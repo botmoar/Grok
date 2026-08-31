@@ -84,6 +84,23 @@ add_action('init', function () {
     add_rewrite_rule('^rpvh-ltrntybyt-bb-ly-khyym/?$', 'index.php?ahavat_redirect=alternative-treatment', 'top');
 });
 
+add_filter('request', function ($vars) {
+    $path = trim((string) parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH), '/');
+    if (preg_match('#^articles/(.+?)/?$#u', $path, $m)) {
+        global $wpdb;
+        $id = (int) $wpdb->get_var($wpdb->prepare(
+            "SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type = 'post' AND post_status = 'publish' LIMIT 1",
+            $m[1]
+        ));
+        if ($id) {
+            return ['p' => $id];
+        }
+        $vars['name'] = $m[1];
+        $vars['post_type'] = 'post';
+    }
+    return $vars;
+});
+
 add_filter('query_vars', function ($vars) {
     $vars[] = 'ahavat_redirect';
     $vars[] = 'query';
@@ -91,17 +108,12 @@ add_filter('query_vars', function ($vars) {
 });
 
 add_action('template_redirect', function () {
-    $redirect = get_query_var('ahavat_redirect');
-    if ($redirect === 'alternative-treatment') {
+    $path = trim((string) parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH), '/');
+    if ($path === 'rpvh-ltrntybyt-bb-ly-khyym' || get_query_var('ahavat_redirect') === 'alternative-treatment') {
         wp_safe_redirect(home_url('/alternative-treatment/'), 301);
         exit;
     }
-    $path = trim(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH), '/');
-    if ($path === 'rpvh-ltrntybyt-bb-ly-khyym') {
-        wp_safe_redirect(home_url('/alternative-treatment/'), 301);
-        exit;
-    }
-});
+}, 0);
 
 add_filter('pre_get_posts', function ($q) {
     if ($q->is_search() && $q->is_main_query() && empty($q->get('s'))) {

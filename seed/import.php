@@ -25,31 +25,53 @@ if (!$data) {
 $theme_images = get_stylesheet_directory() . '/assets/images';
 $media_cache = [];
 
-function ahavat_import_find_page($slug) {
-    $page = get_page_by_path($slug);
-    return $page ? (int) $page->ID : 0;
+function ahavat_import_find_by_name($name, $type) {
+    $found = get_posts([
+        'name' => $name,
+        'post_type' => $type,
+        'post_status' => 'any',
+        'numberposts' => 1,
+        'suppress_filters' => true,
+    ]);
+    if ($found) {
+        return $found[0];
+    }
+    global $wpdb;
+    $id = (int) $wpdb->get_var($wpdb->prepare(
+        "SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type = %s LIMIT 1",
+        $name,
+        $type
+    ));
+    return $id ? get_post($id) : null;
 }
 
 function ahavat_import_upsert_post($args) {
     $existing = null;
     if (!empty($args['post_name']) && !empty($args['post_type'])) {
-        $found = get_posts([
-            'name' => $args['post_name'],
-            'post_type' => $args['post_type'],
-            'post_status' => 'any',
-            'numberposts' => 1,
-            'suppress_filters' => true,
-        ]);
-        if ($found) {
-            $existing = $found[0];
+        $existing = ahavat_import_find_by_name($args['post_name'], $args['post_type']);
+        if (!$existing) {
+            $sanitized = sanitize_title($args['post_name']);
+            if ($sanitized !== $args['post_name']) {
+                $existing = ahavat_import_find_by_name($sanitized, $args['post_type']);
+            }
         }
     }
     if ($existing) {
         $args['ID'] = $existing->ID;
         wp_update_post(wp_slash($args));
-        return (int) $existing->ID;
+        $id = (int) $existing->ID;
+    } else {
+        $id = (int) wp_insert_post(wp_slash($args), true);
+        if (is_wp_error($id)) {
+            return $id;
+        }
     }
-    return (int) wp_insert_post(wp_slash($args), true);
+    if (!empty($args['post_name'])) {
+        global $wpdb;
+        $wpdb->update($wpdb->posts, ['post_name' => $args['post_name']], ['ID' => $id]);
+        clean_post_cache($id);
+    }
+    return $id;
 }
 
 function ahavat_import_media($filename, $parent = 0) {
@@ -111,6 +133,15 @@ function ahavat_import_seo($id, $title, $desc, $og) {
 }
 
 WP_CLI::log('Seeding Ahavat HaChai content…');
+
+$hello = get_page_by_path('hello-world', OBJECT, 'post');
+if (!$hello) {
+    $found = get_posts(['name' => 'hello-world', 'post_type' => 'post', 'post_status' => 'any', 'numberposts' => 1]);
+    $hello = $found ? $found[0] : null;
+}
+if ($hello) {
+    wp_delete_post($hello->ID, true);
+}
 
 update_option('blogname', 'אהבת החי');
 update_option('blogdescription', 'מרכז וטרינרי');

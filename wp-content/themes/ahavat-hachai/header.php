@@ -27,7 +27,7 @@
     <div class="header-main">
         <div class="header-main__inner">
             <a class="site-logo" href="<?php echo esc_url(home_url('/')); ?>">
-                <img src="<?php echo esc_url(ahavat_img('logo')); ?>" alt="אהבת החי מרכז וטרינרי" width="210" height="56" />
+                <img src="<?php echo esc_url(ahavat_img('logo')); ?>" alt="אהבת החי מרכז וטרינרי" width="175" height="41" />
             </a>
             <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="תפריט">
                 <span></span><span></span><span></span>
@@ -38,15 +38,15 @@
                 <a class="<?php echo esc_attr(ahavat_nav_class('our-clinic')); ?>" href="<?php echo esc_url(home_url('/our-clinic/')); ?>">המרפאה</a>
                 <a class="<?php echo esc_attr(ahavat_nav_class('grooming')); ?>" href="<?php echo esc_url(home_url('/grooming/')); ?>">המספרה</a>
                 <div class="site-nav__dropdown">
-                    <button class="site-nav__link site-nav__drop-toggle" type="button" aria-expanded="false">
+                    <button class="site-nav__link site-nav__drop-toggle" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="services-menu" id="services-menu-btn">
                         עוד על השירותים שלנו
                         <span class="chevron" aria-hidden="true"></span>
                     </button>
-                    <div class="site-nav__drop-menu">
+                    <nav id="services-menu" class="site-nav__drop-menu" aria-labelledby="services-menu-btn">
                         <a href="<?php echo esc_url(home_url('/rpvt-khyvt-qzvtyvt/')); ?>">רפואת חיות אקזוטיות</a>
                         <a href="<?php echo esc_url(home_url('/alternative-treatment/')); ?>">רפואה אלטרנטיבית</a>
                         <a href="<?php echo esc_url(home_url('/dental-treatment/')); ?>">טיפולי שיניים</a>
-                    </div>
+                    </nav>
                 </div>
                 <a class="<?php echo esc_attr(ahavat_nav_class('fqa')); ?>" href="<?php echo esc_url(home_url('/fqa/')); ?>">שאלות ותשובות</a>
                 <a class="<?php echo esc_attr(ahavat_nav_class('mmrym-l-htnhgvt-rnbym-klbym-vkhtvlym')); ?>" href="<?php echo esc_url(home_url('/mmrym-l-htnhgvt-rnbym-klbym-vkhtvlym/')); ?>">מאמרים</a>

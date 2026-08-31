@@ -3,20 +3,21 @@
  * Template Name: שאלות ותשובות
  */
 get_header();
-$terms = get_terms(['taxonomy' => 'faq_category', 'hide_empty' => false]);
+$terms = ahavat_faq_terms();
+$chevron = ahavat_img('faq_bubble');
 ?>
-<section class="faq-page">
-    <header class="section-head">
+<section class="faq-hero">
+    <div class="faq-hero__copy">
         <h1 class="heading-split"><strong class="heading-split__pink">שאלות</strong> <span class="heading-split__dark">ותשובות</span></h1>
         <p>ריכזנו בשבילכם מספר שאלות ותשובות שאנחנו נתקלים בהן הרבה במרפאה. יש לכם שאלות נוספות? מוזמנים לכתוב לנו בוואטאפ או להתקשר, נשמח לענות!</p>
-        <form class="search-form search-form--faq" action="<?php echo esc_url(home_url('/search/')); ?>" method="get">
-            <label class="visually-hidden" for="faq-search">חפש שאלה</label>
-            <input id="faq-search" type="search" name="s" placeholder="חפש שאלה..." />
-            <button class="btn btn--pink" type="submit">חפש</button>
-        </form>
-    </header>
+    </div>
+    <div class="faq-hero__media">
+        <img class="faq-hero__pug" src="<?php echo esc_url(ahavat_img('faq_pug') ?: ahavat_img('og_faq')); ?>" alt="" width="992" height="661" />
+    </div>
+</section>
+<section class="faq-page">
     <?php
-    if ($terms && !is_wp_error($terms)) :
+    if ($terms) :
         foreach ($terms as $term) :
             $items = new WP_Query([
                 'post_type' => 'faq_item',
@@ -39,14 +40,17 @@ $terms = get_terms(['taxonomy' => 'faq_category', 'hide_empty' => false]);
                 while ($items->have_posts()) :
                     $items->the_post();
                     $icon = get_post_meta(get_the_ID(), '_ahavat_icon', true);
-                    $icon_url = $icon ? get_theme_file_uri('assets/images/' . $icon) : '';
+                    $icon_url = $icon ? ahavat_img($icon) : '';
                     ?>
                     <details class="faq-item">
                         <summary>
                             <?php if ($icon_url) : ?>
-                                <img src="<?php echo esc_url($icon_url); ?>" alt="" width="28" height="28" />
+                                <img class="faq-item__icon" src="<?php echo esc_url($icon_url); ?>" alt="" width="28" height="28" />
                             <?php endif; ?>
                             <span><?php the_title(); ?></span>
+                            <?php if ($chevron) : ?>
+                                <img class="faq-item__chevron" src="<?php echo esc_url($chevron); ?>" alt="" width="20" height="20" />
+                            <?php endif; ?>
                         </summary>
                         <div class="faq-item__body">
                             <?php echo apply_filters('the_content', get_the_content()); ?>

@@ -26,12 +26,12 @@ $gallery = [
 </section>
 <section class="gallery-grid">
     <?php foreach ($gallery as $img) :
-        $path = get_template_directory() . '/assets/images/' . $img;
-        if (!file_exists($path)) {
+        $src = ahavat_img($img);
+        if (!$src) {
             continue;
         }
         ?>
-        <img src="<?php echo esc_url(get_theme_file_uri('assets/images/' . $img)); ?>" alt="המספרה של אהבת החי" loading="lazy" />
+        <img src="<?php echo esc_url($src); ?>" alt="המספרה של אהבת החי" loading="lazy" />
     <?php endforeach; ?>
 </section>
 <?php

@@ -63,7 +63,7 @@ $rooms = [
         <div class="clinic-room__slider slider" data-slider>
             <div class="slider__track">
                 <?php foreach ($room['images'] as $n => $img) : ?>
-                    <div class="slider__slide <?php echo $n === 0 ? 'is-active' : ''; ?>" style="background-image:url('<?php echo esc_url(get_theme_file_uri('assets/images/' . $img)); ?>')"></div>
+                    <div class="slider__slide <?php echo $n === 0 ? 'is-active' : ''; ?>" style="background-image:url('<?php echo esc_url(ahavat_img($img)); ?>')"></div>
                 <?php endforeach; ?>
             </div>
             <div class="slider__dots"></div>

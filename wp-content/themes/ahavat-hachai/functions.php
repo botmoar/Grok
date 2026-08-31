@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('AHAVAT_VERSION', '1.0.0');
+define('AHAVAT_VERSION', '1.1.0');
 define('AHAVAT_PHONE_DISPLAY', '03-6472933');
 define('AHAVAT_PHONE_TEL', '+97236472933');
 define('AHAVAT_EMERGENCY_DISPLAY', '077-9579799');

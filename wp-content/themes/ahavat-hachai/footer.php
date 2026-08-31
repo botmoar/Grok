@@ -34,7 +34,7 @@
         </div>
         <div class="footer-col footer-col--brand">
             <a href="<?php echo esc_url(home_url('/')); ?>">
-                <img class="footer-logo" src="<?php echo esc_url(ahavat_img('logo_footer') ?: ahavat_img('logo')); ?>" alt="אהבת החי" width="180" height="70" />
+                <img class="footer-logo" src="<?php echo esc_url(ahavat_img('logo_footer') ?: ahavat_img('logo')); ?>" alt="אהבת החי" width="175" height="41" />
             </a>
             <a href="<?php echo esc_url(AHAVAT_MAPS); ?>" target="_blank" rel="noopener">
                 <img src="<?php echo esc_url(ahavat_img('icon_pin')); ?>" alt="" width="18" height="18" />

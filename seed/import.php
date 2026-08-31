@@ -74,16 +74,48 @@ function ahavat_import_upsert_post($args) {
     return $id;
 }
 
+function ahavat_import_find_image($filename) {
+    global $theme_images;
+    $dirs = array_unique(array_filter([
+        $theme_images,
+        get_stylesheet_directory() . '/assets/images',
+        get_template_directory() . '/assets/images',
+        dirname(__DIR__) . '/wp-content/themes/ahavat-hachai/assets/images',
+    ]));
+    $base = basename((string) $filename);
+    foreach ($dirs as $dir) {
+        if (!$dir || !is_dir($dir)) {
+            continue;
+        }
+        foreach ([$filename, $base] as $name) {
+            $path = $dir . '/' . ltrim($name, '/');
+            if (is_file($path)) {
+                return $path;
+            }
+        }
+        foreach (['*_' . $base, '*' . $base] as $pattern) {
+            $matches = glob($dir . '/' . $pattern) ?: [];
+            if ($matches) {
+                return $matches[0];
+            }
+        }
+    }
+    return '';
+}
+
 function ahavat_import_media($filename, $parent = 0) {
-    global $media_cache, $theme_images;
+    global $media_cache;
     if (!$filename) {
         return 0;
     }
     if (isset($media_cache[$filename])) {
         return $media_cache[$filename];
     }
-    $path = $theme_images . '/' . $filename;
-    if (!file_exists($path)) {
+    $path = ahavat_import_find_image($filename);
+    if (!$path) {
+        if (class_exists('WP_CLI')) {
+            WP_CLI::warning("Missing image {$filename}");
+        }
         return 0;
     }
     $existing = get_posts([
@@ -98,14 +130,29 @@ function ahavat_import_media($filename, $parent = 0) {
         $media_cache[$filename] = (int) $existing[0]->ID;
         return $media_cache[$filename];
     }
-    $filetype = wp_check_filetype($filename);
-    $upload = wp_upload_bits($filename, null, file_get_contents($path));
+    $upload_name = preg_replace('/[^A-Za-z0-9._-]/', '_', basename($path));
+    if (!preg_match('/\.(jpe?g|png|gif|webp|svg)$/i', $upload_name)) {
+        $upload_name .= '.jpg';
+    }
+    $filetype = wp_check_filetype($upload_name);
+    $bytes = file_get_contents($path);
+    if ($bytes === false) {
+        return 0;
+    }
+    $upload = wp_upload_bits($upload_name, null, $bytes);
     if (!empty($upload['error'])) {
+        $ext = pathinfo($upload_name, PATHINFO_EXTENSION);
+        $upload = wp_upload_bits('ahavat-' . md5($filename) . '.' . $ext, null, $bytes);
+    }
+    if (!empty($upload['error'])) {
+        if (class_exists('WP_CLI')) {
+            WP_CLI::warning("Upload failed for {$filename}: " . $upload['error']);
+        }
         return 0;
     }
     $attachment = [
         'post_mime_type' => $filetype['type'] ?: 'image/jpeg',
-        'post_title' => preg_replace('/\.[^.]+$/', '', $filename),
+        'post_title' => preg_replace('/\.[^.]+$/', '', basename($filename)),
         'post_content' => '',
         'post_status' => 'inherit',
     ];
@@ -233,22 +280,46 @@ foreach ($data['team'] as $member) {
         update_post_meta($id, '_ahavat_avatar', $member['avatar']);
     }
     if (!empty($member['photo'])) {
+        update_post_meta($id, '_ahavat_photo', $member['photo']);
         $mid = ahavat_import_media($member['photo'], $id);
+        if (!$mid) {
+            $simple = [
+                'sagi-yarkoni' => 'sagi_yarkoni.jpg',
+                'ron-ponti' => 'ron_ponti.jpg',
+                'reut-avraham' => 'reut_avraham.jpeg',
+            ];
+            if (!empty($simple[$member['slug']])) {
+                $mid = ahavat_import_media($simple[$member['slug']], $id);
+            }
+        }
         if ($mid) {
             set_post_thumbnail($id, $mid);
+        } else {
+            WP_CLI::warning("No featured image for {$member['slug']} ({$member['photo']})");
         }
     }
     WP_CLI::log("Team {$member['slug']} #{$id}");
 }
 
+$faq_order = [
+    'פרעושים וקרציות' => 1,
+    'שיניים וחניכיים' => 2,
+    'השמנה ובעיות משקל' => 3,
+    'תזונה' => 4,
+    'כלבים כללי' => 5,
+    'חתולים כללי' => 6,
+];
 $term_order = 0;
 foreach ($data['faq'] as $item) {
     $term = term_exists($item['category'], 'faq_category');
     if (!$term) {
         $term = wp_insert_term($item['category'], 'faq_category');
-        $term_order++;
     }
     $term_id = is_array($term) ? (int) $term['term_id'] : 0;
+    if ($term_id) {
+        $order = $faq_order[$item['category']] ?? (++$term_order);
+        update_term_meta($term_id, '_ahavat_order', $order);
+    }
     $slug = sanitize_title($item['question']);
     $id = ahavat_import_upsert_post([
         'post_type' => 'faq_item',

@@ -1,11 +1,8 @@
 <?php
 $role = get_post_meta(get_the_ID(), '_ahavat_role', true);
 $role_short = get_post_meta(get_the_ID(), '_ahavat_role_short', true) ?: $role;
-$photo = get_the_post_thumbnail_url(get_the_ID(), 'large');
-$avatar = get_post_meta(get_the_ID(), '_ahavat_avatar', true);
-if ($avatar && strpos($avatar, 'http') !== 0) {
-    $avatar = get_theme_file_uri('assets/images/' . $avatar);
-}
+$photo = ahavat_team_photo_url(get_the_ID());
+$avatar = ahavat_team_avatar_url(get_the_ID());
 ?>
 <article class="team-card" data-flip>
     <div class="team-card__inner">
@@ -15,7 +12,7 @@ if ($avatar && strpos($avatar, 'http') !== 0) {
             <?php endif; ?>
             <div class="team-card__caption">
                 <?php if ($rotate = ahavat_img('icon_rotate')) : ?>
-                    <img class="team-card__flip-icon" src="<?php echo esc_url($rotate); ?>" alt="" />
+                    <img class="team-card__flip-icon" src="<?php echo esc_url($rotate); ?>" alt="" width="22" height="22" />
                 <?php endif; ?>
                 <h3><?php the_title(); ?></h3>
                 <p><?php echo esc_html($role_short); ?></p>

@@ -56,4 +56,6 @@ return [
     'exotic_parrot' => '6a1ac7e95fed8844a9fd3b42_parrot_1.jpg',
     'exotic_parrot2' => '6a1ac857cb2062e811ba7a38_parrot_2.jpg',
     'exotic_lizard' => '69f5e08fc7abdcabc4b6d9be_WhatsApp_Image_2026-04-14_at_16.54.22.jpeg',
+    'og_faq' => '65ce1d5185b961b92350d3af_Frame_223.png',
+    'og_articles' => '664903fa66f2d92dc2f6de90_Frame_299.png',
 ];

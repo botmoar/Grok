@@ -156,6 +156,23 @@ add_filter('robots_txt', function ($output, $public) {
 
 add_filter('wp_sitemaps_enabled', '__return_true');
 
+add_filter('wp_sitemaps_add_provider', function ($provider, $name) {
+    if ($name === 'users') {
+        return false;
+    }
+    return $provider;
+}, 10, 2);
+
+add_filter('wp_sitemaps_post_types', function ($types) {
+    unset($types['team_member'], $types['faq_item']);
+    return $types;
+});
+
+add_filter('wp_sitemaps_taxonomies', function ($taxonomies) {
+    unset($taxonomies['category'], $taxonomies['post_tag'], $taxonomies['faq_category']);
+    return $taxonomies;
+});
+
 add_filter('the_content', function ($content) {
     return ahavat_replace_theme_img_placeholder($content);
 });

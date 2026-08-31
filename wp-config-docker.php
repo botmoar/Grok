@@ -24,6 +24,10 @@ if (!defined('AHAVAT_GTM_ID')) {
     define('AHAVAT_GTM_ID', getenv('AHAVAT_GTM_ID') ?: '');
 }
 
+if (!defined('AHAVAT_GOOGLE_SITE_VERIFICATION')) {
+    define('AHAVAT_GOOGLE_SITE_VERIFICATION', getenv('AHAVAT_GOOGLE_SITE_VERIFICATION') ?: '');
+}
+
 if (!defined('WP_DEBUG')) {
     define('WP_DEBUG', false);
 }

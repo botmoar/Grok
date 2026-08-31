@@ -107,7 +107,7 @@ There is no contact form. CTAs are phone and WhatsApp.
 
 - Semantic HTML + BEM-style CSS. Rubik 300–700. Brand pink `#ED2590`.
 - Custom post types: `team_member`, `faq_item` (taxonomy `faq_category`). Articles are normal posts.
-- LocalBusiness / VeterinaryCare JSON-LD on every page. Per-page SEO titles and meta from the live site.
+- SEO: unique Hebrew titles and meta descriptions (live tags where they existed; filled unique copy where Webflow left them empty), Open Graph + Twitter, canonical + hreflang, VeterinaryCare / WebSite / Article / FAQPage JSON-LD, Search Console verification. Search and coming-soon pages are `noindex`. Clean `robots.txt` + `wp-sitemap.xml`.
 - Images were downloaded from `cdn.prod.website-files.com/65acc63adb24d071136d5f75/` into the theme. Do not hotlink the Webflow CDN.
 - No jQuery, no Webflow JS. Lightweight slider and accordion (`<details>`).
 - Branded Hebrew 404.

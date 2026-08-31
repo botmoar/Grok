@@ -120,7 +120,13 @@ function ahavat_import_media($filename, $parent = 0) {
     return (int) $id;
 }
 
-function ahavat_import_seo($id, $title, $desc, $og) {
+function ahavat_import_seo($id, $item) {
+    $title = $item['title_tag'] ?? '';
+    $desc = $item['description'] ?? '';
+    $og = $item['og_image'] ?? ($item['featured'] ?? '');
+    $og_title = $item['og_title'] ?? $title;
+    $og_desc = $item['og_description'] ?? $desc;
+    $robots = $item['robots'] ?? '';
     if ($title) {
         update_post_meta($id, '_ahavat_seo_title', $title);
     }
@@ -129,6 +135,17 @@ function ahavat_import_seo($id, $title, $desc, $og) {
     }
     if ($og) {
         update_post_meta($id, '_ahavat_og_image', $og);
+    }
+    if ($og_title) {
+        update_post_meta($id, '_ahavat_og_title', $og_title);
+    }
+    if ($og_desc) {
+        update_post_meta($id, '_ahavat_og_description', $og_desc);
+    }
+    if ($robots) {
+        update_post_meta($id, '_ahavat_robots', $robots);
+    } else {
+        delete_post_meta($id, '_ahavat_robots');
     }
 }
 
@@ -187,7 +204,7 @@ foreach ($data['pages'] as $key => $page) {
     if (!$is_front && isset($templates[$page['slug']])) {
         update_post_meta($id, '_wp_page_template', $templates[$page['slug']]);
     }
-    ahavat_import_seo($id, $page['title_tag'] ?? '', $page['description'] ?? '', $page['og_image'] ?? '');
+    ahavat_import_seo($id, $page);
     WP_CLI::log("Page {$post_name} #{$id}");
 }
 
@@ -267,7 +284,7 @@ foreach ($data['posts'] as $post) {
         continue;
     }
     update_post_meta($id, '_ahavat_author', $post['author'] ?? '');
-    ahavat_import_seo($id, $post['title_tag'] ?? '', $post['description'] ?? '', $post['featured'] ?? '');
+    ahavat_import_seo($id, $post);
     if (!empty($post['featured'])) {
         $mid = ahavat_import_media($post['featured'], $id);
         if ($mid) {
@@ -279,6 +296,8 @@ foreach ($data['posts'] as $post) {
 
 $gtm = getenv('AHAVAT_GTM_ID') ?: '';
 set_theme_mod('ahavat_gtm_id', $gtm);
+$gsc = getenv('AHAVAT_GOOGLE_SITE_VERIFICATION') ?: 'Yi1gKMJsNN8gFXk3emgHbvyumqsm7J8L7HTXRFm6htA';
+set_theme_mod('ahavat_google_site_verification', $gsc);
 
 flush_rewrite_rules(false);
 

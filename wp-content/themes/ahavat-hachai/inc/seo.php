@@ -187,16 +187,37 @@ add_action('after_setup_theme', function () {
 
 add_filter('the_generator', '__return_empty_string');
 
+add_filter('wp_robots', function ($robots) {
+    $noindex = is_search() || is_404();
+    $post_id = (int) get_queried_object_id();
+    if (!$noindex && $post_id) {
+        $stored = get_post_meta($post_id, '_ahavat_robots', true);
+        if (is_string($stored) && strpos($stored, 'noindex') !== false) {
+            $noindex = true;
+        }
+    }
+    if ($noindex) {
+        return [
+            'noindex' => true,
+            'follow' => true,
+        ];
+    }
+    return [
+        'index' => true,
+        'follow' => true,
+        'max-image-preview' => 'large',
+        'max-snippet' => '-1',
+        'max-video-preview' => '-1',
+    ];
+});
+
 add_action('wp_head', function () {
     $seo = ahavat_seo_meta();
     $url = ahavat_canonical_url();
     $img = ahavat_seo_image_meta($seo['og_image']);
     $og_type = is_singular('post') ? 'article' : 'website';
-    $robots = $seo['robots'];
 
     echo '<meta name="description" content="' . esc_attr($seo['description']) . "\" />\n";
-    echo '<meta name="robots" content="' . esc_attr($robots) . "\" />\n";
-    echo '<meta name="googlebot" content="' . esc_attr($robots) . "\" />\n";
     echo '<meta name="theme-color" content="#ED2590" />' . "\n";
     echo '<meta name="geo.region" content="IL-TA" />' . "\n";
     echo '<meta name="geo.placename" content="הדר יוסף, תל אביב" />' . "\n";
@@ -268,14 +289,17 @@ function ahavat_jsonld_business() {
     $logo = ahavat_img('logo');
     $image = ahavat_seo_default_image();
     return [
-        '@type' => ['VeterinaryCare', 'LocalBusiness', 'MedicalBusiness'],
+        '@type' => ['VeterinaryCare', 'LocalBusiness'],
         '@id' => home_url('/#clinic'),
         'name' => 'אהבת החי',
         'alternateName' => ['Ahavat HaChai', 'מרכז וטרינרי אהבת החי'],
         'description' => 'מרכז וטרינרי בצפון תל אביב בניהולו של ד״ר עופר שביט. טיפול בכלבים, חתולים, ארנבים, מכרסמים, ציפורים וחיות אקזוטיות.',
         'url' => home_url('/'),
-        'image' => $image,
-        'logo' => $logo,
+        'image' => [$image, $logo],
+        'logo' => [
+            '@type' => 'ImageObject',
+            'url' => $logo,
+        ],
         'telephone' => AHAVAT_PHONE_TEL,
         'email' => AHAVAT_EMAIL_VET,
         'priceRange' => '$$',
@@ -286,7 +310,7 @@ function ahavat_jsonld_business() {
             'streetAddress' => 'יד המעביר 9',
             'addressLocality' => 'תל אביב-יפו',
             'addressRegion' => 'הדר יוסף',
-            'postalCode' => '69710',
+            'postalCode' => '6951014',
             'addressCountry' => 'IL',
         ],
         'geo' => [
@@ -342,7 +366,7 @@ function ahavat_jsonld_business() {
             'jobTitle' => 'וטרינר, מייסד',
         ],
         'knowsLanguage' => ['he', 'en'],
-        'medicalSpecialty' => ['Veterinary', 'Surgery', 'Oncology', 'Dentistry'],
+        'knowsAbout' => ['כלבים', 'חתולים', 'חיות אקזוטיות', 'כירורגיה וטרינרית', 'רפואת שיניים לחיות מחמד'],
     ];
 }
 
@@ -356,7 +380,10 @@ function ahavat_jsonld_website() {
         'publisher' => ['@id' => home_url('/#clinic')],
         'potentialAction' => [
             '@type' => 'SearchAction',
-            'target' => home_url('/search/?s={search_term_string}'),
+            'target' => [
+                '@type' => 'EntryPoint',
+                'urlTemplate' => home_url('/search/?s={search_term_string}'),
+            ],
             'query-input' => 'required name=search_term_string',
         ],
     ];

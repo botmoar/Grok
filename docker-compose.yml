@@ -1,0 +1,78 @@
+services:
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: ${WORDPRESS_DB_NAME:-wordpress}
+      MYSQL_USER: ${WORDPRESS_DB_USER:-wordpress}
+      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD:-wordpress}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  wordpress:
+    image: wordpress:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${WORDPRESS_PORT:-8080}:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-wordpress}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-wordpress}
+      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_DEBUG: ${WORDPRESS_DEBUG:-0}
+      WORDPRESS_URL: ${WORDPRESS_URL:-http://localhost:8080}
+      AHAVAT_GTM_ID: ${AHAVAT_GTM_ID:-}
+      AHAVAT_GOOGLE_SITE_VERIFICATION: ${AHAVAT_GOOGLE_SITE_VERIFICATION:-}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('AHAVAT_GTM_ID', getenv('AHAVAT_GTM_ID') ?: '');
+        define('AHAVAT_GOOGLE_SITE_VERIFICATION', getenv('AHAVAT_GOOGLE_SITE_VERIFICATION') ?: '');
+        if (!defined('WP_HOME') && getenv('WORDPRESS_URL')) {
+          define('WP_HOME', getenv('WORDPRESS_URL'));
+          define('WP_SITEURL', getenv('WORDPRESS_URL'));
+        }
+    volumes:
+      - wp_data:/var/www/html
+      - ./wp-content/themes/ahavat-hachai:/var/www/html/wp-content/themes/ahavat-hachai
+      - ./wp-config-docker.php:/var/www/html/wp-config-extra.php:ro
+    restart: unless-stopped
+
+  wpcli:
+    image: wordpress:cli
+    depends_on:
+      wordpress:
+        condition: service_started
+      db:
+        condition: service_healthy
+    user: "33:33"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-wordpress}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-wordpress}
+      WORDPRESS_URL: ${WORDPRESS_URL:-http://localhost:8080}
+      WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER:-admin}
+      WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD:-admin}
+      WORDPRESS_ADMIN_EMAIL: ${WORDPRESS_ADMIN_EMAIL:-vet@ofervet.co.il}
+      AHAVAT_GTM_ID: ${AHAVAT_GTM_ID:-}
+      AHAVAT_GOOGLE_SITE_VERIFICATION: ${AHAVAT_GOOGLE_SITE_VERIFICATION:-}
+    volumes:
+      - wp_data:/var/www/html
+      - ./wp-content/themes/ahavat-hachai:/var/www/html/wp-content/themes/ahavat-hachai
+      - ./seed:/seed
+      - ./bin:/scripts
+    entrypoint: ["sh", "-c", "sleep infinity"]
+    restart: unless-stopped
+
+volumes:
+  db_data:
+  wp_data:

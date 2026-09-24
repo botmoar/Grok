@@ -27,10 +27,24 @@ get_header();
             <time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date('j בF Y')); ?></time>
           <?php endif; ?>
         </header>
-        <?php if (has_post_thumbnail()) : ?>
-          <figure class="am-featured"><?php the_post_thumbnail('large', ['alt' => esc_attr(get_the_title())]); ?></figure>
-        <?php endif; ?>
-        <div class="am-prose"><?php the_content(); ?></div>
+        <?php
+        [$lead, $rest] = amichai_article_html();
+        $is_service = amichai_is_service_hub(get_the_ID());
+        ?>
+        <div class="am-prose">
+          <?php if ($lead !== '') : ?>
+            <div class="am-article-lead"><?php echo $lead; ?></div>
+          <?php endif; ?>
+          <?php if ($is_service) {
+              amichai_intro_cta();
+          } ?>
+          <?php if (!$is_stories) {
+              amichai_inline_featured();
+          } ?>
+          <?php if ($rest !== '') {
+              echo $rest;
+          } ?>
+        </div>
         <?php if ($is_stories) {
             amichai_story_index(get_the_ID());
         } ?>

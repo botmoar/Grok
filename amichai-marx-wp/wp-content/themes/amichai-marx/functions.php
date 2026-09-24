@@ -260,25 +260,111 @@ function amichai_fallback_menu(): void {
     echo '</ul>';
 }
 
-function amichai_footer_nav(): void {
+function amichai_render_flat_links(array $items): void {
     echo '<ul>';
-    foreach (amichai_primary_menu_tree() as $item) {
-        if (($item['slug'] ?? '') === 'עמוד-הבית') {
-            continue;
-        }
-        $children = $item['children'] ?? [];
-        echo '<li><a href="' . esc_url(amichai_menu_item_url($item)) . '">' . esc_html((string) $item['label']) . '</a>';
-        if ($children) {
-            echo '<ul>';
-            foreach ($children as $child) {
-                echo '<li><a href="' . esc_url(amichai_menu_item_url($child)) . '">' . esc_html((string) $child['label']) . '</a></li>';
-            }
-            echo '</ul>';
-        }
-        echo '</li>';
+    foreach ($items as $item) {
+        echo '<li><a href="' . esc_url(amichai_menu_item_url($item)) . '">' . esc_html((string) $item['label']) . '</a></li>';
     }
     echo '</ul>';
 }
+
+function amichai_footer_service_links(): array {
+    return [
+        ['label' => 'ייעוץ כלכלי', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post'],
+        ['label' => 'חיים במינוס', 'slug' => 'חיים-במינוס', 'type' => 'post'],
+        ['label' => 'פנסיה', 'slug' => 'פנסיה', 'type' => 'post'],
+        ['label' => 'ביטוחים', 'slug' => 'ביטוחים', 'type' => 'post'],
+        ['label' => 'חסכונות', 'slug' => 'חסכונות', 'type' => 'post'],
+        ['label' => 'דיור ומשכנתאות', 'slug' => 'דיור-ומשכנתאות', 'type' => 'post'],
+    ];
+}
+
+function amichai_footer_site_links(): array {
+    return [
+        ['label' => 'אודות', 'slug' => 'אודות', 'type' => 'page'],
+        ['label' => 'סיפורי משפחות', 'slug' => 'סיפורי-משפחות', 'type' => 'post'],
+        ['label' => 'מאמרים', 'type' => 'custom', 'path' => '/מאמרים/'],
+        ['label' => 'כלי עזר', 'slug' => 'כלי-עזר', 'type' => 'page'],
+        ['label' => 'מן התקשורת', 'slug' => 'מן-התקשורת', 'type' => 'page'],
+        ['label' => 'צור קשר', 'slug' => 'צור-קשר', 'type' => 'page'],
+    ];
+}
+
+function amichai_service_hub_slugs(): array {
+    return [
+        'יועץ-לכלכלת-המשפחה',
+        'דילמות-כלכליות',
+        'חיים-במינוס',
+        'פנסיה',
+        'ביטוחים',
+        'חסכונות',
+        'דיור-ומשכנתאות',
+        'כלכלת-משפחה',
+        'למי-מיועד-הייעוץ',
+        'הרצאות-וסדנאות',
+    ];
+}
+
+function amichai_is_service_hub(int $post_id): bool {
+    $slug = rawurldecode((string) get_post_field('post_name', $post_id));
+    return in_array($slug, amichai_service_hub_slugs(), true);
+}
+
+function amichai_split_article_lead(string $html): array {
+    if (preg_match_all('/<p\b[^>]*>.*?<\/p>/is', $html, $matches, PREG_OFFSET_CAPTURE)) {
+        foreach ($matches[0] as $match) {
+            $text = trim(wp_strip_all_tags($match[0]));
+            $text = str_replace("\xc2\xa0", '', $text);
+            if ($text === '') {
+                continue;
+            }
+            $end = $match[1] + strlen($match[0]);
+            return [substr($html, 0, $end), ltrim(substr($html, $end))];
+        }
+    }
+    return [$html, ''];
+}
+
+function amichai_article_html(): array {
+    $raw = get_the_content(null, false);
+    $html = apply_filters('the_content', $raw);
+    $html = str_replace(']]>', ']]&gt;', $html);
+    return amichai_split_article_lead($html);
+}
+
+function amichai_inline_featured(): void {
+    if (!has_post_thumbnail()) {
+        return;
+    }
+    echo '<figure class="am-featured">';
+    echo get_the_post_thumbnail(null, 'large', [
+        'class' => 'am-inline-photo',
+        'alt' => get_the_title(),
+    ]);
+    echo '</figure>';
+}
+
+function amichai_intro_cta(): void {
+    ?>
+    <aside class="am-intro-cta" aria-label="שיחת היכרות">
+      <p>שיחת היכרות, בלי התחייבות</p>
+      <div class="am-intro-cta-actions">
+        <a class="am-btn am-btn-primary" href="tel:054-2372417">054-2372417</a>
+        <a class="am-intro-link" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת היכרות</a>
+      </div>
+    </aside>
+    <?php
+}
+
+add_filter('wp_get_loading_optimization_attributes', function (array $attrs, string $tag_name, array $attr): array {
+    $class = (string) ($attr['class'] ?? '');
+    if ($tag_name === 'img' && str_contains($class, 'am-inline-photo')) {
+        $attrs['loading'] = 'lazy';
+        $attrs['decoding'] = 'async';
+        $attrs['fetchpriority'] = 'low';
+    }
+    return $attrs;
+}, 10, 3);
 
 function amichai_asset(string $path): string {
     return get_template_directory_uri() . '/' . ltrim($path, '/');

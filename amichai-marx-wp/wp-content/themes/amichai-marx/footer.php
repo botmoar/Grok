@@ -7,9 +7,13 @@
       </a>
       <p>ליווי אישי למשפחות שרוצות סדר בחשבון, ותוכנית שאפשר לחיות איתה.</p>
     </div>
+    <nav class="am-footer-services" aria-label="שירותים">
+      <h2>שירותים</h2>
+      <?php amichai_render_flat_links(amichai_footer_service_links()); ?>
+    </nav>
     <nav class="am-footer-links" aria-label="באתר">
       <h2>באתר</h2>
-      <?php amichai_footer_nav(); ?>
+      <?php amichai_render_flat_links(amichai_footer_site_links()); ?>
     </nav>
     <div class="am-footer-contact">
       <h2>יצירת קשר</h2>

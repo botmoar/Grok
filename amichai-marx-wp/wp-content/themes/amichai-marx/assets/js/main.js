@@ -45,16 +45,14 @@
   var current = 0;
   var animating = false;
 
-  function padStart() {
-    return parseFloat(getComputedStyle(track).paddingRight) || 0;
-  }
-
   function nearest() {
-    var edge = track.getBoundingClientRect().right - padStart();
+    var box = track.getBoundingClientRect();
+    var mid = box.left + box.width / 2;
     var best = 0;
     var bestDist = Infinity;
     notes.forEach(function (note, i) {
-      var dist = Math.abs(note.getBoundingClientRect().right - edge);
+      var noteBox = note.getBoundingClientRect();
+      var dist = Math.abs(noteBox.left + noteBox.width / 2 - mid);
       if (dist < bestDist) {
         bestDist = dist;
         best = i;
@@ -72,12 +70,13 @@
     if (next) next.disabled = index >= notes.length - 1;
   }
 
-  function align(index) {
+  function align(index, immediate) {
     var note = notes[index];
     if (!note) return;
-    var edge = track.getBoundingClientRect().right - padStart();
-    var delta = note.getBoundingClientRect().right - edge;
-    track.scrollBy({ left: delta, behavior: reduce.matches ? "auto" : "smooth" });
+    var trackBox = track.getBoundingClientRect();
+    var noteBox = note.getBoundingClientRect();
+    var delta = (noteBox.left + noteBox.width / 2) - (trackBox.left + trackBox.width / 2);
+    track.scrollBy({ left: delta, behavior: immediate || reduce.matches ? "auto" : "smooth" });
   }
 
   function go(index) {
@@ -121,10 +120,7 @@
     paint(current);
   }, { passive: true });
 
-  current = nearest();
-  if (current !== 0) {
-    align(0);
-    current = 0;
-  }
+  current = 0;
+  align(0, true);
   paint(current);
 })();

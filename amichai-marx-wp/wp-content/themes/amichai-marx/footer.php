@@ -1,32 +1,25 @@
 <?php defined('ABSPATH') || exit; ?>
 <footer class="am-footer">
   <div class="am-wrap am-footer-grid">
-    <div>
+    <div class="am-footer-brand">
       <a class="am-logo am-logo-footer" href="<?php echo esc_url(home_url('/')); ?>">
         <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="492" height="120" alt="עמיחי מרקס, יועץ ומאמן לכלכלת המשפחה">
       </a>
       <p>ליווי אישי למשפחות שרוצות סדר בחשבון, ותוכנית שאפשר לחיות איתה.</p>
     </div>
-    <div>
+    <nav class="am-footer-links" aria-label="באתר">
       <h2>באתר</h2>
-      <ul>
-        <li><a href="<?php echo esc_url(home_url('/אודות/')); ?>">אודות</a></li>
-        <li><a href="<?php echo esc_url(home_url('/יועץ-לכלכלת-המשפחה/')); ?>">יועץ לכלכלת המשפחה</a></li>
-        <li><a href="<?php echo esc_url(home_url('/סיפורי-משפחות/')); ?>">סיפורי משפחות</a></li>
-        <li><a href="<?php echo esc_url(home_url('/כלי-עזר/')); ?>">כלי עזר</a></li>
-        <li><a href="<?php echo esc_url(home_url('/מן-התקשורת/')); ?>">מן התקשורת</a></li>
-        <li><a href="<?php echo esc_url(home_url('/מאמרים/')); ?>">מאמרים</a></li>
-        <li><a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>">מדיניות פרטיות</a></li>
-      </ul>
-    </div>
-    <div>
+      <?php amichai_footer_nav(); ?>
+    </nav>
+    <div class="am-footer-contact">
       <h2>יצירת קשר</h2>
       <ul>
         <li><a href="tel:054-2372417">054-2372417</a></li>
         <li><a href="https://wa.me/972542372417" target="_blank" rel="noopener">וואטסאפ</a></li>
-        <li><a href="mailto:marx@amichai-marx.co.il">marx@amichai-marx.co.il</a></li>
+        <li><a href="mailto:marx@amichai-marx.co.il" dir="ltr">marx@amichai-marx.co.il</a></li>
         <li>תל מנשה 11, חיננית</li>
         <li>ח.פ. 032965006</li>
+        <li><a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>">מדיניות פרטיות</a></li>
       </ul>
     </div>
   </div>

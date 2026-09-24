@@ -196,17 +196,86 @@ add_action('wp_head', function (): void {
     echo '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","' . esc_js($id) . '");</script>' . "\n";
 }, 20);
 
-function amichai_fallback_menu(): void {
-    $items = [
-        home_url('/') => 'עמוד הבית',
-        home_url('/אודות/') => 'אודות',
-        home_url('/יועץ-לכלכלת-המשפחה/') => 'ייעוץ כלכלי',
-        home_url('/כלכלת-משפחה/') => 'כלכלת משפחה',
-        home_url('/צור-קשר/') => 'צור קשר',
+/**
+ * Primary nav and footer crawl map. Labels match live intent; URLs are kept slugs only.
+ * /ייעוץ-כלכלי/ and /תחומי-כלכלת-המשפחה/ 301 to /יועץ-לכלכלת-המשפחה/, so they are not menu items.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function amichai_primary_menu_tree(): array {
+    return [
+        ['label' => 'עמוד הבית', 'slug' => 'עמוד-הבית', 'type' => 'page'],
+        ['label' => 'אודות', 'slug' => 'אודות', 'type' => 'page'],
+        ['label' => 'ייעוץ כלכלי', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post', 'children' => [
+            ['label' => 'למי מיועד הייעוץ?', 'slug' => 'למי-מיועד-הייעוץ', 'type' => 'post'],
+            ['label' => 'הרצאות וסדנאות', 'slug' => 'הרצאות-וסדנאות', 'type' => 'post'],
+        ]],
+        ['label' => 'דילמות כלכליות', 'slug' => 'דילמות-כלכליות', 'type' => 'post', 'children' => [
+            ['label' => 'חיים במינוס', 'slug' => 'חיים-במינוס', 'type' => 'post'],
+            ['label' => 'פנסיה', 'slug' => 'פנסיה', 'type' => 'post'],
+            ['label' => 'ביטוחים', 'slug' => 'ביטוחים', 'type' => 'post'],
+            ['label' => 'חסכונות', 'slug' => 'חסכונות', 'type' => 'post'],
+            ['label' => 'דיור ומשכנתאות', 'slug' => 'דיור-ומשכנתאות', 'type' => 'post'],
+        ]],
+        ['label' => 'כלכלת משפחה', 'slug' => 'כלכלת-משפחה', 'type' => 'post', 'children' => [
+            ['label' => 'סיפורי משפחות', 'slug' => 'סיפורי-משפחות', 'type' => 'post'],
+        ]],
+        ['label' => 'מאמרים', 'type' => 'custom', 'path' => '/מאמרים/'],
+        ['label' => 'כלי עזר', 'slug' => 'כלי-עזר', 'type' => 'page', 'children' => [
+            ['label' => 'מחשבון תקציב משפחתי', 'slug' => 'מחשבון-תקציב-משפחתי', 'type' => 'page'],
+            ['label' => 'מחשבון חיסכון משפחתי ליעדים', 'slug' => 'מחשבון-חיסכון-משפחתי-ליעדים', 'type' => 'page'],
+        ]],
+        ['label' => 'מן התקשורת', 'slug' => 'מן-התקשורת', 'type' => 'page'],
+        ['label' => 'צור קשר', 'slug' => 'צור-קשר', 'type' => 'page'],
     ];
+}
+
+function amichai_menu_item_url(array $item): string {
+    if (($item['type'] ?? '') === 'custom') {
+        return home_url((string) ($item['path'] ?? '/'));
+    }
+    $slug = (string) ($item['slug'] ?? '');
+    return home_url('/' . $slug . '/');
+}
+
+function amichai_render_fallback_item(array $item): void {
+    $children = $item['children'] ?? [];
+    $class = $children ? ' class="menu-item-has-children"' : '';
+    echo '<li' . $class . '><a href="' . esc_url(amichai_menu_item_url($item)) . '">' . esc_html((string) $item['label']) . '</a>';
+    if ($children) {
+        echo '<ul class="sub-menu">';
+        foreach ($children as $child) {
+            amichai_render_fallback_item($child);
+        }
+        echo '</ul>';
+    }
+    echo '</li>';
+}
+
+function amichai_fallback_menu(): void {
     echo '<ul class="am-menu">';
-    foreach ($items as $url => $label) {
-        echo '<li><a href="' . esc_url($url) . '">' . esc_html($label) . '</a></li>';
+    foreach (amichai_primary_menu_tree() as $item) {
+        amichai_render_fallback_item($item);
+    }
+    echo '</ul>';
+}
+
+function amichai_footer_nav(): void {
+    echo '<ul>';
+    foreach (amichai_primary_menu_tree() as $item) {
+        if (($item['slug'] ?? '') === 'עמוד-הבית') {
+            continue;
+        }
+        $children = $item['children'] ?? [];
+        echo '<li><a href="' . esc_url(amichai_menu_item_url($item)) . '">' . esc_html((string) $item['label']) . '</a>';
+        if ($children) {
+            echo '<ul>';
+            foreach ($children as $child) {
+                echo '<li><a href="' . esc_url(amichai_menu_item_url($child)) . '">' . esc_html((string) $child['label']) . '</a></li>';
+            }
+            echo '</ul>';
+        }
+        echo '</li>';
     }
     echo '</ul>';
 }

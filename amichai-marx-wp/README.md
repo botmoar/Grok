@@ -17,7 +17,7 @@ Open http://localhost:8080
 
 Local admin (change it): user `admin`, password `amichai-local-change-me`.
 
-The seed is idempotent. Run the `wpcli` command again after content edits.
+The seed is idempotent. Run the `wpcli` command again after content edits. Each run rebuilds the primary menu (service items and submenus). A staging deploy needs that one seed run; until then the theme fallback shows the same links.
 
 ## What you should see
 

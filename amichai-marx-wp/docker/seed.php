@@ -293,42 +293,59 @@ if (is_array($existing_items)) {
     }
 }
 
-$menu_posts = [
-    'יועץ-לכלכלת-המשפחה' => 'ייעוץ כלכלי',
-    'כלכלת-משפחה' => 'כלכלת משפחה',
-];
+// Rebuilt on every seed. Staging needs one seed run after deploy so this menu replaces the old five links.
 $order = 0;
-$add = function (string $title, int $object_id, string $object) use ($menu_id, &$order): void {
-    $order++;
-    wp_update_nav_menu_item($menu_id, 0, [
-        'menu-item-title' => $title,
-        'menu-item-object-id' => $object_id,
-        'menu-item-object' => $object,
-        'menu-item-type' => 'post_type',
-        'menu-item-status' => 'publish',
-        'menu-item-position' => $order,
-    ]);
-};
-if (!empty($page_ids['עמוד-הבית'])) {
-    $add('עמוד הבית', $page_ids['עמוד-הבית'], 'page');
-}
-if (!empty($page_ids['אודות'])) {
-    $add('אודות', $page_ids['אודות'], 'page');
-}
-foreach ($menu_posts as $slug => $title) {
+$resolve_id = static function (array $item) use ($page_ids): int {
+    $type = (string) ($item['type'] ?? '');
+    $slug = (string) ($item['slug'] ?? '');
+    if ($type === 'page') {
+        return (int) ($page_ids[$slug] ?? 0);
+    }
+    if ($type !== 'post' || $slug === '') {
+        return 0;
+    }
     $found = get_posts([
         'name' => sanitize_title($slug),
         'post_type' => 'post',
         'post_status' => 'publish',
         'posts_per_page' => 1,
     ]);
-    if ($found) {
-        $add($title, (int) $found[0]->ID, 'post');
+    return $found ? (int) $found[0]->ID : 0;
+};
+$add = static function (array $item, int $parent = 0) use ($menu_id, &$order, $resolve_id, &$add): void {
+    $order++;
+    $type = (string) ($item['type'] ?? '');
+    $args = [
+        'menu-item-title' => (string) $item['label'],
+        'menu-item-status' => 'publish',
+        'menu-item-position' => $order,
+        'menu-item-parent-id' => $parent,
+    ];
+    if ($type === 'custom') {
+        $args['menu-item-type'] = 'custom';
+        $args['menu-item-url'] = home_url((string) ($item['path'] ?? '/'));
+    } else {
+        $object_id = $resolve_id($item);
+        if ($object_id <= 0) {
+            fwrite(STDERR, 'menu skip missing ' . ($item['slug'] ?? $item['label']) . "\n");
+            $order--;
+            return;
+        }
+        $args['menu-item-type'] = 'post_type';
+        $args['menu-item-object-id'] = $object_id;
+        $args['menu-item-object'] = $type === 'page' ? 'page' : 'post';
+    }
+    $item_id = (int) wp_update_nav_menu_item($menu_id, 0, $args);
+    foreach ($item['children'] ?? [] as $child) {
+        $add($child, $item_id);
+    }
+};
+if (function_exists('amichai_primary_menu_tree')) {
+    foreach (amichai_primary_menu_tree() as $item) {
+        $add($item, 0);
     }
 }
-if (!empty($page_ids['צור-קשר'])) {
-    $add('צור קשר', $page_ids['צור-קשר'], 'page');
-}
+echo "menu items: {$order}\n";
 $locations = get_theme_mod('nav_menu_locations');
 if (!is_array($locations)) {
     $locations = [];

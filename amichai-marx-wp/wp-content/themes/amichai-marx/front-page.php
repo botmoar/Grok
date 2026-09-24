@@ -47,7 +47,6 @@ get_header();
       </header>
       <ol class="am-flow">
         <li>
-          <span class="am-flow-num">1</span>
           <span class="am-flow-ico" aria-hidden="true">
             <svg viewBox="0 0 48 48"><circle cx="24" cy="16" r="6"/><path d="M10 38c1.4-7.2 6-11 14-11s12.6 3.8 14 11"/></svg>
           </span>
@@ -55,7 +54,6 @@ get_header();
           <p>כשלוש שעות. הסיפור, המסמכים, הנכסים והיעדים.</p>
         </li>
         <li>
-          <span class="am-flow-num">2</span>
           <span class="am-flow-ico" aria-hidden="true">
             <svg viewBox="0 0 48 48"><rect x="12" y="8" width="24" height="32" rx="3"/><path d="M18 18h12M18 25h12M18 32h7"/></svg>
           </span>
@@ -63,7 +61,6 @@ get_header();
           <p>תמונת מצב, כמה חלופות, ודוח שהמשפחה לוקחת הביתה.</p>
         </li>
         <li>
-          <span class="am-flow-num">3</span>
           <span class="am-flow-ico" aria-hidden="true">
             <svg viewBox="0 0 48 48"><path d="M24 40V22"/><path d="M24 28c-6 0-10-3.2-12-8 4 .2 8 2.2 12 8z"/><path d="M24 26c6 0 10-3.2 12-8-4 .2-8 2.2-12 8z"/><path d="M16 40h16"/></svg>
           </span>

@@ -428,6 +428,8 @@ p { margin: 0 0 1rem; }
 }
 .am-cta-band h2 { color: #fff; margin: 0 0 6px; font-size: 1.8rem; }
 .am-cta-band p { margin: 0; color: rgba(255,255,255,.82); }
+.am-cta-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.am-email { white-space: nowrap; direction: ltr; unicode-bidi: isolate; }
 
 .am-page { padding: 56px 0 88px; }
 .am-quiet { margin: 0 0 6px; color: var(--muted); font-weight: 700; letter-spacing: 0.08em; }
@@ -631,7 +633,9 @@ p { margin: 0 0 1rem; }
   .am-portrait { width: min(100%, 460px); margin-inline: auto; }
   .am-about-photo { max-width: 280px; }
   .am-cta-band { flex-direction: column; align-items: flex-start; padding: 28px 22px; }
-  .am-nav-toggle { display: inline-flex; }
+  .am-header-inner { gap: 8px; }
+  .am-logo { flex: 1 1 auto; min-width: 0; }
+  .am-nav-toggle { display: inline-flex; flex: 0 0 auto; }
   .am-nav {
     display: none;
     position: absolute;
@@ -645,10 +649,35 @@ p { margin: 0 0 1rem; }
   .am-menu { flex-direction: column; gap: 0; }
   .am-menu a { display: flex; align-items: center; min-height: 44px; }
   .am-header-phone-num { display: none; }
-  .am-logo img { height: 54px; }
-  .am-mobile-cta { display: flex; }
-  .am-whatsapp { bottom: 74px; }
-  body { padding-bottom: 64px; }
+  .am-header-phone {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    box-sizing: border-box;
+    justify-content: center;
+  }
+  .am-logo img { height: 50px; max-width: 100%; width: auto; }
+  .am-mobile-cta {
+    display: flex;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .am-whatsapp {
+    right: auto;
+    left: 16px;
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+    z-index: 45;
+  }
+  body { padding-bottom: calc(176px + env(safe-area-inset-bottom, 0px)); }
+  html { scroll-padding-bottom: calc(176px + env(safe-area-inset-bottom, 0px)); }
+  .am-form textarea,
+  .am-form input,
+  .am-cta-band .am-btn { scroll-margin-bottom: 188px; }
+  .am-cta-band .am-actions { width: 100%; padding-left: 76px; box-sizing: border-box; }
+  .am-page .am-form { padding-left: 76px; box-sizing: border-box; }
+  .am-band-last { padding-bottom: 8px; }
 }
 @media (max-width: 640px) {
   .am-wrap { width: min(var(--max), calc(100% - 32px)); }
@@ -664,6 +693,7 @@ p { margin: 0 0 1rem; }
   .am-trust svg { margin: 0; width: 32px; height: 32px; }
   .am-actions .am-btn { width: 100%; }
   .am-hero h1 { font-size: 2.15rem; }
+  .am-cta-band .am-email { font-size: 0.95rem; }
   .fbc-row { grid-template-columns: 1fr; }
   .am-footer-base { flex-direction: column; align-items: flex-start; }
   .am-letters { padding: 56px 0 48px; }

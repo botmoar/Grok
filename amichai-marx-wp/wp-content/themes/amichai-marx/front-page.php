@@ -134,7 +134,7 @@ get_header();
       <div class="am-cta-band">
         <div>
           <h2>שיחת היכרות, בלי התחייבות</h2>
-          <p>054-2372417 · marx@amichai-marx.co.il · תל מנשה 11, חיננית</p>
+          <p class="am-cta-meta"><span>054-2372417</span><span class="am-email" dir="ltr">marx@amichai-marx.co.il</span><span>תל מנשה 11, חיננית</span></p>
         </div>
         <div class="am-actions">
           <a class="am-btn am-btn-primary" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת ייעוץ</a>

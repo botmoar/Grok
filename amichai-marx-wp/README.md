@@ -32,9 +32,10 @@ The seed is idempotent. Run the `wpcli` command again after content edits.
 
 Live export: 8 pages, 71 posts, 5 categories.
 
-- Stories, testimonials, the three meeting pages, ליווי, service explainers, calculators, media, and evergreen articles stay on their original slugs.
-- Near-duplicate יועץ / ייעוץ doorway posts are merged into three canonical articles: `/ייעוץ-לכלכלת-המשפחה/`, `/ניהול-תקציב-משפחתי/`, `/איך-לצאת-מהמינוס/`. The long keyword-repeated versions are not republished.
-- COVID grant, unpaid-leave, isolation-grant, and one-off citizen-grant posts redirect to `/קישורים/` (official sources). Mortgage freeze redirects to `/דיור-ומשכנתאות/`. Study-fund withdrawal redirects to `/חסכונות/`. State-backed emergency loans redirect to `/יציאה-מחובות/`. The May 2017 “until the end of the month” child-savings deadline redirects to the חיסכון לכל ילד guide.
+- 42 posts stay on their original slugs: stories, testimonials, the three meeting pages, the long budget guide, the consulting pillar `/יועץ-לכלכלת-המשפחה/`, and the grants page.
+- 20 near-duplicate posts are merged into a canonical URL. Distinct paragraphs are appended under «נקודות שנשמרו ממדריכים שאוחדו», then the old URL 301s. The consulting doorway cluster points at `/יועץ-לכלכלת-המשפחה/`. Budget duplicates point at `/ניהול-תקציב-משפחתי/`. `/כלכלת-המשפחה/` points at `/כלכלת-משפחה/`.
+- 9 stale or thin posts redirect with no body merge. COVID grants, unpaid leave, isolation grants, the citizen grant, mortgage-freeze, study-fund withdrawal, and state-backed loans go to `/מענקים-לכולם-אילו-מענקים-וזכויות-מגיע/`. The thin return-to-routine note goes to `/איך-לצאת-מהמינוס/`. `/ייעוץ-כלכלי/` goes to the consulting pillar.
+- WhatsApp uses 972542372417. GA4 `G-5SR358LG0Z` is a theme option (Customizer → אנליטיקס) and stays off until it is switched on. The contact form replaces Contact Form 7.
 - The homepage is a landing page, not the old keyword wall.
 - Every move is a 301 in `redirects.json`, with the reason in Hebrew.
 

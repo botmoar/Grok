@@ -5,7 +5,7 @@ defined('ABSPATH') || exit;
 <head>
 <meta charset="<?php bloginfo('charset'); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="<?php echo esc_url(amichai_asset('assets/images/logo.svg')); ?>" type="image/svg+xml">
+<link rel="icon" href="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" type="image/png">
 <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
@@ -14,7 +14,7 @@ defined('ABSPATH') || exit;
 <header class="am-header">
   <div class="am-wrap am-header-inner">
     <a class="am-logo" href="<?php echo esc_url(home_url('/')); ?>">
-      <img src="<?php echo esc_url(amichai_asset('assets/images/logo.svg')); ?>" width="46" height="46" alt="">
+      <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="46" height="49" alt="">
       <span>עמיחי מרקס</span>
     </a>
     <button class="am-nav-toggle" type="button" aria-expanded="false" aria-controls="am-nav">תפריט</button>

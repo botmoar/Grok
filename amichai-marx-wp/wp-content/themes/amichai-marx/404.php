@@ -13,7 +13,7 @@ get_header();
       <a class="am-btn am-btn-ghost" href="tel:054-2372417">חייגו עכשיו</a>
     </p>
     <ul>
-      <li><a href="<?php echo esc_url(home_url('/ייעוץ-לכלכלת-המשפחה/')); ?>">ייעוץ לכלכלת המשפחה</a></li>
+      <li><a href="<?php echo esc_url(home_url('/יועץ-לכלכלת-המשפחה/')); ?>">יועץ לכלכלת המשפחה</a></li>
       <li><a href="<?php echo esc_url(home_url('/ניהול-תקציב-משפחתי/')); ?>">ניהול תקציב משפחתי</a></li>
       <li><a href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">צור קשר</a></li>
     </ul>

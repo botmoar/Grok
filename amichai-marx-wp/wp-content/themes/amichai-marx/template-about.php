@@ -8,7 +8,7 @@ get_header();
 <main id="main" class="am-page">
   <div class="am-wrap am-split">
     <aside>
-      <img class="am-side-photo" src="<?php echo esc_url(amichai_asset('assets/images/portrait.webp')); ?>" alt="עמיחי מרקס">
+      <img class="am-side-photo" src="<?php echo esc_url(amichai_asset('assets/images/portrait.jpg')); ?>" width="236" height="314" alt="עמיחי מרקס">
       <ul class="am-chips">
         <li>מעל 20 שנה במערכת הפיננסית</li>
         <li>הסמכה לייעוץ כלכלת המשפחה</li>

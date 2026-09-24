@@ -121,8 +121,34 @@ REWRITE = {
 
 def clean_html(raw: str) -> str:
     text = raw or ""
-    text = re.sub(r'\sdata-(?:start|end|section-id|id)="[^"]*"', "", text)
-    text = re.sub(r"</?h1\b", lambda m: m.group(0).replace("h1", "h2"), text)
+    text = re.sub(r"https?://(?:www\.)?amichai-marx\.co\.il", "", text)
+    try:
+        from bs4 import BeautifulSoup
+    except ImportError:
+        BeautifulSoup = None
+    if BeautifulSoup and "elementor" in text:
+        soup = BeautifulSoup(text, "html.parser")
+        for tag in soup.find_all(["script", "style", "form"]):
+            tag.decompose()
+        boxes = soup.select(".elementor-widget-container")
+        if boxes:
+            soup = BeautifulSoup("\n".join(box.decode_contents() for box in boxes), "html.parser")
+        for tag in list(soup.find_all(True)):
+            if tag.name in {"div", "span", "section", "font"}:
+                tag.unwrap()
+                continue
+            if tag.name == "a":
+                href = tag.get("href") or ""
+                tag.attrs = {"href": href} if href else {}
+            else:
+                tag.attrs = {}
+            if tag.name == "h1":
+                tag.name = "h2"
+        text = soup.decode()
+    else:
+        text = re.sub(r'\sdata-(?:start|end|section-id|id)="[^"]*"', "", text)
+        text = re.sub(r"</?h1\b", lambda m: m.group(0).replace("h1", "h2"), text)
+    text = re.sub(r'\s(?:style|class|aria-level|dir|id|data-[\w-]+)="[^"]*"', "", text)
     text = re.sub(r"<p>(?:\s|&nbsp;|<br\s*/?>)*</p>", "", text, flags=re.I)
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
@@ -160,6 +186,78 @@ SEO_OVERRIDES = {
 }
 
 
+# Exact map from the consolidation plan. slug -> (action, target or "", reason)
+PLAN = {
+    "איך-לבצע-ניהול-התקציב-הביתי": ("merge", "/ניהול-תקציב-משפחתי/", "מיזוג מדריך תקציב ביתי כפול לעמוד התקציב"),
+    "איך-לנהל-תקציב-ביתי": ("merge", "/ניהול-תקציב-משפחתי/", "מיזוג טיפים ייחודיים לניהול תקציב ביתי"),
+    "באילו-נושאים-יעזור-לנו-יועץ-כלכלי-משפח": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג רשימת נושאים לעמוד היועץ"),
+    "הדרך-החכמה-ליציבות-כלכלית-משפחתית": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג וריאציית יציבות לעמוד היועץ"),
+    "הדרך-הנכונה-לניהול-כלכלת-המשפחה": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג מדריך ניהול כללי לעמוד היועץ"),
+    "הדרך-לעשות-סדר-בניהול-התקציב-המשפחתי": ("merge", "/ניהול-תקציב-משפחתי/", "מיזוג מדריך סדר בתקציב"),
+    "הדרך-לשגשוג-פיננסי-משפחתי-מתחילה-בתכנ": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג וריאציית תכנון לעמוד היועץ"),
+    "הכל-אודות-ייעוץ-עבור-כלכלת-המשפחה": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג עמוד «הכל אודות» לעמוד היועץ"),
+    "המפתח-להתנהלות-כלכלית-חכמה-ומשפחתית-י": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג וריאציית התנהלות לעמוד היועץ"),
+    "יועץ-כלכלי-משפחתי": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג עמוד יועץ כלכלי משפחתי לעמוד הקנוני"),
+    "יועצים-לכלכלת-המשפחה": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג וריאציית יועצים לעמוד הקנוני"),
+    "ייעוץ-כלכלי-למשפחות": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג עמוד ייעוץ כלכלי למשפחות"),
+    "ייעוץ-כלכלי-למשפחות-מי-צריך-יועץ": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג «מי צריך יועץ» לעמוד הקנוני"),
+    "ייעוץ-לכלכלת-המשפחה": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג ייעוץ/יועץ לאותו עמוד קנוני"),
+    "ייעוץ-פיננסי-למשפחות-תכנון-נכון-וחכם": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג שם נרדף לייעוץ פיננסי לעמוד היועץ"),
+    "כך-תוכלו-להתנהל-פיננסית-בצורה-נכונה": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג מדריך התנהלות לעמוד היועץ"),
+    "כלכלת-המשפחה": ("merge", "/כלכלת-משפחה/", "מיזוג צמד הסלאגים עם ה׳ ובלי ה׳"),
+    "למה-חשוב-להשתמש-בייעוץ-כלכלי-למשפחות": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג «למה ייעוץ» לעמוד היועץ"),
+    "על-מה-להתייעץ-במסגרת-ייעוץ-פיננסי-למשפ": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג רשימת נושאי ייעוץ לעמוד היועץ"),
+    "תחומי-כלכלת-המשפחה": ("merge", "/יועץ-לכלכלת-המשפחה/", "מיזוג סקירת תחומים קצרה לעמוד היועץ"),
+    "אנחנו-חזרנו-לשגרה-אך-האוברדראפט-חוגג": ("redirect", "/איך-לצאת-מהמינוס/", "הערה קצרה מתקופת החזרה משגרת הקורונה. ההפניה למדריך היציאה מהמינוס"),
+    "הלוואות-בערבות-מדינה-בתנאים-מצוינים": ("redirect", "/מענקים-לכולם-אילו-מענקים-וזכויות-מגיע/", "הלוואות חירום מתקופת הקורונה. ההפניה לעמוד המענקים והזכויות"),
+    "הקפאת-משכנתא-ושאר-הלוואות-בעקבות-הקור": ("redirect", "/מענקים-לכולם-אילו-מענקים-וזכויות-מגיע/", "הקפאת משכנתא מתקופת הקורונה. ההפניה לעמוד המענקים והזכויות"),
+    "זכויות-שכירים-שפוטרו-או-יצאו-לחלת-בעקב": ("redirect", "/מענקים-לכולם-אילו-מענקים-וזכויות-מגיע/", "הוראות חל״ת מתקופת הקורונה. ההפניה לעמוד המענקים והזכויות"),
+    "ייעוץ-כלכלי": ("redirect", "/יועץ-לכלכלת-המשפחה/", "עמוד צומת קצר. ההפניה לעמוד היועץ"),
+    "מענק-לכל-אזרח-המענק-שמגיע-לכווולם": ("redirect", "/מענקים-לכולם-אילו-מענקים-וזכויות-מגיע/", "מענק אזרח חד־פעמי מתקופת הקורונה"),
+    "מענקים-לעצמאיים-בעקבות-הקורונה": ("redirect", "/מענקים-לכולם-אילו-מענקים-וזכויות-מגיע/", "מענקי עצמאים מתקופת הקורונה"),
+    "משיכה-מקרן-השתלמות-בעקבות-הקורונה": ("redirect", "/מענקים-לכולם-אילו-מענקים-וזכויות-מגיע/", "משיכת קרן השתלמות במסגרת הקורונה"),
+    "עצמאי-כל-המידע-על-מענקי-בידוד": ("redirect", "/מענקים-לכולם-אילו-מענקים-וזכויות-מגיע/", "מענקי בידוד מתקופת הקורונה"),
+}
+
+STOPWORDS = set(
+    "של את על עם זה לא גם כי אם יש הם היא הוא אני אתם לכם כדי מה כל בין אל או אתה זאת היה היתה להיות יותר פחות אחרי לפני עוד רק כבר שם כאן מאוד מאד ניתן אפשר צריך חשוב משפחה משפחות כלכלי כלכלית ייעוץ יועץ עמיחי מרקס".split()
+)
+
+
+def word_tokens(text: str) -> list[str]:
+    return [w for w in re.findall(r"[א-ת]{3,}", text) if w not in STOPWORDS]
+
+
+def unique_blocks(source_html: str, canonical_plain: str, limit: int = 3) -> list[str]:
+    """Paragraphs from a merged post that are not already said on the canonical page."""
+    canon = set(word_tokens(canonical_plain))
+    blocks = re.findall(r"<(?:p|li)\b[^>]*>.*?</(?:p|li)>", source_html, flags=re.I | re.S)
+    scored = []
+    for block in blocks:
+        text = plain(block)
+        if len(text) < 90 or "השאירו פרטים" in text or text.count("צרו קשר") > 1:
+            continue
+        toks = word_tokens(text)
+        if len(toks) < 14:
+            continue
+        overlap = len(set(toks) & canon) / max(1, len(set(toks)))
+        if overlap >= 0.55:
+            continue
+        scored.append((overlap, -len(toks), block.strip()))
+    scored.sort()
+    chosen = []
+    seen = set()
+    for _overlap, _neg, block in scored:
+        key = plain(block)[:100]
+        if key in seen:
+            continue
+        seen.add(key)
+        chosen.append(block)
+        if len(chosen) >= limit:
+            break
+    return chosen
+
+
 def seo_title(title: str, slug: str) -> str:
     if slug in SEO_OVERRIDES:
         return SEO_OVERRIDES[slug]
@@ -177,40 +275,6 @@ def main() -> None:
     kept = []
     seen = set()
 
-    # Redirect map: slug -> (target, reason)
-    redirect_to = {
-        "הדרך-לשגשוג-פיננסי-משפחתי-מתחילה-בתכנ": ("/ייעוץ-לכלכלת-המשפחה/", "מיזוג עמוד דלת SEO משנת 2025 לעמוד הייעוץ הקנוני"),
-        "המפתח-להתנהלות-כלכלית-חכמה-ומשפחתית-י": ("/ייעוץ-לכלכלת-המשפחה/", "מיזוג עמוד דלת SEO משנת 2025 לעמוד הייעוץ הקנוני"),
-        "הדרך-החכמה-ליציבות-כלכלית-משפחתית": ("/ייעוץ-לכלכלת-המשפחה/", "מיזוג עמוד דלת SEO משנת 2025 לעמוד הייעוץ הקנוני"),
-        "באילו-נושאים-יעזור-לנו-יועץ-כלכלי-משפח": ("/תחומי-כלכלת-המשפחה/", "מיזוג כפילות נושאים לעמוד התחומים"),
-        "כך-תוכלו-להתנהל-פיננסית-בצורה-נכונה": ("/ניהול-תקציב-משפחתי/", "מיזוג כפילות התנהלות לעמוד התקציב"),
-        "מהו-ההליך-של-ייעוץ-פיננסי-למשפחות": ("/ייעוץ-לכלכלת-המשפחה/", "תהליך הפגישות מרוכז בעמוד הייעוץ ובעמודי הפגישות"),
-        "הדרך-לעשות-סדר-בניהול-התקציב-המשפחתי": ("/ניהול-תקציב-משפחתי/", "מיזוג כפילות תקציב"),
-        "הדרך-הנכונה-לניהול-כלכלת-המשפחה": ("/כלכלת-משפחה/", "מיזוג לעמוד כלכלת המשפחה המקורי"),
-        "על-מה-להתייעץ-במסגרת-ייעוץ-פיננסי-למשפ": ("/תחומי-כלכלת-המשפחה/", "מיזוג כפילות נושאי ייעוץ"),
-        "הכל-אודות-ייעוץ-עבור-כלכלת-המשפחה": ("/ייעוץ-לכלכלת-המשפחה/", "מיזוג עמוד דלת לעמוד הייעוץ הקנוני"),
-        "איך-לבצע-ניהול-התקציב-הביתי": ("/ניהול-תקציב-משפחתי/", "מיזוג כפילות תקציב ביתי"),
-        "עצמאי-כל-המידע-על-מענקי-בידוד": ("/קישורים/", "מענקי בידוד מתקופת הקורונה אינם בתוקף. ההפניה למקורות רשמיים"),
-        "ייעוץ-פיננסי-למשפחות-תכנון-נכון-וחכם": ("/ייעוץ-לכלכלת-המשפחה/", "מיזוג עמוד דלת. במקור הופיע בטעות השם אביחי"),
-        "איך-לנהל-תקציב-ביתי": ("/ניהול-תקציב-משפחתי/", "מיזוג כפילות ניהול תקציב"),
-        "ייעוץ-כלכלי-למשפחות-מי-צריך-יועץ": ("/למי-מיועד-הייעוץ/", "מיזוג לעמוד קהל היעד המקורי"),
-        "יועץ-כלכלי-משפחתי": ("/ייעוץ-לכלכלת-המשפחה/", "מיזוג וריאציית מילת מפתח יועץ/ייעוץ"),
-        "יועץ-פיננסי-למשפחה": ("/ייעוץ-לכלכלת-המשפחה/", "מיזוג עמוד SEO ארוך וחוזר לעמוד קנוני"),
-        "זכויות-שכירים-שפוטרו-או-יצאו-לחלת-בעקב": ("/קישורים/", "הוראות חל\"ת וקורונה אינן בתוקף. ההפניה למקורות רשמיים"),
-        "הקפאת-משכנתא-ושאר-הלוואות-בעקבות-הקור": ("/דיור-ומשכנתאות/", "הוראת השעה פגה. עקרון ההקפאה שולב בעמוד הדיור"),
-        "הלוואות-בערבות-מדינה-בתנאים-מצוינים": ("/יציאה-מחובות/", "תוכנית הקורונה פגה. עקרון ההלוואות שולב בעמוד החובות"),
-        "משיכה-מקרן-השתלמות-בעקבות-הקורונה": ("/חסכונות/", "ההקשר החירומי פג. עקרון קרן ההשתלמות שולב בעמוד החסכונות"),
-        "מענק-לכל-אזרח-המענק-שמגיע-לכווולם": ("/קישורים/", "מענק הקורונה החד־פעמי אינו בתוקף"),
-        "מענקים-לכולם-אילו-מענקים-וזכויות-מגיע": ("/קישורים/", "אינדקס מענקי קורונה אינו בתוקף"),
-        "מענקים-לעצמאיים-בעקבות-הקורונה": ("/קישורים/", "מענקי עצמאים מתקופת הקורונה אינם בתוקף"),
-        "כלכלת-המשפחה": ("/כלכלת-משפחה/", "עמוד דלת כמעט זהה לעמוד כלכלת משפחה"),
-        "רק-עד-סוף-החודש-לעבור-ממזל-אקראי-להשקעה": ("/חיסכון-לכל-ילד-כל-המידע-ומה-כדאי-לעשות/", "דדליין מאי 2017 עבר. התוכן המהותי נשאר במדריך חיסכון לכל ילד"),
-        "יועץ-לכלכלת-המשפחה": ("/ייעוץ-לכלכלת-המשפחה/", "מיזוג וריאציית יועץ/ייעוץ"),
-        "יועצים-לכלכלת-המשפחה": ("/ייעוץ-לכלכלת-המשפחה/", "מיזוג וריאציית יועצים/ייעוץ"),
-        "ייעוץ-כלכלי-למשפחות": ("/ייעוץ-לכלכלת-המשפחה/", "מיזוג וריאציית ייעוץ כלכלי למשפחות"),
-        "יעוץ-פיננסי-משפחתי-למה-מיועד-הייעוץ": ("/למי-מיועד-הייעוץ/", "מיזוג עמוד SEO ארוך לעמוד קהל היעד"),
-    }
-
     cat_by_id = {
         93: "ייעוץ כלכלי",
         1: "כללי",
@@ -220,45 +284,81 @@ def main() -> None:
     }
 
     classified = []
+    bodies = {}
+    rows = {}
     for post in posts:
         slug = unquote(post["slug"])
         title = html.unescape(re.sub("<[^>]+>", "", post["title"]["rendered"]))
         seen.add(slug)
-        if slug in REDIRECT_TARGETS_CHECK(redirect_to):
-            target, reason = redirect_to[slug]
+        action, target, reason = PLAN.get(slug, ("keep", "", ""))
+        rows[slug] = {"post": post, "title": title, "action": action, "target": target, "reason": reason}
+        if action == "keep":
+            body = clean_html(post["content"]["rendered"])
+            if slug in ("מענק-עבודה-לא-תבקש-לא-תקבל", "נטו-למשפחה-מה-חייבים-לעשות-כדי-באמת-ל", "כמה-בשורות-כלכליות-טובות😊💰"):
+                body = NOTE_DATED + "\n" + body
+            if slug == "חיסכון-לכל-ילד-כל-המידע-ומה-כדאי-לעשות":
+                body = NOTE_CHILD + "\n" + body
+            if slug == "רק-עד-סוף-החודש-לעבור-ממזל-אקראי-להשקעה":
+                body = (
+                    '<aside class="am-note"><strong>הערה לעדכון:</strong> המועד «רק עד סוף החודש» במאמר הוא מאי 2017 והסתיים. '
+                    'מי שלא בחר אז קיבל מסלול ברירת מחדל. בחירת מסלול בחיסכון לכל ילד עדיין משנה את התוצאה. '
+                    'ראו גם את <a href="/חיסכון-לכל-ילד-כל-המידע-ומה-כדאי-לעשות/">המדריך המלא</a>.</aside>\n'
+                    + body
+                )
+            if slug == "מענקים-לכולם-אילו-מענקים-וזכויות-מגיע":
+                body = (
+                    '<aside class="am-note"><strong>הערה לעדכון:</strong> זהו עמוד המענקים והזכויות. חלק מהתוכניות שפורסמו כאן '
+                    'ובמדריכים שהופנו לכאן היו הוראות שעה מתקופת הקורונה. לפני פנייה לרשות כדאי לאמת מה בתוקף, '
+                    'או להתחיל ב<a href="/קישורים/">מקורות הרשמיים</a>.</aside>\n'
+                    + body
+                )
+            bodies[slug] = body
+
+    folded = {slug: [] for slug in bodies}
+    shadow = {slug: plain(body) for slug, body in bodies.items()}
+    for slug, row in rows.items():
+        if row["action"] != "merge":
+            continue
+        target_slug = row["target"].strip("/")
+        if target_slug not in bodies:
+            raise SystemExit(f"merge target missing: {target_slug} from {slug}")
+        source_html = clean_html(row["post"]["content"]["rendered"])
+        room = 8 - sum(len(bits) for _title, bits in folded[target_slug])
+        if room <= 0:
+            continue
+        bits = unique_blocks(source_html, shadow[target_slug], limit=min(3, room))
+        if not bits:
+            continue
+        folded[target_slug].append((row["title"], bits))
+        shadow[target_slug] += " " + plain("\n".join(bits))
+
+    for slug, chunks in folded.items():
+        if not chunks:
+            continue
+        section = [
+            "<h2>נקודות שנשמרו ממדריכים שאוחדו</h2>",
+            "<p>הפסקאות הבאות הגיעו ממאמרים קרובים שאוחדו לעמוד הזה. נשמר רק מה שלא חזר על הטקסט למעלה.</p>",
+        ]
+        for title, bits in chunks:
+            section.append(f"<h3>{html.escape(title)}</h3>")
+            section.extend(bits)
+        bodies[slug] = bodies[slug].rstrip() + "\n" + "\n".join(section)
+
+    for slug, row in rows.items():
+        post = row["post"]
+        title = row["title"]
+        if row["action"] != "keep":
             redirects.append({
                 "from": f"/{slug}/",
-                "to": target,
+                "to": row["target"],
                 "code": 301,
-                "reason": reason,
+                "reason": row["reason"],
                 "source_title": title,
                 "source_date": post["date"][:10],
             })
-            classified.append({"slug": slug, "action": "redirect", "to": target, "title": title})
+            classified.append({"slug": slug, "action": row["action"], "to": row["target"], "title": title})
             continue
-        if slug in REWRITE:
-            spec = REWRITE[slug]
-            body = spec["html"].strip()
-            kept.append({
-                "slug": slug,
-                "title": spec["title"],
-                "date": post["date"],
-                "categories": spec["cats"],
-                "content": body,
-                "excerpt": plain(body)[:220],
-                "seo_title": spec["seo_title"],
-                "meta_desc": spec["meta"],
-                "action": "rewrite",
-            })
-            classified.append({"slug": slug, "action": "rewrite", "title": spec["title"]})
-            continue
-        body = clean_html(post["content"]["rendered"])
-        if slug in ("מענק-עבודה-לא-תבקש-לא-תקבל", "נטו-למשפחה-מה-חייבים-לעשות-כדי-באמת-ל", "כמה-בשורות-כלכליות-טובות😊💰"):
-            body = NOTE_DATED + "\n" + body
-        if slug == "חיסכון-לכל-ילד-כל-המידע-ומה-כדאי-לעשות":
-            body = NOTE_CHILD + "\n" + body
-        if slug in APPEND:
-            body = body + "\n" + APPEND[slug].strip()
+        body = bodies[slug]
         cats = [cat_by_id.get(cid, "מאמרים") for cid in post["categories"]]
         kept.append({
             "slug": slug,
@@ -278,6 +378,14 @@ def main() -> None:
         raise SystemExit(f"unclassified: {missing}")
     if len(posts) != 71:
         raise SystemExit(f"expected 71 posts, got {len(posts)}")
+    from collections import Counter
+    counts = Counter(c["action"] for c in classified)
+    if counts != Counter({"keep": 42, "merge": 20, "redirect": 9}):
+        raise SystemExit(f"unexpected classification counts: {counts}")
+    plan_slugs = set(PLAN)
+    post_slugs = {unquote(p["slug"]) for p in posts}
+    if plan_slugs - post_slugs:
+        raise SystemExit(f"plan slugs missing from live export: {plan_slugs - post_slugs}")
 
     privacy = next(p for p in pages if p["slug"] == "privacy-policy")
     privacy_html = clean_html(privacy["content"]["rendered"])

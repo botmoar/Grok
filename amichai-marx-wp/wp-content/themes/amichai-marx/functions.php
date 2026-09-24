@@ -157,11 +157,50 @@ function amichai_handle_lead(): void {
     exit;
 }
 
+add_action('customize_register', function (WP_Customize_Manager $wp_customize): void {
+    $wp_customize->add_section('amichai_analytics', [
+        'title' => 'אנליטיקס',
+        'priority' => 160,
+    ]);
+    $wp_customize->add_setting('amichai_ga4_id', [
+        'default' => 'G-5SR358LG0Z',
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    $wp_customize->add_setting('amichai_ga4_enabled', [
+        'default' => false,
+        'sanitize_callback' => static fn ($value): bool => (bool) $value,
+    ]);
+    $wp_customize->add_control('amichai_ga4_id', [
+        'label' => 'מזהה GA4',
+        'section' => 'amichai_analytics',
+        'type' => 'text',
+    ]);
+    $wp_customize->add_control('amichai_ga4_enabled', [
+        'label' => 'הפעלת Google Analytics',
+        'description' => 'כבוי כברירת מחדל בתצוגה המקדימה. מפעילים רק אחרי עלייה לאוויר.',
+        'section' => 'amichai_analytics',
+        'type' => 'checkbox',
+    ]);
+});
+
+add_action('wp_head', function (): void {
+    if (is_admin() || !get_theme_mod('amichai_ga4_enabled')) {
+        return;
+    }
+    $id = (string) get_theme_mod('amichai_ga4_id', '');
+    if (!preg_match('/^G-[A-Z0-9]+$/', $id)) {
+        return;
+    }
+    $src = esc_url('https://www.googletagmanager.com/gtag/js?id=' . rawurlencode($id));
+    echo '<script async src="' . $src . '"></script>' . "\n";
+    echo '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","' . esc_js($id) . '");</script>' . "\n";
+}, 20);
+
 function amichai_fallback_menu(): void {
     $items = [
         home_url('/') => 'עמוד הבית',
         home_url('/אודות/') => 'אודות',
-        home_url('/ייעוץ-כלכלי/') => 'ייעוץ כלכלי',
+        home_url('/יועץ-לכלכלת-המשפחה/') => 'ייעוץ כלכלי',
         home_url('/כלכלת-משפחה/') => 'כלכלת משפחה',
         home_url('/צור-קשר/') => 'צור קשר',
     ];

@@ -16,8 +16,8 @@ add_action('wp_head', function (): void {
                 'name' => 'עמיחי מרקס – ייעוץ לכלכלת המשפחה',
                 'description' => 'ייעוץ וליווי לכלכלת המשפחה: תקציב, מינוס, משכנתא, פנסיה, ביטוחים וחסכונות.',
                 'url' => $home,
-                'image' => get_template_directory_uri() . '/assets/images/portrait.webp',
-                'logo' => get_template_directory_uri() . '/assets/images/logo.svg',
+                'image' => get_template_directory_uri() . '/assets/images/portrait.jpg',
+                'logo' => get_template_directory_uri() . '/assets/images/logo.png',
                 'telephone' => '+972-54-2372417',
                 'email' => 'marx@amichai-marx.co.il',
                 'address' => [

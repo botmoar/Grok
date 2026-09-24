@@ -37,7 +37,7 @@ get_header();
         </div>
       </div>
       <div class="am-portrait-wrap">
-        <img class="am-portrait" src="<?php echo esc_url(amichai_asset('assets/images/portrait.webp')); ?>" width="512" height="1080" alt="עמיחי מרקס, יועץ לכלכלת המשפחה">
+        <img class="am-portrait" src="<?php echo esc_url(amichai_asset('assets/images/portrait.jpg')); ?>" width="236" height="314" alt="עמיחי מרקס, יועץ לכלכלת המשפחה">
       </div>
     </div>
   </section>

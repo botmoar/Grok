@@ -33,6 +33,31 @@ update_option('posts_per_page', '9');
 if (function_exists('switch_theme')) {
     switch_theme('amichai-marx');
 }
+set_theme_mod('amichai_ga4_id', 'G-5SR358LG0Z');
+set_theme_mod('amichai_ga4_enabled', false);
+
+$redirect_file = '/redirects.json';
+if (!is_readable($redirect_file)) {
+    $redirect_file = $data_dir . '/redirects.json';
+}
+$redirect_rules = json_decode((string) @file_get_contents($redirect_file), true);
+if (is_array($redirect_rules)) {
+    foreach ($redirect_rules as $rule) {
+        if (empty($rule['from'])) {
+            continue;
+        }
+        $slug = trim((string) $rule['from'], '/');
+        $old_posts = get_posts([
+            'name' => sanitize_title($slug),
+            'post_type' => 'post',
+            'post_status' => 'any',
+            'posts_per_page' => 5,
+        ]);
+        foreach ($old_posts as $old_post) {
+            wp_delete_post((int) $old_post->ID, true);
+        }
+    }
+}
 
 foreach (['hello-world' => 'post', 'sample-page' => 'page'] as $slug => $type) {
     $old = get_posts([
@@ -197,7 +222,7 @@ if (is_array($existing_items)) {
 }
 
 $menu_posts = [
-    'ייעוץ-כלכלי' => 'ייעוץ כלכלי',
+    'יועץ-לכלכלת-המשפחה' => 'ייעוץ כלכלי',
     'כלכלת-משפחה' => 'כלכלת משפחה',
 ];
 $order = 0;

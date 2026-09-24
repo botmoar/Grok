@@ -54,7 +54,7 @@ add_action('wp_head', function (): void {
     $desc = amichai_meta_description();
     $title = amichai_seo_title_raw();
     $url = amichai_current_url();
-    $image = get_template_directory_uri() . '/assets/images/portrait.webp';
+    $image = get_template_directory_uri() . '/assets/images/portrait.jpg';
     echo '<meta name="description" content="' . esc_attr($desc) . '">' . "\n";
     echo '<link rel="canonical" href="' . esc_url($url) . '">' . "\n";
     echo '<meta property="og:locale" content="he_IL">' . "\n";

@@ -54,9 +54,12 @@ get_header();
       <aside class="am-cta-band">
         <div>
           <h2>אפשר להתחיל בשיחה</h2>
-          <p>054-2372417. בלי התחייבות.</p>
+          <p>בלי התחייבות.</p>
         </div>
-        <a class="am-btn am-btn-primary" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת ייעוץ</a>
+        <div class="am-actions">
+          <?php amichai_whatsapp_button(); ?>
+          <a class="am-btn am-btn-on-dark" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת ייעוץ</a>
+        </div>
       </aside>
       <?php
       if (!$is_stories) {

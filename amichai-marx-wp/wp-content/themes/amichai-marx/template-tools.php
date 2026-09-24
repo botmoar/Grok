@@ -36,7 +36,7 @@ get_header();
     <aside class="am-intro-cta am-tools-cta" aria-label="שיחת היכרות">
       <p>רוצים לעבור על המספרים יחד? שיחת היכרות, בלי התחייבות.</p>
       <div class="am-intro-cta-actions">
-        <a class="am-btn am-btn-primary" href="tel:054-2372417">054-2372417</a>
+        <?php amichai_whatsapp_button(); ?>
         <a class="am-intro-link" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת היכרות</a>
       </div>
     </aside>

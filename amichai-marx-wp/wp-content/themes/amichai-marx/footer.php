@@ -3,7 +3,7 @@
   <div class="am-wrap am-footer-grid">
     <div>
       <a class="am-logo am-logo-footer" href="<?php echo esc_url(home_url('/')); ?>">
-        <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="1024" height="379" alt="עמיחי מרקס, יועץ ומאמן לכלכלת המשפחה">
+        <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="492" height="120" alt="עמיחי מרקס, יועץ ומאמן לכלכלת המשפחה">
       </a>
       <p>ליווי אישי למשפחות שרוצות סדר בחשבון, ותוכנית שאפשר לחיות איתה.</p>
     </div>

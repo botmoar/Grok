@@ -14,7 +14,7 @@ defined('ABSPATH') || exit;
 <header class="am-header">
   <div class="am-wrap am-header-inner">
     <a class="am-logo" href="<?php echo esc_url(home_url('/')); ?>">
-      <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="1024" height="379" alt="עמיחי מרקס, יועץ ומאמן לכלכלת המשפחה">
+      <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="492" height="120" alt="עמיחי מרקס, יועץ ומאמן לכלכלת המשפחה">
     </a>
     <button class="am-nav-toggle" type="button" aria-expanded="false" aria-controls="am-nav">תפריט</button>
     <nav id="am-nav" class="am-nav" aria-label="ראשי">

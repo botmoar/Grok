@@ -468,7 +468,14 @@ def main() -> None:
         dups = [t for t, n in Counter(titles).items() if n > 1]
         raise SystemExit(f"duplicate seo titles: {dups}")
 
-    (ROOT / "content" / "posts.json").write_text(json.dumps(kept, ensure_ascii=False, indent=2))
+    feat_path = ROOT / "content" / "blog-featured-map.json"
+    if feat_path.exists():
+        featured = json.loads(feat_path.read_text())
+        for post in kept:
+            hit = featured.get(post["slug"]) or {}
+            if hit.get("image"):
+                post["featured_image"] = hit["image"]
+    (ROOT / "content" / "posts.json").write_text(json.dumps(kept, ensure_ascii=False, indent=2) + "\n")
     (ROOT / "content" / "pages.json").write_text(json.dumps(pages_out, ensure_ascii=False, indent=2))
     (ROOT / "redirects.json").write_text(json.dumps(redirects, ensure_ascii=False, indent=2))
     (ROOT / "content" / "classification.json").write_text(json.dumps(classified, ensure_ascii=False, indent=2))

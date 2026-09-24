@@ -55,6 +55,15 @@ add_action('wp_head', function (): void {
     $title = amichai_seo_title_raw();
     $url = amichai_current_url();
     $image = get_template_directory_uri() . '/assets/images/hero-portrait.png';
+    if (is_singular()) {
+        $thumb_id = get_post_thumbnail_id(get_queried_object_id());
+        if ($thumb_id) {
+            $thumb = wp_get_attachment_image_url($thumb_id, 'large');
+            if (is_string($thumb) && $thumb !== '') {
+                $image = $thumb;
+            }
+        }
+    }
     echo '<meta name="description" content="' . esc_attr($desc) . '">' . "\n";
     echo '<link rel="canonical" href="' . esc_url($url) . '">' . "\n";
     echo '<meta property="og:locale" content="he_IL">' . "\n";

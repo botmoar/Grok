@@ -176,6 +176,63 @@ function amichai_seed_upsert(array $row, string $type): int {
     return (int) $id;
 }
 
+function amichai_seed_encode_url(string $url): string {
+    $parts = wp_parse_url($url);
+    if (!is_array($parts) || empty($parts['scheme']) || empty($parts['host']) || empty($parts['path'])) {
+        return $url;
+    }
+    $segments = array_map(
+        static function (string $segment): string {
+            return rawurlencode(rawurldecode($segment));
+        },
+        explode('/', $parts['path'])
+    );
+    $path = implode('/', $segments);
+    $rebuilt = $parts['scheme'] . '://' . $parts['host'] . $path;
+    if (!empty($parts['query'])) {
+        $rebuilt .= '?' . $parts['query'];
+    }
+    return $rebuilt;
+}
+
+function amichai_seed_thumbnail(int $post_id, string $url, string $title): bool {
+    $url = trim($url);
+    if ($post_id <= 0 || $url === '') {
+        return false;
+    }
+    $encoded = amichai_seed_encode_url($url);
+    add_filter('http_headers_useragent', static function (): string {
+        return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+    });
+    $current = (int) get_post_thumbnail_id($post_id);
+    if ($current > 0 && get_post_meta($current, '_amichai_source_url', true) === $url) {
+        return true;
+    }
+    $found = get_posts([
+        'post_type' => 'attachment',
+        'post_status' => 'inherit',
+        'meta_key' => '_amichai_source_url',
+        'meta_value' => $url,
+        'posts_per_page' => 1,
+        'fields' => 'ids',
+    ]);
+    if ($found) {
+        set_post_thumbnail($post_id, (int) $found[0]);
+        return true;
+    }
+    require_once ABSPATH . 'wp-admin/includes/media.php';
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+    $attachment_id = media_sideload_image($encoded, $post_id, $title, 'id');
+    if (is_wp_error($attachment_id)) {
+        fwrite(STDERR, "thumb {$post_id}: {$attachment_id->get_error_message()}\n");
+        return false;
+    }
+    update_post_meta((int) $attachment_id, '_amichai_source_url', $url);
+    set_post_thumbnail($post_id, (int) $attachment_id);
+    return true;
+}
+
 $page_ids = [];
 foreach ($pages as $page) {
     $id = amichai_seed_upsert($page, 'page');
@@ -183,6 +240,11 @@ foreach ($pages as $page) {
     echo "page {$page['slug']} => {$id}\n";
 }
 
+$featured_map = json_decode((string) file_get_contents($data_dir . '/blog-featured-map.json'), true);
+if (!is_array($featured_map)) {
+    $featured_map = [];
+}
+$thumbs = 0;
 foreach ($posts as $post) {
     $id = amichai_seed_upsert($post, 'post');
     if (!$id) {
@@ -197,8 +259,18 @@ foreach ($posts as $post) {
     if ($cats) {
         wp_set_post_categories($id, $cats, false);
     }
+    $image = '';
+    if (!empty($post['featured_image']) && is_string($post['featured_image'])) {
+        $image = $post['featured_image'];
+    } elseif (!empty($featured_map[$post['slug']]['image'])) {
+        $image = (string) $featured_map[$post['slug']]['image'];
+    }
+    if ($image !== '' && amichai_seed_thumbnail($id, $image, (string) ($post['title'] ?? ''))) {
+        $thumbs++;
+    }
 }
 echo 'posts seeded: ' . count($posts) . "\n";
+echo 'thumbnails set: ' . $thumbs . "\n";
 
 if (!empty($page_ids['עמוד-הבית'])) {
     update_option('show_on_front', 'page');

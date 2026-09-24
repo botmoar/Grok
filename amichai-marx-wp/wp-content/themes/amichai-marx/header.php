@@ -16,7 +16,9 @@ defined('ABSPATH') || exit;
     <a class="am-logo" href="<?php echo esc_url(home_url('/')); ?>">
       <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="492" height="120" alt="עמיחי מרקס, יועץ ומאמן לכלכלת המשפחה">
     </a>
-    <button class="am-nav-toggle" type="button" aria-expanded="false" aria-controls="am-nav">תפריט</button>
+    <button class="am-nav-toggle" type="button" aria-expanded="false" aria-controls="am-nav" aria-label="פתיחת תפריט">
+      <span class="am-burger" aria-hidden="true"></span>
+    </button>
     <nav id="am-nav" class="am-nav" aria-label="ראשי">
       <?php
       wp_nav_menu([
@@ -33,3 +35,4 @@ defined('ABSPATH') || exit;
     </a>
   </div>
 </header>
+<div class="am-nav-backdrop" hidden></div>

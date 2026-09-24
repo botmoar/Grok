@@ -27,6 +27,9 @@ get_header();
             <time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date('j בF Y')); ?></time>
           <?php endif; ?>
         </header>
+        <?php if (has_post_thumbnail()) : ?>
+          <figure class="am-featured"><?php the_post_thumbnail('large', ['alt' => esc_attr(get_the_title())]); ?></figure>
+        <?php endif; ?>
         <div class="am-prose"><?php the_content(); ?></div>
         <?php if ($is_stories) {
             amichai_story_index(get_the_ID());
@@ -50,12 +53,18 @@ get_header();
           'category__in' => wp_get_post_categories(get_the_ID()),
       ]);
       if ($related->have_posts()) :
-          echo '<h2 class="am-related-title">עוד באותו נושא</h2><ul class="am-related">';
+          echo '<h2 class="am-related-title">עוד באותו נושא</h2><div class="am-related-grid">';
           while ($related->have_posts()) :
               $related->the_post();
-              echo '<li><a href="' . esc_url(get_permalink()) . '">' . esc_html(get_the_title()) . '</a></li>';
+              echo '<a class="am-mini" href="' . esc_url(get_permalink()) . '">';
+              echo '<span class="am-mini-thumb">';
+              if (has_post_thumbnail()) {
+                  the_post_thumbnail('medium', ['alt' => '']);
+              }
+              echo '</span><span><strong>' . esc_html(get_the_title()) . '</strong>';
+              echo '<time datetime="' . esc_attr(get_the_date('c')) . '">' . esc_html(get_the_date('j.n.Y')) . '</time></span></a>';
           endwhile;
-          echo '</ul>';
+          echo '</div>';
           wp_reset_postdata();
       endif;
       ?>

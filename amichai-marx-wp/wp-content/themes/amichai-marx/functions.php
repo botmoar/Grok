@@ -219,6 +219,38 @@ function amichai_posted_on(): string {
     return get_the_date('j בF Y');
 }
 
+function amichai_card_category(): string {
+    $cats = get_the_category() ?: [];
+    foreach ($cats as $cat) {
+        if ($cat->name !== 'מאמרים') {
+            return $cat->name;
+        }
+    }
+    return $cats ? $cats[0]->name : '';
+}
+
+function amichai_post_card(): void {
+    $cat = amichai_card_category();
+    ?>
+    <article <?php post_class('am-card'); ?>>
+      <a class="am-card-media" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
+        <?php if (has_post_thumbnail()) {
+            the_post_thumbnail('medium_large', ['alt' => '']);
+        } ?>
+      </a>
+      <div class="am-card-body">
+        <p class="am-meta"><?php
+          if ($cat !== '') {
+              echo esc_html($cat) . ' · ';
+          }
+          ?><time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date('j.n.Y')); ?></time></p>
+        <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+        <p><?php echo esc_html(wp_trim_words(get_the_excerpt(), 26)); ?></p>
+      </div>
+    </article>
+    <?php
+}
+
 function amichai_story_index(int $exclude_id): void {
     $term = get_term_by('name', 'סיפורי משפחות', 'category');
     $posts = [];

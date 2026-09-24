@@ -120,24 +120,51 @@ get_header();
     </div>
   </section>
 
-  <section class="am-letters">
-    <div class="am-wrap">
-      <h2 class="am-letters-title">מכתבים ממשפחות</h2>
-      <blockquote class="am-letter-feature">
-        <p>לאחר התהליך שעברנו אצלך הבנו שלמעשה שנים רבות לא ניהלנו את חיינו, ולכן חיינו בבינוניות ומהיד לפה, לאחר הייעוץ הרגשנו שעולם השפע נפתח לנו, בעזרת הליווי הרגיש והצמוד שלך הצלחנו לצאת לדרך חדשה, דרך אותה בנית עבורנו כעבודת אומן, מותאמת לצרכינו ולערכינו, כיום אנו כבר רואים תוצאות ומצליחים לשמר אותן לאורך זמן.</p>
-        <footer><a href="<?php echo esc_url(home_url('/המלצה/')); ?>">ערן ושרון</a></footer>
-      </blockquote>
-      <div class="am-letter-rest">
-        <blockquote>
-          <p>למדנו לנהל תקציב משפחתי נכון ומאוזן, למדנו מהי תודעה עשירה וכך הרכבנו תקציב נכון וטוב שהביא אותנו לצמיחה ממשית. נתת לנו ביטחון לעתיד טוב יותר, אנו מצליחים לנהל את כספנו בחוכמה ולא שהבנק ינהל אותנו.</p>
-          <footer><a href="<?php echo esc_url(home_url('/מכתב-תודה-לעמיחי-טלי-וחנן/')); ?>">טלי וחנן, משפחת בר-און</a></footer>
-        </blockquote>
-        <blockquote>
-          <p>הקהל שיבח והרעיף מחמאות על הפרקטיות של ההרצאה כמו גם על אופן העברתה על ידי עמיחי. ממליצה בכל פה על ההרצאה – היא רלוונטית לקהל מגוון.</p>
-          <footer><a href="<?php echo esc_url(home_url('/המלצה-מפנינה-שלומיוק-מנהלת-הספרייה/')); ?>">פנינה שלומיוק, הספרייה הציבורית אזור</a></footer>
-          <p class="am-letter-more"><a href="<?php echo esc_url(home_url('/סיפורי-משפחות/')); ?>">סיפורי משפחות</a></p>
-        </blockquote>
+  <section class="am-letters" aria-roledescription="קרוסלה" aria-labelledby="am-letters-title">
+    <div class="am-wrap am-letters-head">
+      <h2 id="am-letters-title" class="am-letters-title">מכתבים ממשפחות</h2>
+      <div class="am-letters-tools">
+        <a class="am-letters-all" href="<?php echo esc_url(home_url('/סיפורי-משפחות/')); ?>">סיפורי משפחות</a>
+        <div class="am-letters-navs">
+          <button class="am-letters-btn" type="button" data-dir="-1" aria-label="המכתב הקודם">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m10 6 6 6-6 6"/></svg>
+          </button>
+          <button class="am-letters-btn" type="button" data-dir="1" aria-label="המכתב הבא">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m14 6-6 6 6 6"/></svg>
+          </button>
+        </div>
       </div>
+    </div>
+    <div class="am-letters-track" tabindex="0">
+      <a class="am-note" href="<?php echo esc_url(home_url('/המלצה/')); ?>">
+        <span class="am-note-sheet">
+          <blockquote>
+            <p>לאחר התהליך שעברנו אצלך הבנו שלמעשה שנים רבות לא ניהלנו את חיינו, ולכן חיינו בבינוניות ומהיד לפה, לאחר הייעוץ הרגשנו שעולם השפע נפתח לנו, בעזרת הליווי הרגיש והצמוד שלך הצלחנו לצאת לדרך חדשה, דרך אותה בנית עבורנו כעבודת אומן, מותאמת לצרכינו ולערכינו, כיום אנו כבר רואים תוצאות ומצליחים לשמר אותן לאורך זמן.</p>
+          </blockquote>
+          <span class="am-note-sign">ערן ושרון</span>
+        </span>
+      </a>
+      <a class="am-note" href="<?php echo esc_url(home_url('/מכתב-תודה-לעמיחי-טלי-וחנן/')); ?>">
+        <span class="am-note-sheet">
+          <blockquote>
+            <p>למדנו לנהל תקציב משפחתי נכון ומאוזן, למדנו מהי תודעה עשירה וכך הרכבנו תקציב נכון וטוב שהביא אותנו לצמיחה ממשית. נתת לנו ביטחון לעתיד טוב יותר, אנו מצליחים לנהל את כספנו בחוכמה ולא שהבנק ינהל אותנו.</p>
+          </blockquote>
+          <span class="am-note-sign">טלי וחנן, משפחת בר-און</span>
+        </span>
+      </a>
+      <a class="am-note" href="<?php echo esc_url(home_url('/המלצה-מפנינה-שלומיוק-מנהלת-הספרייה/')); ?>">
+        <span class="am-note-sheet">
+          <blockquote>
+            <p>הקהל שיבח והרעיף מחמאות על הפרקטיות של ההרצאה כמו גם על אופן העברתה על ידי עמיחי. ממליצה בכל פה על ההרצאה – היא רלוונטית לקהל מגוון.</p>
+          </blockquote>
+          <span class="am-note-sign">פנינה שלומיוק, הספרייה הציבורית אזור</span>
+        </span>
+      </a>
+    </div>
+    <div class="am-letters-dots" role="group" aria-label="בחירת מכתב">
+      <button type="button" aria-label="ערן ושרון" aria-current="true"></button>
+      <button type="button" aria-label="טלי וחנן, משפחת בר-און"></button>
+      <button type="button" aria-label="פנינה שלומיוק"></button>
     </div>
   </section>
 

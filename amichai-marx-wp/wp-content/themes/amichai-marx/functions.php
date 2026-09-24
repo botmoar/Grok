@@ -1,0 +1,188 @@
+<?php
+/**
+ * Amichai Marx theme.
+ */
+
+defined('ABSPATH') || exit;
+
+require get_template_directory() . '/inc/seo.php';
+require get_template_directory() . '/inc/schema.php';
+
+add_action('after_setup_theme', function (): void {
+    add_theme_support('title-tag');
+    add_theme_support('post-thumbnails');
+    add_theme_support('html5', ['search-form', 'comment-form', 'gallery', 'caption', 'style', 'script']);
+    add_theme_support('responsive-embeds');
+    register_nav_menus([
+        'primary' => 'תפריט ראשי',
+        'footer' => 'תפריט תחתון',
+    ]);
+});
+
+add_action('wp_enqueue_scripts', function (): void {
+    $dir = get_template_directory();
+    $uri = get_template_directory_uri();
+    wp_enqueue_style(
+        'amichai-main',
+        $uri . '/assets/css/main.css',
+        [],
+        file_exists($dir . '/assets/css/main.css') ? (string) filemtime($dir . '/assets/css/main.css') : '1.0.0'
+    );
+    wp_enqueue_script(
+        'amichai-main',
+        $uri . '/assets/js/main.js',
+        [],
+        file_exists($dir . '/assets/js/main.js') ? (string) filemtime($dir . '/assets/js/main.js') : '1.0.0',
+        true
+    );
+
+    if (is_page_template('template-budget.php')) {
+        wp_enqueue_script('amichai-budget', $uri . '/assets/js/budget.js', [], '1.0.0', true);
+    }
+    if (is_page_template('template-savings.php')) {
+        wp_enqueue_style('amichai-savings', $uri . '/assets/css/savings.css', ['amichai-main'], '1.0.0');
+        wp_enqueue_script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js', [], '4.4.1', true);
+        wp_enqueue_script('amichai-savings', $uri . '/assets/js/savings.js', ['chartjs'], '1.0.0', true);
+    }
+});
+
+add_action('init', function (): void {
+    register_post_type('amichai_lead', [
+        'labels' => [
+            'name' => 'פניות',
+            'singular_name' => 'פנייה',
+        ],
+        'public' => false,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'menu_icon' => 'dashicons-email',
+        'supports' => ['title', 'editor', 'custom-fields'],
+        'capability_type' => 'post',
+        'map_meta_cap' => true,
+    ]);
+
+    amichai_register_root_category_rules();
+});
+
+function amichai_register_root_category_rules(): void {
+    $categories = get_categories(['hide_empty' => false]);
+    if (!is_array($categories)) {
+        return;
+    }
+    foreach ($categories as $cat) {
+        $slug = $cat->slug;
+        $clash = get_posts([
+            'name' => $slug,
+            'post_type' => 'post',
+            'post_status' => 'publish',
+            'posts_per_page' => 1,
+            'fields' => 'ids',
+        ]);
+        if ($clash) {
+            continue;
+        }
+        $paths = [$slug];
+        $decoded = rawurldecode($slug);
+        if ($decoded !== $slug) {
+            $paths[] = $decoded;
+        }
+        foreach ($paths as $path) {
+            $quoted = preg_quote($path, '/');
+            add_rewrite_rule('^' . $quoted . '/?$', 'index.php?category_name=' . $slug, 'top');
+            add_rewrite_rule('^' . $quoted . '/page/([0-9]{1,})/?$', 'index.php?category_name=' . $slug . '&paged=$matches[1]', 'top');
+        }
+    }
+}
+
+add_filter('category_link', function (string $link, $term_id): string {
+    $cat = get_category($term_id);
+    if (!$cat || is_wp_error($cat)) {
+        return $link;
+    }
+    $clash = get_posts([
+        'name' => $cat->slug,
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'posts_per_page' => 1,
+        'fields' => 'ids',
+    ]);
+    if ($clash) {
+        return $link;
+    }
+    return home_url('/' . $cat->slug . '/');
+}, 10, 2);
+
+add_action('admin_post_nopriv_amichai_lead', 'amichai_handle_lead');
+add_action('admin_post_amichai_lead', 'amichai_handle_lead');
+
+function amichai_handle_lead(): void {
+    $back = wp_get_referer() ?: home_url('/צור-קשר/');
+    $back = remove_query_arg(['lead'], $back);
+
+    if (!isset($_POST['amichai_lead_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['amichai_lead_nonce'])), 'amichai_lead')) {
+        wp_safe_redirect(add_query_arg('lead', 'err', $back));
+        exit;
+    }
+    if (!empty($_POST['company_website'])) {
+        wp_safe_redirect(add_query_arg('lead', 'ok', $back));
+        exit;
+    }
+
+    $name = isset($_POST['full_name']) ? sanitize_text_field(wp_unslash($_POST['full_name'])) : '';
+    $phone = isset($_POST['phone']) ? sanitize_text_field(wp_unslash($_POST['phone'])) : '';
+    $email = isset($_POST['email']) ? sanitize_email(wp_unslash($_POST['email'])) : '';
+    $message = isset($_POST['message']) ? sanitize_textarea_field(wp_unslash($_POST['message'])) : '';
+    $consent = !empty($_POST['privacy_ok']);
+
+    if ($name === '' || $phone === '' || !$consent) {
+        wp_safe_redirect(add_query_arg('lead', 'err', $back));
+        exit;
+    }
+
+    $id = wp_insert_post([
+        'post_type' => 'amichai_lead',
+        'post_status' => 'private',
+        'post_title' => $name . ' – ' . $phone,
+        'post_content' => $message,
+    ], true);
+
+    if (!is_wp_error($id)) {
+        update_post_meta($id, 'phone', $phone);
+        update_post_meta($id, 'email', $email);
+        $body = "שם: {$name}\nטלפון: {$phone}\nדוא״ל: {$email}\n\n{$message}";
+        wp_mail('marx@amichai-marx.co.il', 'פנייה חדשה מהאתר: ' . $name, $body);
+    }
+
+    wp_safe_redirect(add_query_arg('lead', 'ok', home_url('/צור-קשר/')));
+    exit;
+}
+
+function amichai_fallback_menu(): void {
+    $items = [
+        home_url('/') => 'עמוד הבית',
+        home_url('/אודות/') => 'אודות',
+        home_url('/ייעוץ-כלכלי/') => 'ייעוץ כלכלי',
+        home_url('/כלכלת-משפחה/') => 'כלכלת משפחה',
+        home_url('/צור-קשר/') => 'צור קשר',
+    ];
+    echo '<ul class="am-menu">';
+    foreach ($items as $url => $label) {
+        echo '<li><a href="' . esc_url($url) . '">' . esc_html($label) . '</a></li>';
+    }
+    echo '</ul>';
+}
+
+function amichai_asset(string $path): string {
+    return get_template_directory_uri() . '/' . ltrim($path, '/');
+}
+
+function amichai_posted_on(): string {
+    return get_the_date('j בF Y');
+}
+
+add_filter('get_the_archive_title', function (string $title): string {
+    if (is_category()) {
+        return single_cat_title('', false);
+    }
+    return $title;
+});

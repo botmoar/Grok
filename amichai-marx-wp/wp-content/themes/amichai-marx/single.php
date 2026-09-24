@@ -3,17 +3,19 @@ defined('ABSPATH') || exit;
 get_header();
 ?>
 <main id="main" class="am-page">
-  <div class="am-wrap">
+  <div class="am-wrap am-article">
     <?php while (have_posts()) : the_post(); ?>
       <article>
-        <p class="am-kicker"><?php the_category(' · '); ?></p>
-        <h1 class="am-page-title"><?php the_title(); ?></h1>
-        <p><time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date('j בF Y')); ?></time></p>
+        <header class="am-article-head">
+          <p class="am-meta"><?php the_category(' · '); ?></p>
+          <h1 class="am-page-title"><?php the_title(); ?></h1>
+          <time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date('j בF Y')); ?></time>
+        </header>
         <div class="am-prose"><?php the_content(); ?></div>
       </article>
-      <aside class="am-cta-band" style="margin-top:28px">
+      <aside class="am-cta-band">
         <div>
-          <h2>רוצים לבדוק את זה על הבית שלכם?</h2>
+          <h2>לבדוק את זה על הבית שלכם</h2>
           <p>שיחת ייעוץ עם עמיחי מרקס. 054-2372417.</p>
         </div>
         <a class="am-btn am-btn-primary" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת ייעוץ</a>
@@ -26,12 +28,12 @@ get_header();
           'category__in' => wp_get_post_categories(get_the_ID()),
       ]);
       if ($related->have_posts()) :
-          echo '<h2 style="margin-top:32px">עוד באותו נושא</h2><div class="am-posts">';
+          echo '<h2 class="am-related-title">עוד באותו נושא</h2><ul class="am-related">';
           while ($related->have_posts()) :
               $related->the_post();
-              echo '<article class="am-post"><h3><a href="' . esc_url(get_permalink()) . '">' . esc_html(get_the_title()) . '</a></h3></article>';
+              echo '<li><a href="' . esc_url(get_permalink()) . '">' . esc_html(get_the_title()) . '</a></li>';
           endwhile;
-          echo '</div>';
+          echo '</ul>';
           wp_reset_postdata();
       endif;
       ?>

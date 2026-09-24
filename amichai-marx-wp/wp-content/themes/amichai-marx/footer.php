@@ -2,14 +2,13 @@
 <footer class="am-footer">
   <div class="am-wrap am-footer-grid">
     <div>
-      <a class="am-logo am-logo-light" href="<?php echo esc_url(home_url('/')); ?>">
-        <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="42" height="45" alt="">
-        <span>עמיחי מרקס</span>
+      <a class="am-logo am-logo-footer" href="<?php echo esc_url(home_url('/')); ?>">
+        <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="1024" height="379" alt="עמיחי מרקס, יועץ ומאמן לכלכלת המשפחה">
       </a>
-      <p>ייעוץ לכלכלת המשפחה וביטחון פיננסי. ליווי אישי למשפחות שרוצות סדר, שקט ותוכנית.</p>
+      <p>ליווי אישי למשפחות שרוצות סדר בחשבון, ותוכנית שאפשר לחיות איתה.</p>
     </div>
     <div>
-      <h2>ניווט</h2>
+      <h2>באתר</h2>
       <ul>
         <li><a href="<?php echo esc_url(home_url('/אודות/')); ?>">אודות</a></li>
         <li><a href="<?php echo esc_url(home_url('/יועץ-לכלכלת-המשפחה/')); ?>">יועץ לכלכלת המשפחה</a></li>
@@ -29,7 +28,6 @@
         <li>תל מנשה 11, חיננית</li>
         <li>ח.פ. 032965006</li>
       </ul>
-      <a class="am-btn am-btn-primary" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת ייעוץ</a>
     </div>
   </div>
   <div class="am-wrap am-footer-base">

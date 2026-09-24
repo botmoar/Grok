@@ -5,7 +5,7 @@ defined('ABSPATH') || exit;
 <head>
 <meta charset="<?php bloginfo('charset'); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" type="image/png">
+<link rel="icon" href="<?php echo esc_url(amichai_asset('assets/images/logo-mark.png')); ?>" type="image/png">
 <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
@@ -14,8 +14,7 @@ defined('ABSPATH') || exit;
 <header class="am-header">
   <div class="am-wrap am-header-inner">
     <a class="am-logo" href="<?php echo esc_url(home_url('/')); ?>">
-      <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="46" height="49" alt="">
-      <span>עמיחי מרקס</span>
+      <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="1024" height="379" alt="עמיחי מרקס, יועץ ומאמן לכלכלת המשפחה">
     </a>
     <button class="am-nav-toggle" type="button" aria-expanded="false" aria-controls="am-nav">תפריט</button>
     <nav id="am-nav" class="am-nav" aria-label="ראשי">
@@ -29,8 +28,8 @@ defined('ABSPATH') || exit;
       ?>
     </nav>
     <a class="am-header-phone" href="tel:054-2372417">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       <span class="am-header-phone-num">054-2372417</span>
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1L6.6 10.8z"/></svg>
     </a>
   </div>
 </header>

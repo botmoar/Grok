@@ -42,7 +42,7 @@ $status = isset($_GET['lead']) ? sanitize_key(wp_unslash($_GET['lead'])) : '';
       </form>
       <aside class="am-contact-card">
         <h2>פרטי התקשרות</h2>
-        <p><a href="tel:054-2372417">054-2372417</a></p>
+        <p><a class="am-phone-lg" href="tel:054-2372417">054-2372417</a></p>
         <p><a href="https://wa.me/972542372417" target="_blank" rel="noopener">וואטסאפ</a></p>
         <p><a href="mailto:marx@amichai-marx.co.il">marx@amichai-marx.co.il</a></p>
         <p>תל מנשה 11, חיננית</p>

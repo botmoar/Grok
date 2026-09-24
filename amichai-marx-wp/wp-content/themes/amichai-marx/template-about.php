@@ -7,14 +7,13 @@ get_header();
 ?>
 <main id="main" class="am-page">
   <div class="am-wrap am-split">
-    <aside>
-      <img class="am-side-photo" src="<?php echo esc_url(amichai_asset('assets/images/portrait.jpg')); ?>" width="236" height="314" alt="עמיחי מרקס">
-      <ul class="am-chips">
+    <aside class="am-about-aside">
+      <img class="am-side-photo" src="<?php echo esc_url(amichai_asset('assets/images/hero-portrait.png')); ?>" width="620" height="705" alt="עמיחי מרקס">
+      <ul class="am-facts">
         <li>מעל 20 שנה במערכת הפיננסית</li>
         <li>הסמכה לייעוץ כלכלת המשפחה</li>
         <li>רישיון ייעוץ פנסיוני</li>
-        <li>מאמן מוסמך</li>
-        <li>מגשר מוסמך</li>
+        <li>מאמן מוסמך ומגשר מוסמך</li>
         <li>חבר באיגוד היועצים והמאמנים לכלכלת המשפחה בישראל</li>
       </ul>
     </aside>

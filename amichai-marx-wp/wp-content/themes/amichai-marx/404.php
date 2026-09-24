@@ -4,7 +4,7 @@ get_header();
 ?>
 <main id="main" class="am-page">
   <div class="am-wrap am-prose">
-    <p class="am-kicker">404</p>
+    <p class="am-quiet">404</p>
     <h1 class="am-page-title">העמוד הזה לא נמצא</h1>
     <p>ייתכן שהקישור ישן, או שהעמוד אוחד לעמוד חזק יותר. אפשר לחפש, לחזור הביתה, או פשוט להתקשר.</p>
     <?php get_search_form(); ?>

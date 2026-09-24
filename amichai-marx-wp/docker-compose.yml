@@ -1,0 +1,77 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: rootpass
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uwordpress", "-pwordpress"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  wordpress:
+    image: wordpress:6.8.2-php8.2-apache
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      AMICHAI_GO_LIVE: ${AMICHAI_GO_LIVE:-0}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('AMICHAI_GO_LIVE', getenv('AMICHAI_GO_LIVE') === '1');
+        define('DISALLOW_FILE_EDIT', true);
+        define('WP_ENVIRONMENT_TYPE', getenv('AMICHAI_GO_LIVE') === '1' ? 'production' : 'staging');
+    volumes: &wp-volumes
+      - wp_data:/var/www/html
+      - ./wp-content/themes/amichai-marx:/var/www/html/wp-content/themes/amichai-marx
+      - ./wp-content/mu-plugins:/var/www/html/wp-content/mu-plugins
+      - ./content:/var/www/html/wp-content/amichai-data:ro
+      - ./redirects.json:/redirects.json:ro
+
+  wpcli:
+    image: wordpress:cli-2.12.0-php8.2
+    profiles: ["seed"]
+    user: "33:33"
+    depends_on:
+      db:
+        condition: service_healthy
+      wordpress:
+        condition: service_started
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WP_URL: ${WP_URL:-http://localhost:8080}
+      WP_ADMIN_USER: ${WP_ADMIN_USER:-admin}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD:-amichai-local-change-me}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL:-marx@amichai-marx.co.il}
+      AMICHAI_GO_LIVE: ${AMICHAI_GO_LIVE:-0}
+    volumes:
+      - wp_data:/var/www/html
+      - ./wp-content/themes/amichai-marx:/var/www/html/wp-content/themes/amichai-marx
+      - ./wp-content/mu-plugins:/var/www/html/wp-content/mu-plugins
+      - ./content:/var/www/html/wp-content/amichai-data:ro
+      - ./redirects.json:/redirects.json:ro
+      - ./docker/seed.sh:/seed/seed.sh:ro
+      - ./docker/seed.php:/seed/seed.php:ro
+    entrypoint: ["sh", "/seed/seed.sh"]
+    restart: "no"
+
+volumes:
+  db_data:
+  wp_data:

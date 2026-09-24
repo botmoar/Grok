@@ -612,6 +612,7 @@ p { margin: 0 0 1rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .am-letters-track { scroll-behavior: auto; }
+  .am-mobile-cta { transition: none; }
 }
 
 .am-faq-sec { background: #f7fafc; padding: 88px 0; }
@@ -1157,6 +1158,13 @@ p { margin: 0 0 1rem; }
   .am-mobile-cta {
     display: flex;
     padding-bottom: env(safe-area-inset-bottom, 0px);
+    transform: translateY(110%);
+    transition: transform 0.28s ease;
+    pointer-events: none;
+  }
+  .am-mobile-cta.is-visible {
+    transform: none;
+    pointer-events: auto;
   }
   .am-whatsapp {
     right: auto;

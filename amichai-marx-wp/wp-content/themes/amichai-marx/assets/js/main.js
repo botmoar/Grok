@@ -32,6 +32,25 @@
 })();
 
 (function () {
+  var bar = document.querySelector(".am-mobile-cta");
+  if (!bar) return;
+  var threshold = 160;
+  var mq = window.matchMedia("(max-width: 980px)");
+
+  function sync() {
+    var show = mq.matches && window.scrollY > threshold;
+    bar.classList.toggle("is-visible", show);
+    if (show) bar.removeAttribute("inert");
+    else bar.setAttribute("inert", "");
+  }
+
+  window.addEventListener("scroll", sync, { passive: true });
+  if (mq.addEventListener) mq.addEventListener("change", sync);
+  else if (mq.addListener) mq.addListener(sync);
+  sync();
+})();
+
+(function () {
   var root = document.querySelector(".am-letters");
   if (!root) return;
   var track = root.querySelector(".am-letters-track");

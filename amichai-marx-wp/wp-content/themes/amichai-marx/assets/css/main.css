@@ -758,6 +758,78 @@ p { margin: 0 0 1rem; }
 .am-faq details { border-bottom: 1px solid var(--line); padding: 12px 0; }
 .am-faq summary { cursor: pointer; font-weight: 700; color: var(--navy); min-height: 44px; }
 
+.am-tools { max-width: 920px; }
+.am-tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  align-items: stretch;
+}
+.am-tool-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 100%;
+  padding: 26px 24px 22px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(15, 29, 65, 0.05);
+}
+.am-tool-ico {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #f4f8f5;
+  color: var(--navy);
+}
+.am-tool-ico svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.am-tool-ico .am-accent { stroke: var(--green); }
+.am-tool-kicker {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.am-tool-card h2 {
+  margin: 0;
+  font-size: 1.32rem;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+.am-tool-card p:not(.am-tool-kicker) {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 500;
+  line-height: 1.6;
+}
+.am-tool-card .am-btn {
+  margin-top: auto;
+  align-self: flex-start;
+}
+.am-tools-sources {
+  margin-top: 36px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  max-width: 38rem;
+}
+.am-tools-sources h2 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+.am-tools-sources p { margin: 0; color: var(--ink); }
+.am-tools-sources a { font-weight: 700; }
+.am-tools-cta { margin-top: 22px; }
 .am-article-lead > :first-child { margin-top: 0; }
 .am-intro-cta {
   display: flex;
@@ -1094,6 +1166,7 @@ p { margin: 0 0 1rem; }
   .am-cta-band .am-email { font-size: 0.95rem; }
   .am-cta-close .am-actions .am-btn { width: auto; min-width: 220px; max-width: 100%; }
   .fbc-row { grid-template-columns: 1fr; }
+  .am-tool-grid { grid-template-columns: 1fr; }
   .am-featured img { max-height: 240px; }
   .am-intro-cta { align-items: flex-start; }
   .am-footer { padding: 40px 0 32px; text-align: center; }

@@ -219,6 +219,53 @@ function amichai_posted_on(): string {
     return get_the_date('j בF Y');
 }
 
+function amichai_story_index(int $exclude_id): void {
+    $term = get_term_by('name', 'סיפורי משפחות', 'category');
+    $posts = [];
+    if ($term && !is_wp_error($term)) {
+        $posts = get_posts([
+            'post_type' => 'post',
+            'post_status' => 'publish',
+            'posts_per_page' => 40,
+            'category' => (int) $term->term_id,
+            'post__not_in' => [$exclude_id],
+            'orderby' => 'date',
+            'order' => 'DESC',
+        ]);
+    }
+    $first = [
+        'המלצה' => 'המלצה מערן ושרון',
+        'מכתב-תודה-לעמיחי-טלי-וחנן' => 'מכתב תודה – טלי וחנן, משפחת בר-און',
+        'המלצה-מפנינה-שלומיוק-מנהלת-הספרייה' => 'המלצה מפנינה שלומיוק, הספרייה הציבורית אזור',
+    ];
+    $by_slug = [];
+    foreach ($posts as $post) {
+        $by_slug[rawurldecode((string) $post->post_name)] = $post;
+    }
+    echo '<ul class="am-related am-story-index">';
+    $shown = [];
+    foreach ($first as $slug => $label) {
+        if (!isset($by_slug[$slug])) {
+            continue;
+        }
+        $post = $by_slug[$slug];
+        $shown[$slug] = true;
+        echo '<li><a href="' . esc_url(get_permalink($post)) . '">' . esc_html($label) . '</a></li>';
+    }
+    foreach ($posts as $post) {
+        $slug = rawurldecode((string) $post->post_name);
+        if (isset($shown[$slug])) {
+            continue;
+        }
+        $title = get_the_title($post);
+        if ($slug === 'המלצה-הוד-השרון' && $title === 'המלצה') {
+            $title = 'המלצה מהוד השרון';
+        }
+        echo '<li><a href="' . esc_url(get_permalink($post)) . '">' . esc_html($title) . '</a></li>';
+    }
+    echo '</ul>';
+}
+
 add_filter('get_the_archive_title', function (string $title): string {
     if (is_category()) {
         return single_cat_title('', false);

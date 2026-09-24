@@ -10,7 +10,7 @@ get_header();
     <aside class="am-about-aside">
       <img class="am-side-photo" src="<?php echo esc_url(amichai_asset('assets/images/hero-portrait.png')); ?>" width="620" height="705" alt="עמיחי מרקס">
       <ul class="am-facts">
-        <li>מעל 20 שנה במערכת הפיננסית</li>
+        <li>מעל 20 שנות ניסיון</li>
         <li>הסמכה לייעוץ כלכלת המשפחה</li>
         <li>רישיון ייעוץ פנסיוני</li>
         <li>מאמן מוסמך ומגשר מוסמך</li>

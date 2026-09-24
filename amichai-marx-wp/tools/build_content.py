@@ -335,10 +335,7 @@ def main() -> None:
     for slug, chunks in folded.items():
         if not chunks:
             continue
-        section = [
-            "<h2>נקודות שנשמרו ממדריכים שאוחדו</h2>",
-            "<p>הפסקאות הבאות הגיעו ממאמרים קרובים שאוחדו לעמוד הזה. נשמר רק מה שלא חזר על הטקסט למעלה.</p>",
-        ]
+        section = []
         for title, bits in chunks:
             section.append(f"<h3>{html.escape(title)}</h3>")
             section.extend(bits)

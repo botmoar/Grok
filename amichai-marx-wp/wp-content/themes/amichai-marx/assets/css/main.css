@@ -448,6 +448,8 @@ p { margin: 0 0 1rem; }
   min-height: 44px;
 }
 .am-related a:hover { color: var(--blue); }
+.am-story-index { margin-top: 12px; }
+.am-story-index a { font-size: 1.12rem; font-weight: 700; }
 .am-prose { max-width: 44rem; font-size: 1.05rem; }
 .am-prose h2 { font-size: 1.45rem; margin: 1.7rem 0 0.55rem; letter-spacing: -0.02em; }
 .am-prose h3 { font-size: 1.15rem; margin: 1.3rem 0 0.4rem; }

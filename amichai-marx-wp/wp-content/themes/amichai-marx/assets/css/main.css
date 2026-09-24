@@ -309,13 +309,13 @@ p { margin: 0 0 1rem; }
 }
 .am-trust li + li { border-inline-start: 1px solid #e7eef3; }
 .am-trust svg {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   display: block;
-  margin: 0 auto 10px;
+  margin: 0 auto 12px;
   fill: none;
   stroke: var(--navy-2);
-  stroke-width: 1.5;
+  stroke-width: 1.85;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -1088,7 +1088,7 @@ p { margin: 0 0 1rem; }
     padding: 12px 0;
   }
   .am-trust li + li { border-inline-start: 0; border-top: 1px solid #e7eef3; }
-  .am-trust svg { margin: 0; width: 32px; height: 32px; }
+  .am-trust svg { margin: 0; width: 40px; height: 40px; }
   .am-actions .am-btn { width: 100%; }
   .am-hero h1 { font-size: 2.15rem; }
   .am-cta-band .am-email { font-size: 0.95rem; }

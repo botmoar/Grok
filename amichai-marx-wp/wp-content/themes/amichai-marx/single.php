@@ -4,7 +4,9 @@ get_header();
 ?>
 <main id="main" class="am-page">
   <div class="am-wrap am-article">
-    <?php while (have_posts()) : the_post();
+    <?php
+    $related_posts = [];
+    while (have_posts()) : the_post();
       $story_slug = rawurldecode((string) get_post_field('post_name', get_the_ID()));
       $is_stories = ($story_slug === 'סיפורי-משפחות');
       $cats = array_filter(get_the_category() ?: [], static function ($cat) {
@@ -57,33 +59,38 @@ get_header();
         <a class="am-btn am-btn-primary" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת ייעוץ</a>
       </aside>
       <?php
-      if ($is_stories) {
-          continue;
-      }
-      $related = new WP_Query([
-          'post_type' => 'post',
-          'posts_per_page' => 3,
-          'post__not_in' => [get_the_ID()],
-          'category__in' => wp_get_post_categories(get_the_ID()),
-      ]);
-      if ($related->have_posts()) :
-          echo '<h2 class="am-related-title">עוד באותו נושא</h2><div class="am-related-grid">';
-          while ($related->have_posts()) :
-              $related->the_post();
-              echo '<a class="am-mini" href="' . esc_url(get_permalink()) . '">';
-              echo '<span class="am-mini-thumb">';
-              if (has_post_thumbnail()) {
-                  the_post_thumbnail('medium', ['alt' => '']);
-              }
-              echo '</span><span><strong>' . esc_html(get_the_title()) . '</strong>';
-              echo '<time datetime="' . esc_attr(get_the_date('c')) . '">' . esc_html(get_the_date('j.n.Y')) . '</time></span></a>';
-          endwhile;
-          echo '</div>';
+      if (!$is_stories) {
+          $related = new WP_Query([
+              'post_type' => 'post',
+              'posts_per_page' => 2,
+              'post__not_in' => [get_the_ID()],
+              'category__in' => wp_get_post_categories(get_the_ID()),
+              'ignore_sticky_posts' => true,
+          ]);
+          $related_posts = $related->posts;
           wp_reset_postdata();
-      endif;
+      }
       ?>
     <?php endwhile; ?>
   </div>
+  <?php if ($related_posts) : ?>
+    <section class="am-wrap am-related-sec" aria-labelledby="am-related-title">
+      <h2 id="am-related-title" class="am-related-title">עוד באותו נושא</h2>
+      <div class="am-related-grid">
+        <?php foreach ($related_posts as $related_post) : ?>
+          <a class="am-mini" href="<?php echo esc_url(get_permalink($related_post)); ?>">
+            <span class="am-mini-thumb">
+              <?php echo get_the_post_thumbnail($related_post, 'medium', ['alt' => '']); ?>
+            </span>
+            <span>
+              <strong><?php echo esc_html(get_the_title($related_post)); ?></strong>
+              <time datetime="<?php echo esc_attr(get_the_date('c', $related_post)); ?>"><?php echo esc_html(get_the_date('j.n.Y', $related_post)); ?></time>
+            </span>
+          </a>
+        <?php endforeach; ?>
+      </div>
+    </section>
+  <?php endif; ?>
 </main>
 <?php
 get_footer();

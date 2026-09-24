@@ -336,9 +336,7 @@ p { margin: 0 0 1rem; }
 .am-process ol { list-style: none; margin: 0; padding: 0; }
 .am-process a {
   display: grid;
-  grid-template-columns: 52px 1fr;
-  grid-template-rows: auto auto;
-  column-gap: 8px;
+  gap: 2px;
   padding: 16px 0;
   border-bottom: 1px solid var(--line);
   text-decoration: none;
@@ -346,50 +344,77 @@ p { margin: 0 0 1rem; }
   min-height: 44px;
 }
 .am-process li:first-child a { border-top: 1px solid var(--line); }
-.am-process span {
-  grid-row: 1 / span 2;
-  align-self: center;
-  font-weight: 700;
-  color: var(--navy);
-  font-size: 0.95rem;
-  letter-spacing: 0.08em;
-}
-.am-process strong { color: var(--navy); font-size: 1.12rem; }
+.am-process strong { color: var(--navy); font-size: 1.15rem; }
 .am-process em { font-style: normal; color: var(--muted); }
 
-.am-quotes-title { margin-bottom: 22px; }
-.am-quotes {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 28px;
-  align-items: stretch;
+.am-letters {
+  padding: 88px 0 72px;
+  background: #fff;
 }
-.am-quote {
-  margin: 0;
-  padding: 0;
+.am-letter-feature {
+  position: relative;
+  margin: 0 0 48px;
+  padding-block: 4px;
+  padding-inline-start: 5.8rem;
+  max-width: 48rem;
+  border: 0;
 }
-.am-quote p {
-  margin: 0 0 14px;
-  color: var(--navy);
-  font-size: 1.2rem;
-  line-height: 1.55;
-  font-weight: 500;
-}
-.am-quote-lead { position: relative; }
-.am-quote-lead::before {
+.am-letter-feature::before {
   content: "״";
-  display: block;
-  font-size: 4.2rem;
-  line-height: 0.7;
-  color: var(--blue-line);
+  position: absolute;
+  inset-inline-start: 0;
+  top: -0.08em;
+  font-size: 4.8rem;
+  line-height: 0.8;
   font-weight: 800;
-  margin-bottom: 8px;
+  color: var(--blue-line);
 }
-.am-quote-lead p { font-size: 1.55rem; line-height: 1.45; }
-.am-quote footer a { color: var(--navy); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--blue-line); }
-.am-quote-side { display: grid; gap: 22px; align-content: start; }
-.am-quote-side .am-quote { padding-top: 8px; border-top: 1px solid var(--line); }
-.am-quote-side .am-quote p { font-size: 1.05rem; font-weight: 400; }
+.am-letter-feature p {
+  margin: 0;
+  color: var(--navy);
+  font-size: clamp(1.65rem, 2.7vw, 2.15rem);
+  font-weight: 500;
+  line-height: 1.38;
+  letter-spacing: -0.02em;
+}
+.am-letter-feature footer {
+  margin-top: 22px;
+}
+.am-letter-feature footer a,
+.am-letter-rest footer a {
+  color: var(--navy);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid var(--blue-line);
+  padding-bottom: 1px;
+}
+.am-letter-feature footer a:hover,
+.am-letter-rest footer a:hover { color: var(--blue); }
+.am-letter-rest {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 40px 56px;
+  border-top: 1px solid var(--line);
+  padding-top: 32px;
+}
+.am-letter-rest blockquote { margin: 0; }
+.am-letter-rest p {
+  margin: 0 0 16px;
+  color: var(--ink);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+.am-letter-rest blockquote + blockquote {
+  border-inline-start: 1px solid var(--line);
+  padding-inline-start: 40px;
+}
+.am-letter-more { margin: 22px 0 0 !important; }
+.am-letter-more a {
+  color: var(--navy);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid var(--blue-line);
+}
 
 .am-article .am-cta-band { margin-top: 36px; }
 .am-cta-band {
@@ -594,7 +619,7 @@ p { margin: 0 0 1rem; }
   .am-about-grid,
   .am-work,
   .am-process,
-  .am-quotes,
+  .am-letter-rest,
   .am-split,
   .am-contact-grid,
   .am-footer-grid {
@@ -639,5 +664,21 @@ p { margin: 0 0 1rem; }
   .am-hero h1 { font-size: 2.15rem; }
   .fbc-row { grid-template-columns: 1fr; }
   .am-footer-base { flex-direction: column; align-items: flex-start; }
-  .am-quote-lead p { font-size: 1.25rem; }
+  .am-letters { padding: 56px 0 48px; }
+  .am-letter-feature { padding-inline-start: 0; margin-bottom: 32px; }
+  .am-letter-feature::before {
+    position: static;
+    display: block;
+    font-size: 3.6rem;
+    line-height: 0.7;
+    margin-bottom: 6px;
+  }
+  .am-letter-feature p { font-size: 1.35rem; }
+  .am-letter-rest blockquote + blockquote {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+    margin-top: 8px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
 }

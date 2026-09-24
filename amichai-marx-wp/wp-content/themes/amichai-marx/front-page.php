@@ -83,28 +83,24 @@ get_header();
       <ol>
         <li>
           <a href="<?php echo esc_url(home_url('/פגישה-מס-1-היכרות/')); ?>">
-            <span>01</span>
             <strong>היכרות</strong>
             <em>כשלוש שעות. הסיפור, המסמכים, הנכסים והיעדים.</em>
           </a>
         </li>
         <li>
           <a href="<?php echo esc_url(home_url('/פגישה-מס-2-הצגת-התוכנית/')); ?>">
-            <span>02</span>
             <strong>הצגת התוכנית</strong>
             <em>תמונת מצב, כמה חלופות, ודוח שהמשפחה לוקחת הביתה.</em>
           </a>
         </li>
         <li>
           <a href="<?php echo esc_url(home_url('/פגישה-מס-3-יישום-התוכנית/')); ?>">
-            <span>03</span>
             <strong>יישום</strong>
             <em>מהנייר להתנהלות היומיומית, עם כלים שעובדים בבית הזה.</em>
           </a>
         </li>
         <li>
           <a href="<?php echo esc_url(home_url('/ליווי/')); ?>">
-            <span>04</span>
             <strong>ליווי</strong>
             <em>שאלות בדרך ושיחה שבועית, עד שיש ביטחון להמשיך לבד.</em>
           </a>
@@ -113,26 +109,23 @@ get_header();
     </div>
   </section>
 
-  <section class="am-band am-band-plain">
+  <section class="am-letters">
     <div class="am-wrap">
-      <h2 class="am-quotes-title">מכתבים שפורסמו באתר</h2>
-      <div class="am-quotes">
-        <blockquote class="am-quote am-quote-lead">
-          <p>לאחר הייעוץ הרגשנו שעולם השפע נפתח לנו, בעזרת הליווי הרגיש והצמוד שלך הצלחנו לצאת לדרך חדשה… כיום אנו כבר רואים תוצאות ומצליחים לשמר אותן לאורך זמן.</p>
-          <footer><a href="<?php echo esc_url(home_url('/המלצה/')); ?>">ערן ושרון</a></footer>
+      <blockquote class="am-letter-feature">
+        <p>לאחר התהליך שעברנו אצלך הבנו שלמעשה שנים רבות לא ניהלנו את חיינו, ולכן חיינו בבינוניות ומהיד לפה, לאחר הייעוץ הרגשנו שעולם השפע נפתח לנו, בעזרת הליווי הרגיש והצמוד שלך הצלחנו לצאת לדרך חדשה, דרך אותה בנית עבורנו כעבודת אומן, מותאמת לצרכינו ולערכינו, כיום אנו כבר רואים תוצאות ומצליחים לשמר אותם לאורך זמן.</p>
+        <footer><a href="<?php echo esc_url(home_url('/המלצה/')); ?>">ערן ושרון</a></footer>
+      </blockquote>
+      <div class="am-letter-rest">
+        <blockquote>
+          <p>למדנו לנהל תקציב משפחתי נכון ומאוזן, למדנו מהי תודעה עשירה וכך הרכבנו תקציב נכון וטוב שהביא אותנו לצמיחה ממשית. נתת לנו ביטחון לעתיד טוב יותר, אנו מצליחים לנהל את כספנו בחוכמה ולא שהבנק ינהל אותנו.</p>
+          <footer><a href="<?php echo esc_url(home_url('/מכתב-תודה-לעמיחי-טלי-וחנן/')); ?>">טלי וחנן, משפחת בר-און</a></footer>
         </blockquote>
-        <div class="am-quote-side">
-          <blockquote class="am-quote">
-            <p>למדנו לנהל תקציב משפחתי נכון ומאוזן, למדנו מהי תודעה עשירה… נתת לנו ביטחון לעתיד טוב יותר, אנו מצליחים לנהל את כספנו בחוכמה ולא שהבנק ינהל אותנו.</p>
-            <footer><a href="<?php echo esc_url(home_url('/מכתב-תודה-לעמיחי-טלי-וחנן/')); ?>">טלי וחנן</a></footer>
-          </blockquote>
-          <blockquote class="am-quote">
-            <p>הקהל שיבח והרעיף מחמאות על הפרקטיות של ההרצאה כמו גם על אופן העברתה… ממליצה בכל פה על ההרצאה.</p>
-            <footer><a href="<?php echo esc_url(home_url('/המלצה-מפנינה-שלומיוק-מנהלת-הספרייה/')); ?>">פנינה שלומיוק, הספרייה הציבורית אזור</a></footer>
-          </blockquote>
-        </div>
+        <blockquote>
+          <p>הקהל שיבח והרעיף מחמאות על הפרקטיות של ההרצאה כמו גם על אופן העברתה על ידי עמיחי. ממליצה בכל פה על ההרצאה – היא רלוונטית לקהל מגוון.</p>
+          <footer><a href="<?php echo esc_url(home_url('/המלצה-מפנינה-שלומיוק-מנהלת-הספרייה/')); ?>">פנינה שלומיוק, הספרייה הציבורית אזור</a></footer>
+          <p class="am-letter-more"><a href="<?php echo esc_url(home_url('/סיפורי-משפחות/')); ?>">סיפורי משפחות</a></p>
+        </blockquote>
       </div>
-      <p class="am-more"><a href="<?php echo esc_url(home_url('/סיפורי-משפחות/')); ?>">לסיפורי המשפחות</a></p>
     </div>
   </section>
 

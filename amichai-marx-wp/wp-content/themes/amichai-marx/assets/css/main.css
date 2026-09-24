@@ -828,14 +828,15 @@ p { margin: 0 0 1rem; }
     border-bottom: 1px solid #e3eef5;
   }
   .am-posts { grid-template-columns: 1fr; }
-  .am-header-phone-num { display: none; }
+  .am-header-phone-num { display: inline; font-size: 0.92rem; letter-spacing: 0; }
   .am-header-phone {
-    flex: 0 0 44px;
-    width: 44px;
-    height: 44px;
+    flex: 0 0 auto;
+    width: auto;
     min-width: 44px;
     min-height: 44px;
-    padding: 0;
+    height: 44px;
+    padding: 0 2px;
+    gap: 6px;
     box-sizing: border-box;
     justify-content: center;
   }
@@ -846,15 +847,24 @@ p { margin: 0 0 1rem; }
   }
   .am-whatsapp {
     right: auto;
-    left: 16px;
-    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+    left: 12px;
+    bottom: calc(96px + env(safe-area-inset-bottom, 0px));
     z-index: 45;
   }
-  body { padding-bottom: calc(176px + env(safe-area-inset-bottom, 0px)); }
-  html { scroll-padding-bottom: calc(176px + env(safe-area-inset-bottom, 0px)); }
+  body { padding-bottom: calc(240px + env(safe-area-inset-bottom, 0px)); }
+  #main { padding-bottom: 24px; }
+  .am-page { padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px)); }
+  .am-flow,
+  .am-posts,
+  .am-prose,
+  .am-related-grid { padding-bottom: 28px; }
+  html { scroll-padding-bottom: calc(240px + env(safe-area-inset-bottom, 0px)); }
   .am-form textarea,
   .am-form input,
-  .am-cta-band .am-btn { scroll-margin-bottom: 188px; }
+  .am-cta-band .am-btn,
+  .am-flow li,
+  .am-card,
+  .am-mini { scroll-margin-bottom: 240px; }
   .am-cta-band .am-actions { width: 100%; padding-left: 76px; box-sizing: border-box; }
   .am-page .am-form { padding-left: 76px; box-sizing: border-box; }
   .am-band-last { padding-bottom: 8px; }

@@ -8,7 +8,6 @@ from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC_POSTS = Path("/tmp/amichai/posts.json")
-SRC_PAGES = Path("/tmp/amichai/pages.json")
 
 NOTE_DATED = (
     '<aside class="am-note"><strong>הערה לעדכון:</strong> המועדים, הסכומים ושיעורי הזכאות במאמר '
@@ -270,7 +269,6 @@ def seo_title(title: str, slug: str) -> str:
 
 def main() -> None:
     posts = json.loads(SRC_POSTS.read_text())
-    pages = json.loads(SRC_PAGES.read_text())
     redirects = []
     kept = []
     seen = set()
@@ -384,14 +382,7 @@ def main() -> None:
     if plan_slugs - post_slugs:
         raise SystemExit(f"plan slugs missing from live export: {plan_slugs - post_slugs}")
 
-    privacy = next(p for p in pages if p["slug"] == "privacy-policy")
-    privacy_html = clean_html(privacy["content"]["rendered"])
-    privacy_html = privacy_html.replace("0054372417", "054-2372417").replace("054372417", "054-2372417")
-    privacy_html = (
-        '<aside class="am-note">מספרי הטלפון במדיניות המקורית הופיעו בלי מקף ובצורות שגויות (054372417, 0054372417). '
-        'הם אוחדו למספר שמופיע בעמוד צור הקשר: 054-2372417. כתובת הדוא״ל marx06@gmail.com נשמרה כפי שפורסמה.</aside>\n'
-        + privacy_html
-    )
+    privacy_html = PRIVACY_HTML.strip()
 
     about_html = Path("/tmp/amichai/about-authored.html").read_text() if False else ABOUT_HTML.strip()
 
@@ -487,6 +478,19 @@ def main() -> None:
 def REDIRECT_TARGETS_CHECK(mapping):
     return mapping
 
+
+PRIVACY_HTML = r"""
+<p>עמיחי מרקס מפעיל את האתר amichai-marx.co.il. העסק רשום בח.פ. 032965006, בכתובת תל מנשה 11, חיננית. מדיניות זו מסבירה איזה מידע נאסף באתר, למה, ואיך פונים אליי בעניין פרטיות.</p>
+<h2>איזה מידע נאסף</h2>
+<p>בטופס «צור קשר» אפשר למסור שם, טלפון, דוא״ל ותוכן הפנייה. המסירה אינה חובה על פי חוק. בלי שם וטלפון אי אפשר לחזור אליכם בעניין הפנייה.</p>
+<p>בגלישה רגילה נשמרים נתונים טכניים שדרושים להפעלת האתר: כתובת IP, סוג הדפדפן, והעמודים שנצפו. האתר עשוי להשתמש בעוגיות לצורך תפעול. אם מופעל כלי סטטיסטיקה, הוא משמש למדידת שימוש אנונימית באתר, לא ליצירת פרופיל שיווקי אישי.</p>
+<h2>למה המידע משמש</h2>
+<p>פרטי הפנייה משמשים כדי לחזור אליכם ולתאם שיחת ייעוץ. הם לא נמכרים ולא מועברים לרשימת תפוצה. ספק האחסון של האתר רואה את המידע רק כחלק מהשירות הטכני. אם הדין מחייב מסירה לרשות, היא תיעשה על פי אותה חובה.</p>
+<p>המידע נשמר כל עוד הוא נחוץ לטיפול בפנייה, או כפי שהדין דורש לשמור תיעוד.</p>
+<h2>פנייה בעניין פרטיות</h2>
+<p>אפשר לבקש לעיין במידע שנשמר, לתקן פרט שגוי, או לבקש מחיקה, בכפוף לדין. פניות בנושא פרטיות: <a href="mailto:marx06@gmail.com">marx06@gmail.com</a>, או בטלפון <a href="tel:054-2372417">054-2372417</a>.</p>
+<p>האתר אינו מיועד לילדים. אם מדיניות זו תשתנה, הנוסח המעודכן יפורסם בעמוד זה.</p>
+"""
 
 ABOUT_HTML = r"""
 <p>אני עמיחי מרקס, מרצה, מנחה סדנאות ויועץ כלכלי למשפחות שרוצות יותר. יותר ביטחון, יותר שלווה, יותר איכות חיים.</p>

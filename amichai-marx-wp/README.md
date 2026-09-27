@@ -17,7 +17,7 @@ Open http://localhost:8080
 
 Local admin (change it): user `admin`, password `amichai-local-change-me`.
 
-The seed is idempotent. Run the `wpcli` command again after content edits. Each run rebuilds the primary menu (service items and submenus). A staging deploy needs that one seed run; until then the theme fallback shows the same links.
+The seed is idempotent. Run the `wpcli` command again after content edits. Each run rebuilds the primary menu (service items and submenus) and overwrites page and post bodies from `content/`, including the privacy policy. A staging deploy needs that one seed run; until then the theme fallback shows the same links and WordPress still serves the previous page body.
 
 ## What you should see
 
@@ -39,7 +39,7 @@ Live export: 8 pages, 71 posts, 5 categories.
 - The homepage is a landing page, not the old keyword wall.
 - Every move is a 301 in `redirects.json`, with the reason in Hebrew.
 
-Facts used on the site (phone, emails, address, company number, credentials, quotes) come from the live pages. Phone numbers in the privacy policy that were missing a digit separator were aligned to `054-2372417`. No new testimonials or performance stats were added.
+Facts used on the site (phone, emails, address, company number, credentials, quotes) come from the live pages. The published phone is `054-2372417`. The privacy page states it as the contact number. No new testimonials or performance stats were added.
 
 ## Go live
 

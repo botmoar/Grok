@@ -220,3 +220,47 @@
     }
   });
 })();
+
+(function () {
+  var menu = document.querySelector(".am-menu");
+  if (!menu) return;
+  var desktop = window.matchMedia("(min-width: 981px)");
+  menu.querySelectorAll(":scope > .menu-item-has-children").forEach(function (item) {
+    var link = item.querySelector(":scope > a");
+    if (!link) return;
+    var apply = function () {
+      if (desktop.matches) {
+        link.setAttribute("aria-haspopup", "true");
+        link.setAttribute("aria-expanded", "false");
+      } else {
+        link.removeAttribute("aria-haspopup");
+        link.removeAttribute("aria-expanded");
+      }
+    };
+    apply();
+    desktop.addEventListener("change", apply);
+    var sync = function () {
+      if (!desktop.matches) return;
+      var open = item.matches(":hover, :focus-within") && !item.classList.contains("is-dismissed");
+      link.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+    item.addEventListener("focusin", sync);
+    item.addEventListener("mouseenter", sync);
+    item.addEventListener("focusout", function () {
+      setTimeout(function () {
+        if (!item.contains(document.activeElement)) item.classList.remove("is-dismissed");
+        sync();
+      }, 0);
+    });
+    item.addEventListener("mouseleave", function () {
+      item.classList.remove("is-dismissed");
+      setTimeout(sync, 0);
+    });
+    item.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape" || !desktop.matches) return;
+      item.classList.add("is-dismissed");
+      link.focus();
+      sync();
+    });
+  });
+})();

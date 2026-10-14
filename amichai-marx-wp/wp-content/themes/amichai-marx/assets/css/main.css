@@ -2291,3 +2291,14 @@ body.am-lightbox-open { overflow: hidden; }
   .am-hub-cert { padding: 48px 0; }
   .am-hub-cert-grid { grid-template-columns: 1fr; gap: 24px; }
 }
+
+/* Keyboard focus */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid #1077a2;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+:where(.am-mortgage, .am-hub-navy .am-hub-hero, .am-mt-hero, .am-cta-band, .am-service-key, .am-footer-mortgage) :where(a, button):focus-visible {
+  outline-color: var(--lime);
+}
+.am-menu > li.is-dismissed > .sub-menu { display: none !important; }

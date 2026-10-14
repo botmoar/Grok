@@ -2,7 +2,7 @@
 
 Hebrew RTL site for family-economics consultant Amichai Marx. Custom theme `amichai-marx`, Docker Compose (WordPress + MySQL 8 + WP-CLI), and a seed that keeps the live slugs worth keeping.
 
-Preview builds stay `noindex` until `AMICHAI_GO_LIVE=1`.
+Indexing follows one switch, WordPress's `blog_public` option (Settings → Reading). The seed turns it off on every host except `amichai-marx.co.il` and never turns it on. Go-live steps: [LAUNCH.md](LAUNCH.md).
 
 ## Local preview
 
@@ -28,7 +28,7 @@ The seed is idempotent. Run the `wpcli` command again after content edits. Each 
 - Mortgage hub `/דיור-ומשכנתאות/` with the association certificate, plus 13 topic pages (listed below)
 - Pages: `/אודות/`, `/צור-קשר/`, `/מן-התקשורת/`, `/כלי-עזר/`, `/מחשבון-תקציב-משפחתי/`, `/מחשבון-חיסכון-משפחתי-ליעדים/`, `/privacy-policy/`
 - Contact form stores a private lead (פניות in wp-admin) and tries `wp_mail`
-- `robots.txt` disallows everything, pages send `noindex`
+- With `blog_public` at 0: `robots.txt` disallows everything, and pages send `noindex` (meta and `X-Robots-Tag`)
 
 ## Content decisions
 
@@ -58,18 +58,7 @@ Facts used on the site (phone, emails, address, company number, credentials, quo
 
 ## Go live
 
-1. Point the host at the real domain and set `WP_URL` (or `siteurl` / `home`) to `https://amichai-marx.co.il`.
-2. Set `AMICHAI_GO_LIVE=1` and recreate the WordPress container so `wp-config.php` picks it up.
-3. Re-run the seed, or at least:
-
-```bash
-wp option update blog_public 1
-wp rewrite flush --hard
-```
-
-4. Confirm `robots.txt` allows crawling and lists the sitemap, and that pages no longer send `noindex`.
-5. Configure real SMTP. `wp_mail` does nothing useful until the server can send mail.
-6. Replace the local admin password.
+Follow [LAUNCH.md](LAUNCH.md): backup, database and media move, search-replace, seed, server config, the remove-on-launch checklist, indexing, mail, verification (`tools/verify_launch.py`), Search Console, and rollback.
 
 Sitemap URL after go-live: `/wp-sitemap.xml`. Core WordPress sitemaps are enabled in code even on preview, but preview `robots.txt` disallows the whole host.
 
@@ -91,14 +80,13 @@ wp rewrite flush --hard
 5. In `wp-config.php`, before “stop editing”:
 
 ```php
-define('AMICHAI_GO_LIVE', false); // true only on the public domain
 define('DISALLOW_FILE_EDIT', true);
 ```
 
 6. Settings → Permalinks → Post name. Save once if the category archives 404.
 7. Categories `מאמרים`, `כללי`, and `שירותים-שלנו` are rewritten to the site root, matching the live URLs. `ייעוץ-כלכלי` and `סיפורי-משפחות` stay as posts because those slugs already belong to content; their category archives remain under `/category/…`.
 8. Turn on SMTP (cPanel email or a plugin). Test the contact form.
-9. Flip `AMICHAI_GO_LIVE` and `blog_public` only when this host is the one you want indexed. Until then the mu-plugin sends `noindex` and a disallow-all robots file.
+9. Turn on `blog_public` only when this host is the one you want indexed. Until then the mu-plugin sends `noindex` and a disallow-all robots file.
 
 ## Layout of this folder
 
@@ -116,6 +104,11 @@ define('DISALLOW_FILE_EDIT', true);
 | `tools/editorial_overrides.json` | Hand edits made after the first build, re-applied on every build |
 | `tools/revision_2026.py` | October 2026 client revision: facts, mortgage/growth/support hubs, cross-links |
 | `tools/mortgage_topics.py` | The 13 mortgage topic pages |
+| `tools/build_assets.sh` | Minifies theme CSS/JS into the `.min` files the theme serves |
+| `tools/verify_launch.py` | Post-deploy checks: old live URLs, redirects, robots/noindex, blocked files |
+| `tools/live-urls.txt` | Every URL in the live sitemap before the migration |
+| `server/htaccess-performance.conf` | Apache compression, caching, security headers, file deny list |
+| `LAUNCH.md` | Go-live runbook |
 
 ## Regenerating content
 

@@ -91,6 +91,8 @@ add_action('wp_head', function (): void {
     }
     echo '<meta name="description" content="' . esc_attr($desc) . '">' . "\n";
     echo '<link rel="canonical" href="' . esc_url($url) . '">' . "\n";
+    echo '<link rel="alternate" hreflang="he" href="' . esc_url($url) . '">' . "\n";
+    echo '<link rel="alternate" hreflang="x-default" href="' . esc_url($url) . '">' . "\n";
     echo '<meta property="og:locale" content="he_IL">' . "\n";
     echo '<meta property="og:site_name" content="עמיחי מרקס">' . "\n";
     echo '<meta property="og:title" content="' . esc_attr($title) . '">' . "\n";

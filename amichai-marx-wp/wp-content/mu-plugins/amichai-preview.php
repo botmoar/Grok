@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Amichai preview, redirects, robots
- * Description: Noindex until go-live, 301 map, robots.txt and sitemap switch.
+ * Description: Noindex while blog_public is off, 301 map, robots.txt.
  */
 
 defined('ABSPATH') || exit;
@@ -21,8 +21,9 @@ add_action('init', static function (): void {
     );
 }, 0);
 
+// Indexing follows one switch only: Settings > Reading > "Discourage search engines" (blog_public).
 function amichai_is_live(): bool {
-    return defined('AMICHAI_GO_LIVE') && AMICHAI_GO_LIVE;
+    return (string) get_option('blog_public') === '1';
 }
 
 add_filter('wp_robots', function (array $robots): array {
@@ -47,7 +48,7 @@ add_filter('robots_txt', function (string $output, $public): string {
     if (!amichai_is_live()) {
         $lines[] = 'Disallow: /';
         $lines[] = '';
-        $lines[] = '# Preview build. Set AMICHAI_GO_LIVE=1 and blog_public=1 before launch.';
+        $lines[] = '# Preview build. Indexing turns on with blog_public=1.';
         return implode("\n", $lines) . "\n";
     }
     $lines[] = 'Disallow: /wp-admin/';

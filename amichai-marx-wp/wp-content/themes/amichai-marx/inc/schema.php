@@ -30,17 +30,23 @@ add_action('wp_head', function (): void {
                     '@type' => 'Country',
                     'name' => 'Israel',
                 ],
-                'founder' => [
-                    '@type' => 'Person',
-                    'name' => 'עמיחי מרקס',
-                    'jobTitle' => 'יועץ לכלכלת המשפחה ויועץ משכנתאות',
-                    'memberOf' => [
-                        '@type' => 'Organization',
-                        'name' => 'התאחדות יועצי המשכנתאות בישראל',
-                    ],
-                ],
+                'founder' => ['@id' => $home . '#person'],
                 'knowsLanguage' => 'he',
                 'currenciesAccepted' => 'ILS',
+            ],
+            [
+                '@type' => 'Person',
+                '@id' => $home . '#person',
+                'name' => 'עמיחי מרקס',
+                'url' => home_url('/אודות/'),
+                'image' => get_template_directory_uri() . '/assets/images/amichai-marx.jpg',
+                'jobTitle' => 'יועץ לכלכלת המשפחה ויועץ משכנתאות',
+                'worksFor' => ['@id' => $home . '#business'],
+                'memberOf' => [
+                    '@type' => 'Organization',
+                    'name' => 'התאחדות יועצי המשכנתאות בישראל',
+                ],
+                'knowsLanguage' => 'he',
             ],
             [
                 '@type' => 'WebSite',
@@ -88,10 +94,8 @@ add_action('wp_head', function (): void {
             'dateModified' => get_the_modified_date('c'),
             'inLanguage' => 'he-IL',
             'mainEntityOfPage' => get_permalink(),
-            'author' => [
-                '@type' => 'Person',
-                'name' => 'עמיחי מרקס',
-            ],
+            'author' => ['@id' => $home . '#person'],
+            'image' => get_the_post_thumbnail_url(null, 'large') ?: get_template_directory_uri() . '/assets/images/amichai-marx.jpg',
             'publisher' => ['@id' => $home . '#business'],
         ];
     }

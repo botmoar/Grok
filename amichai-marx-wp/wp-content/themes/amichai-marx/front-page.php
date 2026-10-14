@@ -7,9 +7,9 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
   <section class="am-hero">
     <div class="am-wrap am-hero-grid">
       <div class="am-hero-copy">
-        <p class="am-kicker">עמיחי מרקס · יועץ לכלכלת המשפחה ויועץ משכנתאות</p>
-        <h1>ייעוץ לכלכלת המשפחה<br><span>ומשכנתאות, בליווי צמוד</span></h1>
-        <p class="am-lead">15 שנה אני מלווה משפחות, אחרי יותר מעשרים שנה בעולם הפיננסי. תקציב ומינוס, משכנתא, חסכונות והשקעות, בתוכנית אחת. ואחרי התוכנית אני נשאר לצידכם, לאורך כל הדרך.</p>
+        <p class="am-kicker">עמיחי מרקס</p>
+        <h1>ייעוץ לכלכלת המשפחה <span>ומשכנתאות, בליווי צמוד</span></h1>
+        <p class="am-lead">תקציב ומינוס, משכנתא, חסכונות והשקעות, בתוכנית אחת שבונים יחד. ואחרי התוכנית אני ממשיך ללוות אתכם, כל עוד צריך.</p>
         <div class="am-actions">
           <a class="am-btn am-btn-primary" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת היכרות <?php echo $arrow; ?></a>
           <a class="am-btn am-btn-ghost" href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/')); ?>">ייעוץ משכנתאות</a>
@@ -19,20 +19,24 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
         <?php amichai_portrait('am-hero-photo'); ?>
         <div class="am-hero-card-body">
           <p class="am-hero-name">עמיחי מרקס</p>
-          <p class="am-hero-role">יועץ ומאמן לכלכלת המשפחה<br>יועץ משכנתאות</p>
-          <a class="am-hero-badge" href="#credentials">
-            <span class="am-hero-badge-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4.5 6.3V12c0 4.3 3 7.6 7.5 9 4.5-1.4 7.5-4.7 7.5-9V6.3L12 3z"/><path d="m8.6 12.2 2.3 2.3 4.6-4.8"/></svg></span>
-            <span>חבר בהתאחדות יועצי<br>המשכנתאות בישראל</span>
-          </a>
+          <p class="am-hero-role">יועץ לכלכלת המשפחה ויועץ משכנתאות</p>
         </div>
       </aside>
-    </div>
-    <div class="am-wrap">
-      <ul class="am-trust">
-        <li><strong>15 שנה</strong><span>בליווי משפחות</span></li>
-        <li><strong>מעל 20 שנה</strong><span>בעולם הפיננסי</span></li>
-        <li><strong>יועץ משכנתאות</strong><span>חבר בהתאחדות</span></li>
-        <li><strong>ליווי צמוד</strong><span>לאורך הדרך</span></li>
+      <ul class="am-trust" aria-label="בקצרה">
+        <?php
+        $trust = [
+            ['15 שנה', 'בליווי משפחות', 'M16 19v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 17.5V19M10 10.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM20 19v-1.4a3.2 3.2 0 0 0-2.4-3.1M15.5 4.6a3 3 0 0 1 0 5.8'],
+            ['מעל 20 שנה', 'בעולם הפיננסי', 'M4 19.5h16M7 16v-5M12 16V6.5M17 16V9'],
+            ['יועץ משכנתאות', 'חבר בהתאחדות', 'M3 11.5 12 4l9 7.5M5.5 9.8V20h13V9.8M10 20v-5.5h4V20'],
+            ['ליווי צמוד', 'גם אחרי התוכנית', 'M6 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM18 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM6 16V10a4 4 0 0 1 4-4h6M18 8v6a4 4 0 0 1-4 4H8'],
+        ];
+        foreach ($trust as [$title, $label, $icon]) :
+            ?>
+          <li>
+            <span class="am-trust-ico"><?php echo amichai_mortgage_icon($icon); ?></span>
+            <span class="am-trust-text"><strong><?php echo esc_html($title); ?></strong><span><?php echo esc_html($label); ?></span></span>
+          </li>
+        <?php endforeach; ?>
       </ul>
     </div>
   </section>

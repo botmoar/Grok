@@ -106,6 +106,7 @@ define('DISALLOW_FILE_EDIT', true);
 | `tools/mortgage_topics.py` | The 13 mortgage topic pages |
 | `tools/build_assets.sh` | Minifies theme CSS/JS into the `.min` files the theme serves |
 | `tools/verify_launch.py` | Post-deploy checks: old live URLs, redirects, robots/noindex, blocked files |
+| `tools/webkit_check.mjs` | Mobile Safari (Playwright WebKit, 390px) check of every sitemap URL: unsized or oversized SVGs, horizontal overflow |
 | `tools/live-urls.txt` | Every URL in the live sitemap before the migration |
 | `server/htaccess-performance.conf` | Apache compression, caching, security headers, file deny list |
 | `LAUNCH.md` | Go-live runbook |

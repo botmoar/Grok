@@ -520,6 +520,12 @@ def main() -> None:
         "code": 301,
         "reason": "כתובת שגויה שהופצה בקישורים חיצוניים",
     } for wrong, right in SLUG_ALIASES.items())
+    redirects.extend({
+        "from": f"/{name}",
+        "to": "/wp-sitemap.xml",
+        "code": 301,
+        "reason": "מפת האתר הישנה (Yoast) שהוגשה ל-Search Console",
+    } for name in ("sitemap_index.xml", "post-sitemap.xml", "page-sitemap.xml", "category-sitemap.xml"))
     redirect_map = {r["from"].strip("/"): r["to"] for r in redirects}
     redirect_map["privacy-policy-2"] = "/privacy-policy/"
 

@@ -236,5 +236,29 @@
     "to": "/מהו-ההליך-של-ייעוץ-פיננסי-למשפחות/",
     "code": 301,
     "reason": "כתובת שגויה שהופצה בקישורים חיצוניים"
+  },
+  {
+    "from": "/sitemap_index.xml",
+    "to": "/wp-sitemap.xml",
+    "code": 301,
+    "reason": "מפת האתר הישנה (Yoast) שהוגשה ל-Search Console"
+  },
+  {
+    "from": "/post-sitemap.xml",
+    "to": "/wp-sitemap.xml",
+    "code": 301,
+    "reason": "מפת האתר הישנה (Yoast) שהוגשה ל-Search Console"
+  },
+  {
+    "from": "/page-sitemap.xml",
+    "to": "/wp-sitemap.xml",
+    "code": 301,
+    "reason": "מפת האתר הישנה (Yoast) שהוגשה ל-Search Console"
+  },
+  {
+    "from": "/category-sitemap.xml",
+    "to": "/wp-sitemap.xml",
+    "code": 301,
+    "reason": "מפת האתר הישנה (Yoast) שהוגשה ל-Search Console"
   }
 ]

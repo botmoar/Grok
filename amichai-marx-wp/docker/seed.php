@@ -8,6 +8,8 @@ if (!defined('ABSPATH')) {
     exit(1);
 }
 
+global $wpdb;
+
 $data_dir = WP_CONTENT_DIR . '/amichai-data';
 $posts = json_decode((string) file_get_contents($data_dir . '/posts.json'), true);
 $pages = json_decode((string) file_get_contents($data_dir . '/pages.json'), true);
@@ -16,7 +18,6 @@ if (!is_array($posts) || !is_array($pages)) {
     exit(1);
 }
 
-$live = defined('AMICHAI_GO_LIVE') && AMICHAI_GO_LIVE;
 update_option('blogname', 'עמיחי מרקס');
 update_option('blogdescription', 'ייעוץ לכלכלת המשפחה וביטחון פיננסי');
 update_option('timezone_string', 'Asia/Jerusalem');
@@ -24,7 +25,10 @@ update_option('date_format', 'j בF Y');
 update_option('time_format', 'H:i');
 update_option('start_of_week', '0');
 update_option('permalink_structure', '/%postname%/');
-update_option('blog_public', $live ? '1' : '0');
+// Only the production host may be indexed. The seed never flips blog_public on for it; that is a launch step.
+if (wp_parse_url(home_url(), PHP_URL_HOST) !== 'amichai-marx.co.il') {
+    update_option('blog_public', '0');
+}
 update_option('default_comment_status', 'closed');
 update_option('default_ping_status', 'closed');
 update_option('WPLANG', 'he_IL');
@@ -71,35 +75,23 @@ foreach (['hello-world' => 'post', 'sample-page' => 'page'] as $slug => $type) {
     }
 }
 
-$english_privacy = get_posts([
-    'name' => 'privacy-policy',
-    'post_type' => 'page',
-    'post_status' => 'any',
-    'posts_per_page' => 1,
-]);
-if ($english_privacy && $english_privacy[0]->post_title === 'Privacy Policy') {
-    wp_delete_post((int) $english_privacy[0]->ID, true);
+function amichai_seed_find(string $slug, string $type): int {
+    global $wpdb;
+    return (int) $wpdb->get_var($wpdb->prepare(
+        "SELECT ID FROM {$wpdb->posts} WHERE post_name = %s AND post_type = %s AND post_status NOT IN ('trash', 'auto-draft', 'inherit') ORDER BY ID ASC LIMIT 1",
+        sanitize_title($slug),
+        $type
+    ));
 }
-$privacy_dup = get_posts([
-    'name' => 'privacy-policy-2',
-    'post_type' => 'page',
-    'post_status' => 'any',
-    'posts_per_page' => 1,
-]);
-if ($privacy_dup) {
-    $canonical = get_posts([
-        'name' => 'privacy-policy',
-        'post_type' => 'page',
-        'post_status' => 'any',
-        'posts_per_page' => 1,
-    ]);
-    if ($canonical) {
-        wp_delete_post((int) $privacy_dup[0]->ID, true);
-    } else {
-        wp_update_post([
-            'ID' => (int) $privacy_dup[0]->ID,
-            'post_name' => 'privacy-policy',
-        ]);
+
+// WordPress installs an English "Privacy Policy" draft on privacy-policy; earlier seeds left numbered copies.
+$privacy_rows = $wpdb->get_results($wpdb->prepare(
+    "SELECT ID, post_name, post_title FROM {$wpdb->posts} WHERE post_type = 'page' AND post_name LIKE %s",
+    $wpdb->esc_like('privacy-policy') . '%'
+));
+foreach ($privacy_rows as $row) {
+    if ($row->post_title === 'Privacy Policy' || preg_match('/^privacy-policy-\d+$/', $row->post_name)) {
+        wp_delete_post((int) $row->ID, true);
     }
 }
 
@@ -132,13 +124,7 @@ foreach ($category_slugs as $name => $slug) {
 }
 
 function amichai_seed_upsert(array $row, string $type): int {
-    $lookup = sanitize_title($row['slug']);
-    $found = get_posts([
-        'name' => $lookup,
-        'post_type' => $type,
-        'post_status' => 'any',
-        'posts_per_page' => 1,
-    ]);
+    $found_id = amichai_seed_find((string) $row['slug'], $type);
     $postarr = [
         'post_title' => $row['title'],
         'post_name' => $row['slug'],
@@ -153,8 +139,8 @@ function amichai_seed_upsert(array $row, string $type): int {
         $postarr['post_date'] = $row['date'];
         $postarr['post_date_gmt'] = get_gmt_from_date($row['date']);
     }
-    if ($found) {
-        $postarr['ID'] = $found[0]->ID;
+    if ($found_id > 0) {
+        $postarr['ID'] = $found_id;
         $id = wp_update_post(wp_slash($postarr), true);
     } else {
         $id = wp_insert_post(wp_slash($postarr), true);

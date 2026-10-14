@@ -59,19 +59,37 @@ add_filter('robots_txt', function (string $output, $public): string {
     return implode("\n", $lines) . "\n";
 }, 99, 2);
 
-add_action('template_redirect', function (): void {
-    if (is_admin()) {
-        return;
+function amichai_redirect_rules(): array {
+    static $map = null;
+    if ($map !== null) {
+        return $map;
     }
     $file = '/redirects.json';
     if (!is_readable($file)) {
         $file = WP_CONTENT_DIR . '/amichai-data/redirects.json';
     }
-    if (!is_readable($file)) {
+    $map = is_readable($file) ? json_decode((string) file_get_contents($file), true) : [];
+    $map = is_array($map) ? $map : [];
+    return $map;
+}
+
+// Some category URLs share a path with a redirected legacy post; link straight to the final page.
+add_filter('term_link', function (string $url): string {
+    $path = '/' . trim(rawurldecode((string) wp_parse_url($url, PHP_URL_PATH)), '/') . '/';
+    foreach (amichai_redirect_rules() as $rule) {
+        if (!empty($rule['from']) && '/' . trim((string) $rule['from'], '/') . '/' === $path) {
+            return home_url($rule['to']);
+        }
+    }
+    return $url;
+});
+
+add_action('template_redirect', function (): void {
+    if (is_admin()) {
         return;
     }
-    $map = json_decode((string) file_get_contents($file), true);
-    if (!is_array($map)) {
+    $map = amichai_redirect_rules();
+    if (!$map) {
         return;
     }
     $path = isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : '/';

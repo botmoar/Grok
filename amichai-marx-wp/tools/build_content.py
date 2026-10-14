@@ -2,6 +2,7 @@
 """Build seed JSON and redirects from the live WordPress export."""
 import html
 import json
+import urllib.parse
 import re
 from pathlib import Path
 from urllib.parse import unquote
@@ -485,14 +486,29 @@ def main() -> None:
             hit = featured.get(post["slug"]) or {}
             if hit.get("image"):
                 post["featured_image"] = hit["image"]
-    (ROOT / "content" / "posts.json").write_text(json.dumps(kept, ensure_ascii=False, indent=2) + "\n")
-    (ROOT / "content" / "pages.json").write_text(json.dumps(pages_out, ensure_ascii=False, indent=2))
     redirects.extend({
         "from": f"/{wrong}/",
         "to": f"/{right}/",
         "code": 301,
         "reason": "כתובת שגויה שהופצה בקישורים חיצוניים",
     } for wrong, right in SLUG_ALIASES.items())
+    redirect_map = {r["from"].strip("/"): r["to"] for r in redirects}
+    redirect_map["privacy-policy-2"] = "/privacy-policy/"
+
+    def point_to_final(match):
+        href = match.group(2)
+        path = re.sub(r"^https?://(www\.)?amichai-marx\.co\.il", "", href)
+        if not path.startswith("/"):
+            return match.group(0)
+        key = urllib.parse.unquote(path.split("#")[0]).strip("/")
+        if key in redirect_map:
+            return f'{match.group(1)}"{redirect_map[key]}"'
+        return match.group(0)
+
+    for row in kept + pages_out:
+        row["content"] = re.sub(r'(href=)"([^"]+)"', point_to_final, row.get("content", ""))
+    (ROOT / "content" / "posts.json").write_text(json.dumps(kept, ensure_ascii=False, indent=2) + "\n")
+    (ROOT / "content" / "pages.json").write_text(json.dumps(pages_out, ensure_ascii=False, indent=2))
     (ROOT / "redirects.json").write_text(json.dumps(redirects, ensure_ascii=False, indent=2))
     (ROOT / "content" / "classification.json").write_text(json.dumps(classified, ensure_ascii=False, indent=2))
     print(f"posts kept/rewritten: {len(kept)}")

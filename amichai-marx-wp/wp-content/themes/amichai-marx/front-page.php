@@ -44,8 +44,8 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
   <section class="am-services" aria-labelledby="am-services-title">
     <div class="am-wrap">
       <header class="am-sec-head">
-        <p class="am-kicker">במה אני מלווה</p>
-        <h2 id="am-services-title">כל הכסף של הבית, בתמונה אחת</h2>
+        <p class="am-kicker">שירותים</p>
+        <h2 id="am-services-title">במה אני מלווה משפחות</h2>
         <p>ההתנהלות השוטפת, המשכנתא, החסכונות, הביטוחים והפנסיה נבדקים באותו תהליך ואצל אותו אדם. כך ההחלטות מתחברות זו לזו, ולא סותרות.</p>
       </header>
       <div class="am-service-grid">
@@ -94,8 +94,8 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
   <section class="am-mortgage" aria-labelledby="am-mortgage-title">
     <div class="am-wrap am-mortgage-grid">
       <div class="am-mortgage-copy">
-        <p class="am-kicker am-kicker-light">ייעוץ משכנתאות</p>
-        <h2 id="am-mortgage-title">משכנתא שנבנית מתוך התמונה המלאה של הבית</h2>
+        <p class="am-kicker am-kicker-light">משכנתאות</p>
+        <h2 id="am-mortgage-title">ייעוץ משכנתאות כחלק מהתוכנית הכלכלית</h2>
         <p>רכישת בית היא כנראה העסקה הגדולה בחיים. הבנקים מוסיפים פרמטרים וחישובים שמקשים על השוואה בין הצעות, וההבדל בין משכנתא טובה לרעה מורגש בכיס כל חודש, לאורך רוב שנות העבודה.</p>
         <p>לכן ייעוץ משכנתאות מתחיל אצלי מהמשפחה, לא מהבנק: ההכנסות, ההוצאות, ההון העצמי והיעדים. רק מתוך התמונה הזו בונים תמהיל שמשלמים עליו לבנק פחות.</p>
         <ul class="am-checks am-checks-light">
@@ -123,8 +123,8 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
     <div class="am-wrap">
       <header class="am-sec-head am-sec-head-start am-sec-head-row">
         <div>
-          <p class="am-kicker">משכנתאות, לפי השלב בחיים</p>
-          <h2 id="am-mtopics-title">באיזה שלב אתם?</h2>
+          <p class="am-kicker">נושאי משכנתא</p>
+          <h2 id="am-mtopics-title">ייעוץ משכנתא לפי המצב שלכם</h2>
         </div>
         <a class="am-letters-all" href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/')); ?>">המדריך המלא למשכנתא</a>
       </header>
@@ -135,8 +135,8 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
   <section class="am-growth" aria-labelledby="am-growth-title">
     <div class="am-wrap am-growth-grid">
       <div class="am-growth-copy">
-        <p class="am-kicker">עולם הצמיחה</p>
-        <h2 id="am-growth-title">מצניחה לצמיחה: חסכונות, השקעות ויעדים</h2>
+        <p class="am-kicker">צמיחה</p>
+        <h2 id="am-growth-title">חסכונות, השקעות ויעדים</h2>
         <p>לכולנו יש תכניות: להחליף רכב, לשפץ, השכלה לילדים, עזרה בדיור. בלי חיסכון מראש נשארות שתי אפשרויות: לוותר על התכנית, או לממן אותה בהלוואות ולשלם עליה כפול.</p>
         <p>בייעוץ בודקים מה קורה היום לכסף שכבר נחסך, ובונים תוכנית חיסכון שמאפשרת לממש את היעדים בזמן.</p>
         <p class="am-more"><a href="<?php echo esc_url(home_url('/חסכונות/')); ?>">צמיחה, חסכונות והשקעות</a></p>
@@ -168,8 +168,8 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
   <section class="am-journey" aria-labelledby="am-journey-title">
     <div class="am-wrap">
       <header class="am-sec-head">
-        <p class="am-kicker">איך זה עובד</p>
-        <h2 id="am-journey-title">שלוש פגישות הן רק ההתחלה</h2>
+        <p class="am-kicker">התהליך</p>
+        <h2 id="am-journey-title">איך מתנהל הליווי</h2>
         <p>שלוש פגישות בונות את התוכנית. אחריהן מתחיל החלק שעושה את ההבדל: ליווי צמוד לאורך חודשים, עד שהמשפחה מתנהלת בביטחון ובעצמאות.</p>
       </header>
       <ol class="am-journey-steps">
@@ -212,7 +212,7 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
     <div class="am-wrap am-about-grid">
       <div class="am-about-copy">
         <p class="am-kicker">נעים להכיר</p>
-        <h2 id="am-about-title">ניסיון, הסמכות, ומאות משפחות שבחרו בצמיחה</h2>
+        <h2 id="am-about-title">15 שנה בליווי משפחות</h2>
         <p>אני עמיחי מרקס. כבר למעלה מעשרים שנה אני פועל במערכת הפיננסית בארץ ובחו״ל, ו־15 שנה אני מלווה משפחות. את 2008 ראיתי מבפנים: שוק שנפל, ואנשים שהפסידו חסכונות ופנסיה בלי להבין למה. מאז, הליווי של משפחות הוא העבודה עצמה, לא תוספת.</p>
         <?php amichai_credentials_list(); ?>
         <p class="am-more"><a href="<?php echo esc_url(home_url('/אודות/')); ?>">הסיפור המלא</a></p>
@@ -230,7 +230,7 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
   <section class="am-letters" aria-roledescription="קרוסלה" aria-labelledby="am-letters-title">
     <div class="am-wrap am-letters-head">
       <div>
-        <p class="am-kicker">סיפורים ומכתבים</p>
+        <p class="am-kicker">המלצות</p>
         <h2 id="am-letters-title" class="am-letters-title">מה המשפחות כותבות</h2>
       </div>
       <div class="am-letters-tools">
@@ -290,7 +290,7 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
   <section class="am-media-sec" aria-labelledby="am-media-title">
     <div class="am-wrap">
       <header class="am-sec-head am-sec-head-start">
-        <p class="am-kicker">מן התקשורת</p>
+        <p class="am-kicker">תקשורת</p>
         <h2 id="am-media-title">בטלוויזיה וברדיו</h2>
       </header>
       <div class="am-media-grid">
@@ -317,8 +317,8 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
     <div class="am-wrap">
       <header class="am-sec-head am-sec-head-start am-sec-head-row">
         <div>
-          <p class="am-kicker">מאמרים</p>
-          <h2 id="am-reads-title">לקרוא לפני שמחליטים</h2>
+          <p class="am-kicker">מהבלוג</p>
+          <h2 id="am-reads-title">מאמרים נבחרים</h2>
         </div>
         <a class="am-letters-all" href="<?php echo esc_url(home_url('/מאמרים/')); ?>">לכל המאמרים</a>
       </header>
@@ -338,7 +338,7 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
   <section class="am-faq-sec">
     <div class="am-wrap am-faq">
       <p class="am-kicker">שאלות ותשובות</p>
-      <h2>מה שואלים לפני הפגישה הראשונה</h2>
+      <h2>שאלות נפוצות</h2>
       <details>
         <summary>כמה פגישות יש, ומה קורה אחריהן?</summary>
         <p>שלוש פגישות: היכרות של כשעה וחצי, הצגת התוכנית, ויישום. אחריהן מתחיל ליווי צמוד לאורך חודשים, עם שיחה שבועית ומענה לכל שאלה בדרך, עד שיש ביטחון להמשיך לבד.</p>

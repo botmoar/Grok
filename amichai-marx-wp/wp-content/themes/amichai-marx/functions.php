@@ -514,7 +514,7 @@ function amichai_hub_profile(string $slug): array {
             'related' => ['חסכונות', 'יועץ-לכלכלת-המשפחה', 'ליווי'],
         ],
         'חסכונות' => [
-            'kicker' => 'עולם הצמיחה',
+            'kicker' => 'חסכונות והשקעות',
             'tone' => 'green',
             'highlights' => [
                 ['חיסכון עם יעד', 'סכום חודשי שנגזר מהיעדים של המשפחה, לא מהמקרה.'],
@@ -567,7 +567,7 @@ function amichai_topic_card(WP_Post $post, string $label = ''): void {
     <?php
 }
 
-function amichai_closing_cta(string $title = 'מוכנים לצאת לדרך?', string $text = 'שיחת היכרות, בלי התחייבות. משם ממשיכים יחד, בליווי צמוד לאורך הדרך.'): void {
+function amichai_closing_cta(string $title = 'אפשר להתחיל בשיחה', string $text = 'שיחת היכרות, בלי התחייבות. משם ממשיכים יחד, בליווי צמוד לאורך הדרך.'): void {
     ?>
     <section class="am-band-last">
       <div class="am-wrap">

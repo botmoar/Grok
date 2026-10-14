@@ -8,7 +8,7 @@ get_header();
 <main id="main" class="am-page">
   <?php amichai_page_hero('מן התקשורת', 'קטעים מתוכניות טלוויזיה ורדיו שבהן עמיחי מרקס דיבר על כלכלת המשפחה.', 'עמיחי מרקס בתקשורת'); ?>
   <div class="am-wrap am-prose">
-    <h2>קטעים נבחרים מהתוכנית «לבחור נכון» בהנחיית מיכל צפיר</h2>
+    <h2>התוכנית לבחור נכון, עם מיכל צפיר</h2>
     <div class="am-videos">
       <figure>
         <div class="am-video">
@@ -23,7 +23,7 @@ get_header();
         <figcaption>עמיחי מרקס – כלכלת המשפחה לקראת החגים</figcaption>
       </figure>
     </div>
-    <h2>ראיון בתוכנית «דנה בסוגיה» בהגשת שיפי חריטן ברדיו קול ברמה</h2>
+    <h2>ראיון ברדיו קול ברמה, עם שיפי חריטן</h2>
     <div class="am-audio">
       <img src="<?php echo esc_url(amichai_asset('assets/images/kol-barama.png')); ?>" alt="קול ברמה">
       <div>

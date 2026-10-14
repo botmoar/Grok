@@ -52,8 +52,8 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
     <section class="am-mtopics am-mtopics-hub" aria-labelledby="am-mtopics-title">
       <div class="am-wrap">
         <header class="am-sec-head am-sec-head-start">
-          <p class="am-kicker">נושאי המשכנתא</p>
-          <h2 id="am-mtopics-title">מה מביא אתכם? מתחילים מהמצב שלכם</h2>
+          <p class="am-kicker">נושאי משכנתא</p>
+          <h2 id="am-mtopics-title">ייעוץ משכנתא לפי המצב שלכם</h2>
           <p>שלושה עשר נושאים, מקובצים לפי השלב בחיים. בכל אחד: למי הוא מתאים, איפה נתקעים, איך מלווים צעד אחר צעד, ומה להכין לפגישה.</p>
         </header>
         <?php amichai_mortgage_map(); ?>
@@ -89,8 +89,8 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
     <section class="am-hub-stories" aria-labelledby="am-hub-stories-title">
       <div class="am-wrap">
         <header class="am-sec-head am-sec-head-start">
-          <p class="am-kicker">משפחות שליוויתי במשכנתא</p>
-          <h2 id="am-hub-stories-title">מהשאלה «אפשר בכלל?» ועד בית משלנו</h2>
+          <p class="am-kicker">סיפורי משפחות</p>
+          <h2 id="am-hub-stories-title">משפחות שליוויתי במשכנתא</h2>
         </header>
         <div class="am-quote-grid">
           <figure class="am-quote">

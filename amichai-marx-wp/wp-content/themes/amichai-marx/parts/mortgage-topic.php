@@ -100,7 +100,7 @@ $siblings = array_values(array_filter($group['items'], static fn ($item) => $ite
       ?>
     <section class="am-hub-related" aria-labelledby="am-mt-related-title">
       <div class="am-wrap">
-        <h2 id="am-mt-related-title" class="am-related-title">מכלכלת המשפחה: קשור לנושא</h2>
+        <h2 id="am-mt-related-title" class="am-related-title">עוד בנושא כלכלת המשפחה</h2>
         <div class="am-topic-grid">
           <?php foreach ($related as $post) {
               amichai_topic_card($post);
@@ -110,5 +110,5 @@ $siblings = array_values(array_filter($group['items'], static fn ($item) => $ite
     </section>
   <?php endif; ?>
 
-  <?php amichai_closing_cta('בודקים את המשכנתא יחד', 'שיחת היכרות, בלי התחייבות. משם תוכנית, השוואת הצעות, וליווי צמוד לאורך הדרך.'); ?>
+  <?php amichai_closing_cta('שיחת ייעוץ משכנתא', 'שיחת היכרות, בלי התחייבות. משם תוכנית, השוואת הצעות, וליווי צמוד לאורך הדרך.'); ?>
 </main>

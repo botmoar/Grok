@@ -169,7 +169,7 @@ def plain(raw: str) -> str:
 
 
 def meta_from(title: str, body: str) -> str:
-    base = plain(body)
+    base = plain(re.sub(r'<aside class="am-note">.*?</aside>', "", body, flags=re.S))
     base = re.sub(r"^(הערה לעדכון:)?", "", base).strip()
     if len(base) > 150:
         cut = base[:150]
@@ -401,7 +401,7 @@ def main() -> None:
             "template": "",
             "seo_title": "ייעוץ לכלכלת המשפחה וביטחון פיננסי | עמיחי מרקס",
             "meta_desc": "ליווי אישי למשפחות בתקציב, יציאה מהמינוס ותכנון יעדים. עמיחי מרקס, 15 שנה בליווי משפחות. לתיאום שיחה: 054-2372417.",
-            "content": "<p>עמיחי מרקס מלווה משפחות שרוצות יותר ביטחון, יותר שלווה ויותר שליטה בכלכלת הבית. 15 שנה בליווי משפחות, אחרי יותר מעשרים שנה במערכת הפיננסית.</p>",
+            "content": "<p>עמיחי מרקס מלווה משפחות שרוצות יותר ביטחון, יותר שלווה ויותר שליטה בכלכלת הבית. 15 שנה בליווי משפחות, ויותר מעשרים שנה במערכת הפיננסית.</p>",
         },
         {
             "slug": "אודות",
@@ -507,6 +507,17 @@ def main() -> None:
 
     for row in kept + pages_out:
         row["content"] = re.sub(r'(href=)"([^"]+)"', point_to_final, row.get("content", ""))
+    link_names = {
+        "https://harb.cma.gov.il": "הר הביטוח",
+        "https://itur.mof.gov.il": "איתור כספים אבודים, משרד האוצר",
+        "https://www.gov.il/he/departments/capital_market_authority": "רשות שוק ההון, ביטוח וחיסכון",
+        "https://www.boi.org.il": "בנק ישראל",
+        "https://www.isa.gov.il": "הרשות לניירות ערך",
+        "https://data.gov.il": "מאגרי המידע הממשלתיים",
+    }
+    for row in kept + pages_out:
+        for url, name in link_names.items():
+            row["content"] = row["content"].replace(f'>{url}</a>', f'>{name}</a>')
     (ROOT / "content" / "posts.json").write_text(json.dumps(kept, ensure_ascii=False, indent=2) + "\n")
     (ROOT / "content" / "pages.json").write_text(json.dumps(pages_out, ensure_ascii=False, indent=2))
     (ROOT / "redirects.json").write_text(json.dumps(redirects, ensure_ascii=False, indent=2))

@@ -28,7 +28,21 @@ function amichai_seo_title_raw(): string {
     return 'עמיחי מרקס | ייעוץ לכלכלת המשפחה';
 }
 
-add_filter('pre_get_document_title', 'amichai_seo_title_raw');
+add_filter('pre_get_document_title', static function (): string {
+    return amichai_seo_title_raw() . amichai_page_suffix();
+});
+
+remove_action('wp_head', 'rel_canonical');
+remove_action('wp_head', 'rsd_link');
+remove_action('wp_head', 'wlwmanifest_link');
+remove_action('wp_head', 'wp_generator');
+remove_action('wp_head', 'wp_shortlink_wp_head');
+remove_action('template_redirect', 'wp_shortlink_header', 11);
+
+function amichai_page_suffix(): string {
+    $paged = (int) get_query_var('paged');
+    return $paged > 1 ? ' | עמוד ' . $paged : '';
+}
 
 function amichai_meta_description(): string {
     if (is_singular()) {
@@ -45,14 +59,25 @@ function amichai_meta_description(): string {
         return 'ייעוץ לכלכלת המשפחה ומשכנתאות בליווי צמוד: תקציב, מינוס, משכנתא, חסכונות והשקעות. עמיחי מרקס, 15 שנה בליווי משפחות. 054-2372417.';
     }
     if (is_category()) {
-        return 'מאמרים בנושא ' . single_cat_title('', false) . ' מאת עמיחי מרקס, יועץ לכלכלת המשפחה.';
+        $by_cat = [
+            'מאמרים' => 'מאמרים על תקציב, יציאה מהמינוס, משכנתאות, חסכונות וזכויות. עמיחי מרקס, יועץ לכלכלת המשפחה ויועץ משכנתאות.',
+            'סיפורי משפחות' => 'סיפורים, המלצות ומכתבי תודה ממשפחות שליווה עמיחי מרקס בתקציב, במשכנתא ובחסכונות.',
+            'ייעוץ כלכלי' => 'מאמרים על ייעוץ כלכלי למשפחות: איך נראה התהליך, למי הוא מתאים ומה מקבלים ממנו.',
+            'משכנתאות' => 'ייעוץ משכנתאות לפי המצב שלכם: רכישה ראשונה, מחזור, שיפוץ, מסורבים ומשכנתא הפוכה.',
+            'שירותים שלנו' => 'הרצאות, סדנאות וליווי אישי בכלכלת המשפחה עם עמיחי מרקס.',
+        ];
+        $name = single_cat_title('', false);
+        $desc = trim(wp_strip_all_tags(category_description()));
+        $desc = $desc !== '' ? $desc : ($by_cat[$name] ?? $name . ': מאמרים מאת עמיחי מרקס, יועץ לכלכלת המשפחה.');
+        $paged = (int) get_query_var('paged');
+        return $paged > 1 ? $desc . ' עמוד ' . $paged . '.' : $desc;
     }
     return 'עמיחי מרקס, ייעוץ לכלכלת המשפחה וביטחון פיננסי. טלפון 054-2372417.';
 }
 
 add_action('wp_head', function (): void {
     $desc = amichai_meta_description();
-    $title = amichai_seo_title_raw();
+    $title = amichai_seo_title_raw() . amichai_page_suffix();
     $url = amichai_current_url();
     $image = get_template_directory_uri() . '/assets/images/amichai-marx.jpg';
     if (is_singular()) {
@@ -74,6 +99,9 @@ add_action('wp_head', function (): void {
     echo '<meta property="og:type" content="' . (is_singular('post') ? 'article' : 'website') . '">' . "\n";
     echo '<meta property="og:image" content="' . esc_url($image) . '">' . "\n";
     echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr($title) . '">' . "\n";
+    echo '<meta name="twitter:description" content="' . esc_attr($desc) . '">' . "\n";
+    echo '<meta name="twitter:image" content="' . esc_url($image) . '">' . "\n";
 }, 1);
 
 function amichai_current_url(): string {

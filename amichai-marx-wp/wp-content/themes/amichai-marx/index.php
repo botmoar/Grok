@@ -12,7 +12,7 @@ get_header();
         <p>לא נמצאו תכנים.</p>
       <?php endif; ?>
     </div>
-    <div class="am-pager"><?php the_posts_pagination(['mid_size' => 1]); ?></div>
+    <div class="am-pager"><?php the_posts_pagination(['mid_size' => 1, 'screen_reader_text' => 'ניווט בין עמודים', 'aria_label' => 'עמודים', 'prev_text' => 'הקודם', 'next_text' => 'הבא']); ?></div>
   </div>
 </main>
 <?php

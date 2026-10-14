@@ -3,7 +3,13 @@ defined('ABSPATH') || exit;
 get_header();
 ?>
 <main id="main" class="am-page">
-  <?php amichai_page_hero(wp_strip_all_tags(get_the_archive_title()), wp_strip_all_tags(get_the_archive_description()), 'עמיחי מרקס · כלכלת המשפחה'); ?>
+  <?php
+  $am_desc = wp_strip_all_tags(get_the_archive_description());
+  if ($am_desc === '' && is_category('מאמרים')) {
+      $am_desc = 'תקציב, משכנתאות, חסכונות וזכויות. מה שכדאי לדעת לפני שמחליטים על הכסף של הבית.';
+  }
+  amichai_page_hero(single_term_title('', false) ?: wp_strip_all_tags(get_the_archive_title()), $am_desc, 'מהבלוג');
+  ?>
   <div class="am-wrap">
     <div class="am-posts">
       <?php if (have_posts()) : while (have_posts()) : the_post(); ?>

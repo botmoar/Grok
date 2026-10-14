@@ -712,7 +712,7 @@ function amichai_card_category(): string {
             return $cat->name;
         }
     }
-    return $cats ? $cats[0]->name : '';
+    return '';
 }
 
 function amichai_post_card(): void {

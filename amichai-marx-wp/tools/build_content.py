@@ -10,6 +10,10 @@ import mortgage_topics
 import revision_2026
 
 ROOT = Path(__file__).resolve().parents[1]
+
+SLUG_ALIASES = {
+    "מהו-התהליך-של-ייעוץ-פיננסי-למשפחות": "מהו-ההליך-של-ייעוץ-פיננסי-למשפחות",
+}
 SRC_POSTS = Path("/tmp/amichai/posts.json")
 
 NOTE_DATED = (
@@ -483,6 +487,12 @@ def main() -> None:
                 post["featured_image"] = hit["image"]
     (ROOT / "content" / "posts.json").write_text(json.dumps(kept, ensure_ascii=False, indent=2) + "\n")
     (ROOT / "content" / "pages.json").write_text(json.dumps(pages_out, ensure_ascii=False, indent=2))
+    redirects.extend({
+        "from": f"/{wrong}/",
+        "to": f"/{right}/",
+        "code": 301,
+        "reason": "כתובת שגויה שהופצה בקישורים חיצוניים",
+    } for wrong, right in SLUG_ALIASES.items())
     (ROOT / "redirects.json").write_text(json.dumps(redirects, ensure_ascii=False, indent=2))
     (ROOT / "content" / "classification.json").write_text(json.dumps(classified, ensure_ascii=False, indent=2))
     print(f"posts kept/rewritten: {len(kept)}")

@@ -3,9 +3,8 @@ defined('ABSPATH') || exit;
 get_header();
 ?>
 <main id="main" class="am-page">
+  <?php amichai_page_hero(wp_strip_all_tags(get_the_archive_title()), wp_strip_all_tags(get_the_archive_description()), 'עמיחי מרקס · כלכלת המשפחה'); ?>
   <div class="am-wrap">
-    <h1 class="am-page-title"><?php the_archive_title(); ?></h1>
-    <?php the_archive_description('<div class="am-prose">', '</div>'); ?>
     <div class="am-posts">
       <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
         <?php amichai_post_card(); ?>

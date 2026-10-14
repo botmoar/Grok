@@ -3,12 +3,12 @@ defined('ABSPATH') || exit;
 get_header();
 ?>
 <main id="main" class="am-page">
-  <div class="am-wrap am-prose">
-    <?php while (have_posts()) : the_post(); ?>
-      <h1 class="am-page-title"><?php the_title(); ?></h1>
+  <?php while (have_posts()) : the_post(); ?>
+    <?php amichai_page_hero(get_the_title(), has_excerpt() ? get_the_excerpt() : ''); ?>
+    <div class="am-wrap am-prose">
       <?php the_content(); ?>
-    <?php endwhile; ?>
-  </div>
+    </div>
+  <?php endwhile; ?>
 </main>
 <?php
 get_footer();

@@ -7,9 +7,8 @@ get_header();
 $status = isset($_GET['lead']) ? sanitize_key(wp_unslash($_GET['lead'])) : '';
 ?>
 <main id="main" class="am-page">
+  <?php amichai_page_hero('צור קשר', 'שיחת היכרות מתחילה בטלפון, בוואטסאפ או בטופס. בלי התחייבות.', 'ייעוץ לכלכלת המשפחה ומשכנתאות'); ?>
   <div class="am-wrap">
-    <h1 class="am-page-title">צור קשר</h1>
-    <p class="am-lead">שיחת ייעוץ מתחילה בטלפון או בטופס. בלי התחייבות.</p>
     <?php if ($status === 'ok') : ?>
       <p class="am-alert am-alert-ok">הפנייה התקבלה. עמיחי יחזור אליך. אם זה דחוף, אפשר גם להתקשר עכשיו.</p>
     <?php elseif ($status === 'err') : ?>

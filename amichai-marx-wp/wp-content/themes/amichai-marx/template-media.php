@@ -6,8 +6,8 @@ defined('ABSPATH') || exit;
 get_header();
 ?>
 <main id="main" class="am-page">
+  <?php amichai_page_hero('מן התקשורת', 'קטעים מתוכניות טלוויזיה ורדיו שבהן עמיחי מרקס דיבר על כלכלת המשפחה.', 'עמיחי מרקס בתקשורת'); ?>
   <div class="am-wrap am-prose">
-    <h1 class="am-page-title">מן התקשורת</h1>
     <h2>קטעים נבחרים מהתוכנית «לבחור נכון» בהנחיית מיכל צפיר</h2>
     <div class="am-videos">
       <figure>

@@ -6,9 +6,8 @@ defined('ABSPATH') || exit;
 get_header();
 ?>
 <main id="main" class="am-page">
+  <?php amichai_page_hero('כלי עזר לכלכלת המשפחה', 'המחשבונים להמחשה בלבד. הם לא מחליפים ייעוץ שמתחשב במסמכים של הבית.', 'מחשבונים'); ?>
   <div class="am-wrap am-tools">
-    <h1 class="am-page-title">כלי עזר לכלכלת המשפחה</h1>
-    <p class="am-lead">המחשבונים להמחשה בלבד. הם לא מחליפים ייעוץ שמתחשב במסמכים של הבית.</p>
     <div class="am-tool-grid">
       <article class="am-tool-card">
         <span class="am-tool-ico" aria-hidden="true">

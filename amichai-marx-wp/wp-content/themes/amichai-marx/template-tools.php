@@ -11,7 +11,7 @@ get_header();
     <div class="am-tool-grid">
       <article class="am-tool-card">
         <span class="am-tool-ico" aria-hidden="true">
-          <svg viewBox="0 0 48 48"><rect x="10" y="8" width="28" height="32" rx="4"/><path d="M16 16h16M16 23h6M26 23h6M16 30h6M26 30h6"/></svg>
+          <svg viewBox="0 0 48 48" width="28" height="28" stroke-width="1.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="10" y="8" width="28" height="32" rx="4"/><path d="M16 16h16M16 23h6M26 23h6M16 30h6M26 30h6"/></svg>
         </span>
         <p class="am-tool-kicker">מחשבון</p>
         <h2>מחשבון תקציב משפחתי</h2>
@@ -20,7 +20,7 @@ get_header();
       </article>
       <article class="am-tool-card">
         <span class="am-tool-ico" aria-hidden="true">
-          <svg viewBox="0 0 48 48"><path d="M10 34V14"/><path d="M10 34h28"/><path d="M16 28l6-7 5 4 9-11"/><path class="am-accent" d="M30 14h8v8"/></svg>
+          <svg viewBox="0 0 48 48" width="28" height="28" stroke-width="1.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 34V14"/><path d="M10 34h28"/><path d="M16 28l6-7 5 4 9-11"/><path class="am-accent" d="M30 14h8v8"/></svg>
         </span>
         <p class="am-tool-kicker">מחשבון</p>
         <h2>מחשבון חיסכון משפחתי ליעדים</h2>

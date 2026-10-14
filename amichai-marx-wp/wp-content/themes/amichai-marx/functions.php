@@ -508,7 +508,7 @@ function amichai_cert_figure(string $key, string $class = ''): void {
     <figure class="am-cert <?php echo esc_attr($class); ?>">
       <a class="am-cert-frame" href="<?php echo esc_url($full); ?>" data-lightbox data-w="<?php echo (int) $c['w']; ?>" data-h="<?php echo (int) $c['h']; ?>" data-caption="<?php echo esc_attr($c['title'] . ' · ' . $c['meta']); ?>" aria-label="<?php echo esc_attr('הגדלת התעודה: ' . $c['title']); ?>">
         <img src="<?php echo esc_url($thumb); ?>" width="<?php echo (int) $c['tw']; ?>" height="<?php echo (int) $c['th']; ?>" loading="lazy" decoding="async" alt="<?php echo esc_attr($c['title']); ?>">
-        <span class="am-cert-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4.5 4.5M11 8v6M8 11h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="am-cert-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4.5 4.5M11 8v6M8 11h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
       </a>
       <figcaption><strong><?php echo esc_html($c['title']); ?></strong><span><?php echo esc_html($c['meta']); ?></span></figcaption>
     </figure>

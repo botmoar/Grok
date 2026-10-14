@@ -30,7 +30,7 @@ get_header();
             <p class="am-hero-name">עמיחי מרקס</p>
             <p class="am-hero-role">יועץ ומאמן לכלכלת המשפחה<br>יועץ משכנתאות</p>
             <a class="am-hero-badge" href="#credentials">
-              <span class="am-hero-badge-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4.5 6.3V12c0 4.3 3 7.6 7.5 9 4.5-1.4 7.5-4.7 7.5-9V6.3L12 3z"/><path d="m8.6 12.2 2.3 2.3 4.6-4.8"/></svg></span>
+              <span class="am-hero-badge-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" stroke-width="2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 4.5 6.3V12c0 4.3 3 7.6 7.5 9 4.5-1.4 7.5-4.7 7.5-9V6.3L12 3z"/><path d="m8.6 12.2 2.3 2.3 4.6-4.8"/></svg></span>
               <span>הסמכות ותעודות</span>
             </a>
           </div>

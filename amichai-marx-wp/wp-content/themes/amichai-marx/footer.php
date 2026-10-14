@@ -6,15 +6,14 @@
         <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="492" height="120" loading="lazy" alt="עמיחי מרקס, יועץ ומאמן לכלכלת המשפחה">
       </a>
       <p>ליווי אישי למשפחות שרוצות סדר בחשבון, ותוכנית שאפשר לחיות איתה.</p>
+      <img class="am-footer-assoc" src="<?php echo esc_url(amichai_asset('assets/images/association.png')); ?>" width="120" height="48" loading="lazy" alt="חבר באיגוד היועצים והמאמנים לכלכלת המשפחה בישראל">
     </div>
-    <nav class="am-footer-services" aria-label="שירותים">
-      <h2>שירותים</h2>
-      <?php amichai_render_flat_links(amichai_footer_service_links()); ?>
-    </nav>
-    <nav class="am-footer-links" aria-label="באתר">
-      <h2>באתר</h2>
-      <?php amichai_render_flat_links(amichai_footer_site_links()); ?>
-    </nav>
+    <?php foreach (amichai_footer_columns() as $column) : ?>
+      <nav class="am-footer-col" aria-label="<?php echo esc_attr($column['title']); ?>">
+        <h2><?php echo esc_html($column['title']); ?></h2>
+        <?php amichai_render_flat_links($column['items']); ?>
+      </nav>
+    <?php endforeach; ?>
     <div class="am-footer-contact">
       <h2>יצירת קשר</h2>
       <ul>
@@ -22,26 +21,18 @@
         <li><a href="<?php echo esc_url(amichai_whatsapp_url()); ?>" target="_blank" rel="noopener">וואטסאפ</a></li>
         <li><a href="mailto:marx@amichai-marx.co.il" dir="ltr">marx@amichai-marx.co.il</a></li>
         <li>תל מנשה 11, חיננית</li>
-        <li>ח.פ. 032965006</li>
+      </ul>
+    </div>
+  </div>
+  <div class="am-footer-base">
+    <div class="am-wrap">
+      <p>© <?php echo esc_html(gmdate('Y')); ?> עמיחי מרקס · ח.פ. 032965006</p>
+      <ul>
+        <li><a href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">צור קשר</a></li>
         <li><a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>">מדיניות פרטיות</a></li>
         <li><a href="<?php echo esc_url(home_url('/הצהרת-נגישות/')); ?>">הצהרת נגישות</a></li>
       </ul>
     </div>
-  </div>
-  <nav class="am-wrap am-footer-mortgage" aria-label="נושאי משכנתא">
-    <h2><a href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/')); ?>">משכנתאות</a></h2>
-    <div class="am-footer-mgroups">
-      <?php foreach (amichai_mortgage_groups() as $group) : ?>
-        <div>
-          <h3><?php echo esc_html($group['title']); ?></h3>
-          <?php amichai_render_flat_links(array_map(static fn (array $item): array => $item + ['type' => 'post'], $group['items'])); ?>
-        </div>
-      <?php endforeach; ?>
-    </div>
-  </nav>
-  <div class="am-wrap am-footer-base">
-    <p>© <?php echo esc_html(gmdate('Y')); ?> עמיחי מרקס. חבר באיגוד היועצים והמאמנים לכלכלת המשפחה בישראל.</p>
-    <img src="<?php echo esc_url(amichai_asset('assets/images/association.png')); ?>" width="120" height="48" loading="lazy" alt="לוגו איגוד היועצים והמאמנים לכלכלת המשפחה בישראל">
   </div>
 </footer>
 <a class="am-whatsapp" href="<?php echo esc_url(amichai_whatsapp_url()); ?>" target="_blank" rel="noopener noreferrer" aria-label="שליחת וואטסאפ">

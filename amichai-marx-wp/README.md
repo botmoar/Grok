@@ -43,7 +43,7 @@ Live export: 8 pages, 71 posts, 5 categories.
 
 ### Mortgage pillar (October 2026 revision)
 
-`tools/mortgage_topics.py` holds the 13 topic pages the client asked for. Each one is a post in the `משכנתאות` category, rendered by `parts/mortgage-topic.php`. Every page covers who it is for, common problems, the step-by-step process, what to prepare, and a short FAQ. The FAQ is stored as `_amichai_faq` post meta and emitted as `FAQPage` JSON-LD next to a `Service` node. The `/משכנתאות/` category archive 301s to the hub and is left out of the sitemap. Groups and menu labels come from `amichai_mortgage_groups()` in `functions.php`. That one function feeds the mega menu, the homepage and hub topic maps, the topic-page sidebars, and the footer band.
+`tools/mortgage_topics.py` holds the 13 topic pages the client asked for. Each one is a post in the `משכנתאות` category, rendered by `parts/mortgage-topic.php`. Every page covers who it is for, common problems, the step-by-step process, what to prepare, and a short FAQ. The FAQ is stored as `_amichai_faq` post meta and emitted as `FAQPage` JSON-LD next to a `Service` node. The `/משכנתאות/` category archive 301s to the hub and is left out of the sitemap. Groups and menu labels come from `amichai_mortgage_groups()` in `functions.php`. That one function feeds the mega menu, the homepage and hub topic maps, and the topic-page sidebars. The footer links only the hub and four key topics; its columns come from `amichai_footer_columns()`.
 
 | Group | Slugs |
 | --- | --- |

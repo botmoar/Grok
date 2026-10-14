@@ -76,6 +76,16 @@
   sync();
 })();
 
+// The footer has its own WhatsApp link; tuck the floating button away so it never covers footer text.
+(function () {
+  var footer = document.querySelector(".am-footer");
+  var fab = document.querySelector(".am-whatsapp");
+  if (!footer || !fab || !("IntersectionObserver" in window)) return;
+  new IntersectionObserver(function (entries) {
+    fab.classList.toggle("is-tucked", entries[0].isIntersecting);
+  }).observe(footer);
+})();
+
 (function () {
   var root = document.querySelector(".am-letters");
   if (!root) return;

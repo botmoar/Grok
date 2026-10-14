@@ -661,14 +661,44 @@ function amichai_page_hero(string $title, string $lead = '', string $kicker = ''
     <?php
 }
 
-function amichai_footer_site_links(): array {
+/**
+ * Footer link columns. Labels are short so three columns fit a 390px screen; the
+ * mega menu still links every mortgage topic.
+ *
+ * @return array<int, array{title: string, items: array<int, array<string, string>>}>
+ */
+function amichai_footer_columns(): array {
     return [
-        ['label' => 'אודות', 'slug' => 'אודות', 'type' => 'page'],
-        ['label' => 'סיפורי משפחות', 'slug' => 'סיפורי-משפחות', 'type' => 'post'],
-        ['label' => 'מאמרים', 'type' => 'custom', 'path' => '/מאמרים/'],
-        ['label' => 'כלי עזר', 'slug' => 'כלי-עזר', 'type' => 'page'],
-        ['label' => 'מן התקשורת', 'slug' => 'מן-התקשורת', 'type' => 'page'],
-        ['label' => 'צור קשר', 'slug' => 'צור-קשר', 'type' => 'page'],
+        [
+            'title' => 'משכנתאות',
+            'items' => [
+                ['label' => 'ייעוץ משכנתאות', 'slug' => 'דיור-ומשכנתאות', 'type' => 'post'],
+                ['label' => 'מחזור משכנתא', 'slug' => 'מחזור-משכנתא', 'type' => 'post'],
+                ['label' => 'זוגות צעירים', 'slug' => 'יועץ-משכנתאות-לזוגות-צעירים', 'type' => 'post'],
+                ['label' => 'מסורבי משכנתא', 'slug' => 'יועץ-משכנתאות-למסורבים', 'type' => 'post'],
+                ['label' => 'איחוד הלוואות', 'slug' => 'איחוד-הלוואות', 'type' => 'post'],
+            ],
+        ],
+        [
+            'title' => 'שירותים',
+            'items' => [
+                ['label' => 'כלכלת המשפחה', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post'],
+                ['label' => 'ליווי צמוד', 'slug' => 'ליווי', 'type' => 'post'],
+                ['label' => 'חסכונות והשקעות', 'slug' => 'חסכונות', 'type' => 'post'],
+                ['label' => 'חיים במינוס', 'slug' => 'חיים-במינוס', 'type' => 'post'],
+                ['label' => 'פנסיה', 'slug' => 'פנסיה', 'type' => 'post'],
+            ],
+        ],
+        [
+            'title' => 'באתר',
+            'items' => [
+                ['label' => 'אודות', 'slug' => 'אודות', 'type' => 'page'],
+                ['label' => 'סיפורי משפחות', 'slug' => 'סיפורי-משפחות', 'type' => 'post'],
+                ['label' => 'מאמרים', 'type' => 'custom', 'path' => '/מאמרים/'],
+                ['label' => 'כלי עזר', 'slug' => 'כלי-עזר', 'type' => 'page'],
+                ['label' => 'מן התקשורת', 'slug' => 'מן-התקשורת', 'type' => 'page'],
+            ],
+        ],
     ];
 }
 

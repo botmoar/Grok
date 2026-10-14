@@ -26,13 +26,11 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
           <?php amichai_whatsapp_button('am-btn am-btn-ghost am-btn-wa'); ?>
         </div>
       </div>
-      <div class="am-hub-visual"<?php echo !empty($profile['cert']) ? ' id="mortgage-cert"' : ''; ?>>
-        <?php if (!empty($profile['cert'])) : ?>
-          <?php amichai_cert_figure($profile['cert'], 'am-cert-wide am-cert-on-dark'); ?>
-        <?php elseif (has_post_thumbnail()) : ?>
+      <?php if (has_post_thumbnail()) : ?>
+        <div class="am-hub-visual">
           <figure class="am-hub-photo"><?php the_post_thumbnail('large', ['alt' => '', 'loading' => 'eager']); ?></figure>
-        <?php endif; ?>
-      </div>
+        </div>
+      <?php endif; ?>
     </div>
   </section>
 
@@ -84,6 +82,19 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
       </nav>
     </aside>
   </div>
+
+  <?php if (!empty($profile['cert'])) : ?>
+    <section class="am-hub-cert" id="mortgage-cert" aria-labelledby="am-hub-cert-title">
+      <div class="am-wrap am-hub-cert-grid">
+        <div>
+          <p class="am-kicker">הסמכה</p>
+          <h2 id="am-hub-cert-title">חבר בהתאחדות יועצי המשכנתאות בישראל</h2>
+          <p>ייעוץ המשכנתא נעשה כחלק מהתוכנית הכלכלית של הבית, בידי יועץ משכנתאות חבר בהתאחדות. לחיצה על התעודה פותחת אותה בגודל מלא.</p>
+        </div>
+        <?php amichai_cert_figure($profile['cert'], 'am-cert-wide'); ?>
+      </div>
+    </section>
+  <?php endif; ?>
 
   <?php if ($slug === 'דיור-ומשכנתאות') : ?>
     <section class="am-hub-stories" aria-labelledby="am-hub-stories-title">

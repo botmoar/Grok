@@ -274,6 +274,7 @@ p { margin: 0 0 1rem; }
 }
 .am-hero h1 span { display: block; color: var(--blue); }
 .am-hero .am-lead { max-width: 34rem; font-size: 1.16rem; line-height: 1.65; color: #4a5d72; margin-bottom: 28px; text-wrap: pretty; }
+.am-hero { overflow-x: clip; }
 .am-hero-card {
   position: relative;
   justify-self: end;
@@ -1609,7 +1610,7 @@ body.am-lightbox-open { overflow: hidden; }
     padding: 14px;
     margin-inline-end: 22px;
   }
-  .am-hero-card::before { inset: 22px -22px -16px 22px; }
+  .am-hero-card::before { inset: 22px auto -16px auto; inset-inline-start: 22px; inset-inline-end: -22px; }
   .am-hero-card::after { display: none; }
   .am-hero-photo img { width: 132px; }
   .am-hero-card-body { padding: 0; }
@@ -2256,4 +2257,35 @@ body.am-lightbox-open { overflow: hidden; }
   .am-post-related { padding: 40px 0 44px; margin-top: 44px; }
   .am-post-related .am-related-title { font-size: 1.4rem; margin-bottom: 18px; }
   .am-page .am-posts { grid-template-columns: 1fr; gap: 18px; }
+}
+
+.am-thumb-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(91, 188, 228, 0.35), transparent 55%),
+    radial-gradient(circle at 10% 95%, rgba(193, 216, 47, 0.25), transparent 50%),
+    var(--navy);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.am-thumb-fallback img { width: 56px; height: 56px; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.9; }
+.am-card-media .am-thumb-fallback, .am-topic-thumb .am-thumb-fallback { aspect-ratio: inherit; }
+
+.am-topic-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.am-post-related .am-wrap { max-width: 920px; }
+.am-hub-cert { padding: 72px 0; background: #fff; border-top: 1px solid var(--line); }
+.am-hub-cert-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 48px; align-items: center; }
+.am-hub-cert h2 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); margin: 0 0 14px; }
+.am-hub-cert p:not(.am-kicker) { color: #4a5d72; margin: 0; max-width: 34rem; }
+@media (max-width: 640px) {
+  .am-topic-grid-2 { grid-template-columns: 1fr; }
+  .am-hub-cert { padding: 48px 0; }
+  .am-hub-cert-grid { grid-template-columns: 1fr; gap: 24px; }
 }

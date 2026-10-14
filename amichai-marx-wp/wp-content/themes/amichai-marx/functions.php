@@ -555,10 +555,31 @@ function amichai_post_by_slug(string $slug): ?WP_Post {
     return $found ? $found[0] : null;
 }
 
+function amichai_card_image(WP_Post $post): void {
+    $img = has_post_thumbnail($post) ? get_the_post_thumbnail($post, 'medium_large', ['alt' => '', 'loading' => 'lazy']) : '';
+    if ($img !== '') {
+        echo $img;
+        return;
+    }
+    $label = '';
+    foreach (get_the_category($post->ID) ?: [] as $cat) {
+        if ($cat->name !== 'מאמרים') {
+            $label = $cat->name;
+            break;
+        }
+    }
+    ?>
+    <span class="am-thumb-fallback" aria-hidden="true">
+      <img src="<?php echo esc_url(amichai_asset('assets/images/logo-mark.png')); ?>" alt="" width="56" height="56" loading="lazy">
+      <span><?php echo esc_html($label !== '' ? $label : 'כלכלת המשפחה'); ?></span>
+    </span>
+    <?php
+}
+
 function amichai_topic_card(WP_Post $post, string $label = ''): void {
     ?>
     <a class="am-topic" href="<?php echo esc_url(get_permalink($post)); ?>">
-      <span class="am-topic-thumb"><?php echo get_the_post_thumbnail($post, 'medium_large', ['alt' => '', 'loading' => 'lazy']); ?></span>
+      <span class="am-topic-thumb"><?php amichai_card_image($post); ?></span>
       <span class="am-topic-body">
         <strong><?php echo esc_html($label !== '' ? $label : get_the_title($post)); ?></strong>
         <span><?php echo esc_html(wp_trim_words(get_the_excerpt($post), 18)); ?></span>
@@ -720,9 +741,7 @@ function amichai_post_card(): void {
     ?>
     <article <?php post_class('am-card'); ?>>
       <a class="am-card-media" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
-        <?php if (has_post_thumbnail()) {
-            the_post_thumbnail('medium_large', ['alt' => '']);
-        } ?>
+        <?php amichai_card_image(get_post()); ?>
       </a>
       <div class="am-card-body">
         <p class="am-meta"><?php

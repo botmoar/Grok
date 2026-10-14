@@ -636,6 +636,26 @@ def render(topic: dict) -> str:
     return "\n".join(parts)
 
 
+UPLOADS = "https://amichai-marx.co.il/wp-content/uploads/"
+
+# Real photos from the client's own media library, one per topic.
+IMAGES = {
+    "יועץ-משכנתאות-לזוגות-צעירים": "2020/07/happy-young-asian-couple-realtor-agent.jpg",
+    "משכנתא-למשפרי-דיור": "2022/10/ftopbg.jpg",
+    "משכנתא-לבנייה-עצמית": "2022/08/businessman-holding-model-house-scaled.jpg",
+    "משכנתא-לשיפוץ": "2022/10/405708-PCVOP3-17.jpg",
+    "מחזור-משכנתא": "2022/10/128.jpg",
+    "חיסכון-בעלויות-המשכנתא": "2026/06/15.jpg",
+    "איחוד-הלוואות": "2021/12/closeup-economist-using-calculator-while-going-through-bills-taxes-office.jpg",
+    "יועץ-משכנתאות-למסורבים": "2021/03/businessman-accountant-holding-pen-working-desk-using-laptop-calculate-financial-report.jpg",
+    "משכנתא-למבוגרים": "2022/10/hands-437968_640-1.jpg",
+    "משכנתא-הפוכה": "2025/11/4.jpg",
+    "יועץ-משכנתאות-פרטי": "2021/03/real-estate-broker-agent-presenting-consult-customer-decision-making-sign-insurance-form-agreement.jpg",
+    "יועץ-הלוואות-פרטי": "2021/06/finances-saveing-economy-concept-female-accountant-banker-use-calculator.jpg",
+    "יועץ-משכנתאות-בצפון": "2022/10/child-1844901_640.jpg",
+}
+
+
 def posts() -> list:
     out = []
     for topic in TOPICS:
@@ -651,6 +671,6 @@ def posts() -> list:
             "faq": [{"q": q, "a": a} for q, a in topic["faq"]],
             "related": topic["related"],
             "action": "mortgage-topic",
-            "featured_image": "",
+            "featured_image": UPLOADS + IMAGES[topic["slug"]],
         })
     return out

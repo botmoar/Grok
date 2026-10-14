@@ -82,15 +82,15 @@ if (amichai_is_service_hub(get_queried_object_id())) {
       if (!$is_stories) {
           $related_posts = get_posts([
               'post_type' => 'post',
-              'posts_per_page' => 3,
+              'posts_per_page' => 2,
               'post__not_in' => [$post_id],
               'category__in' => $cats ? [(int) $cats[0]->term_id] : wp_get_post_categories($post_id),
               'ignore_sticky_posts' => true,
           ]);
-          if (count($related_posts) < 3) {
+          if (count($related_posts) < 2) {
               $related_posts = array_merge($related_posts, get_posts([
                   'post_type' => 'post',
-                  'posts_per_page' => 3 - count($related_posts),
+                  'posts_per_page' => 2 - count($related_posts),
                   'post__not_in' => array_merge([$post_id], wp_list_pluck($related_posts, 'ID')),
                   'ignore_sticky_posts' => true,
               ]));
@@ -100,7 +100,7 @@ if (amichai_is_service_hub(get_queried_object_id())) {
         <section class="am-post-related" aria-labelledby="am-related-title">
           <div class="am-wrap">
             <h2 id="am-related-title" class="am-related-title">עוד באותו נושא</h2>
-            <div class="am-topic-grid">
+            <div class="am-topic-grid am-topic-grid-2">
               <?php foreach ($related_posts as $related_post) {
                   amichai_topic_card($related_post);
               } ?>

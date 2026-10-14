@@ -32,6 +32,32 @@
 })();
 
 (function () {
+  var menu = document.querySelector("#am-nav .am-menu");
+  if (!menu) return;
+  var parents = menu.querySelectorAll(":scope > .menu-item-has-children");
+  if (!parents.length) return;
+  menu.classList.add("has-toggles");
+  Array.prototype.forEach.call(parents, function (li, i) {
+    var link = li.querySelector(":scope > a");
+    var sub = li.querySelector(":scope > .sub-menu");
+    if (!link || !sub) return;
+    sub.id = sub.id || "am-sub-" + i;
+    var toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "am-sub-toggle";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-controls", sub.id);
+    toggle.setAttribute("aria-label", "תת־תפריט: " + link.textContent.trim());
+    li.insertBefore(toggle, sub);
+    toggle.addEventListener("click", function () {
+      var open = toggle.getAttribute("aria-expanded") !== "true";
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      li.classList.toggle("is-expanded", open);
+    });
+  });
+})();
+
+(function () {
   var bar = document.querySelector(".am-mobile-cta");
   if (!bar) return;
   var threshold = 160;
@@ -142,4 +168,55 @@
   current = 0;
   align(0, true);
   paint(current);
+})();
+
+(function () {
+  var links = document.querySelectorAll("a[data-lightbox]");
+  if (!links.length) return;
+  var box = document.createElement("div");
+  box.className = "am-lightbox";
+  box.setAttribute("role", "dialog");
+  box.setAttribute("aria-modal", "true");
+  box.setAttribute("aria-label", "תצוגת תעודה");
+  box.innerHTML = '<button class="am-lightbox-close" type="button" aria-label="סגירה">×</button><figure><img alt=""><figcaption></figcaption></figure>';
+  document.body.appendChild(box);
+  var img = box.querySelector("img");
+  var caption = box.querySelector("figcaption");
+  var closeBtn = box.querySelector(".am-lightbox-close");
+  var opener = null;
+
+  function close() {
+    box.classList.remove("is-open");
+    document.body.classList.remove("am-lightbox-open");
+    img.removeAttribute("src");
+    if (opener) opener.focus();
+  }
+
+  Array.prototype.forEach.call(links, function (link) {
+    link.addEventListener("click", function (event) {
+      event.preventDefault();
+      opener = link;
+      var thumb = link.querySelector("img");
+      img.src = link.getAttribute("href");
+      img.width = Number(link.getAttribute("data-w")) || 0;
+      img.height = Number(link.getAttribute("data-h")) || 0;
+      img.alt = thumb ? thumb.alt : "";
+      caption.textContent = link.getAttribute("data-caption") || "";
+      box.classList.add("is-open");
+      document.body.classList.add("am-lightbox-open");
+      closeBtn.focus();
+    });
+  });
+
+  box.addEventListener("click", function (event) {
+    if (event.target === box || event.target === closeBtn) close();
+  });
+  document.addEventListener("keydown", function (event) {
+    if (!box.classList.contains("is-open")) return;
+    if (event.key === "Escape") close();
+    if (event.key === "Tab") {
+      event.preventDefault();
+      closeBtn.focus();
+    }
+  });
 })();

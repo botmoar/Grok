@@ -112,6 +112,24 @@ add_filter('category_link', function (string $link, $term_id): string {
     return home_url('/' . $cat->slug . '/');
 }, 10, 2);
 
+// The mortgage category only groups the topic pages; its archive would compete with the hub.
+add_action('template_redirect', function (): void {
+    if (is_category('משכנתאות')) {
+        wp_safe_redirect(home_url('/דיור-ומשכנתאות/'), 301);
+        exit;
+    }
+});
+
+add_filter('wp_sitemaps_taxonomies_query_args', function (array $args, string $taxonomy): array {
+    if ($taxonomy === 'category') {
+        $term = get_term_by('name', 'משכנתאות', 'category');
+        if ($term) {
+            $args['exclude'] = array_merge((array) ($args['exclude'] ?? []), [(int) $term->term_id]);
+        }
+    }
+    return $args;
+}, 10, 2);
+
 add_action('admin_post_nopriv_amichai_lead', 'amichai_handle_lead');
 add_action('admin_post_amichai_lead', 'amichai_handle_lead');
 
@@ -204,30 +222,158 @@ add_action('wp_head', function (): void {
  */
 function amichai_primary_menu_tree(): array {
     return [
-        ['label' => 'עמוד הבית', 'slug' => 'עמוד-הבית', 'type' => 'page'],
-        ['label' => 'אודות', 'slug' => 'אודות', 'type' => 'page'],
-        ['label' => 'ייעוץ כלכלי', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post', 'children' => [
-            ['label' => 'למי מיועד הייעוץ?', 'slug' => 'למי-מיועד-הייעוץ', 'type' => 'post'],
+        ['label' => 'אודות', 'slug' => 'אודות', 'type' => 'page', 'children' => [
+            ['label' => 'סיפורי משפחות', 'slug' => 'סיפורי-משפחות', 'type' => 'post'],
+            ['label' => 'מן התקשורת', 'slug' => 'מן-התקשורת', 'type' => 'page'],
             ['label' => 'הרצאות וסדנאות', 'slug' => 'הרצאות-וסדנאות', 'type' => 'post'],
         ]],
-        ['label' => 'דילמות כלכליות', 'slug' => 'דילמות-כלכליות', 'type' => 'post', 'children' => [
+        ['label' => 'ייעוץ כלכלי', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post', 'children' => [
+            ['label' => 'למי מיועד הייעוץ?', 'slug' => 'למי-מיועד-הייעוץ', 'type' => 'post'],
+            ['label' => 'ליווי צמוד לאורך הדרך', 'slug' => 'ליווי', 'type' => 'post'],
+            ['label' => 'כלכלת משפחה', 'slug' => 'כלכלת-משפחה', 'type' => 'post'],
             ['label' => 'חיים במינוס', 'slug' => 'חיים-במינוס', 'type' => 'post'],
+        ]],
+        ['label' => 'משכנתאות', 'slug' => 'דיור-ומשכנתאות', 'type' => 'post', 'class' => 'am-menu-key am-mega', 'children' => amichai_mortgage_menu_children()],
+        ['label' => 'צמיחה וחסכונות', 'slug' => 'חסכונות', 'type' => 'post'],
+        ['label' => 'דילמות כלכליות', 'slug' => 'דילמות-כלכליות', 'type' => 'post', 'children' => [
             ['label' => 'פנסיה', 'slug' => 'פנסיה', 'type' => 'post'],
             ['label' => 'ביטוחים', 'slug' => 'ביטוחים', 'type' => 'post'],
-            ['label' => 'חסכונות', 'slug' => 'חסכונות', 'type' => 'post'],
-            ['label' => 'דיור ומשכנתאות', 'slug' => 'דיור-ומשכנתאות', 'type' => 'post'],
-        ]],
-        ['label' => 'כלכלת משפחה', 'slug' => 'כלכלת-משפחה', 'type' => 'post', 'children' => [
-            ['label' => 'סיפורי משפחות', 'slug' => 'סיפורי-משפחות', 'type' => 'post'],
+            ['label' => 'יציאה מחובות', 'slug' => 'יציאה-מחובות', 'type' => 'post'],
         ]],
         ['label' => 'מאמרים', 'type' => 'custom', 'path' => '/מאמרים/'],
         ['label' => 'כלי עזר', 'slug' => 'כלי-עזר', 'type' => 'page', 'children' => [
             ['label' => 'מחשבון תקציב משפחתי', 'slug' => 'מחשבון-תקציב-משפחתי', 'type' => 'page'],
             ['label' => 'מחשבון חיסכון משפחתי ליעדים', 'slug' => 'מחשבון-חיסכון-משפחתי-ליעדים', 'type' => 'page'],
         ]],
-        ['label' => 'מן התקשורת', 'slug' => 'מן-התקשורת', 'type' => 'page'],
         ['label' => 'צור קשר', 'slug' => 'צור-קשר', 'type' => 'page'],
     ];
+}
+
+/**
+ * The mortgage pillar: four groups by life situation, thirteen topic pages (seeded from
+ * tools/mortgage_topics.py). Drives the mega menu, the topic maps, the footer and schema.
+ *
+ * @return array<string, array<string, mixed>>
+ */
+function amichai_mortgage_groups(): array {
+    return [
+        'buy' => [
+            'title' => 'קונים בית',
+            'text' => 'דירה ראשונה, שדרוג, בנייה ושיפוץ.',
+            'icon' => 'M3 11.5 12 4l9 7.5M5.5 9.8V20h13V9.8M10 20v-5.5h4V20',
+            'items' => [
+                ['slug' => 'יועץ-משכנתאות-לזוגות-צעירים', 'label' => 'זוגות צעירים ודירה ראשונה'],
+                ['slug' => 'משכנתא-למשפרי-דיור', 'label' => 'משפרי דיור'],
+                ['slug' => 'משכנתא-לבנייה-עצמית', 'label' => 'בנייה עצמית'],
+                ['slug' => 'משכנתא-לשיפוץ', 'label' => 'שיפוץ ושדרוג הבית'],
+            ],
+        ],
+        'save' => [
+            'title' => 'חוסכים במשכנתא',
+            'text' => 'מחזור, עלויות, ואיחוד הלוואות וחובות.',
+            'icon' => 'M4 16.5 9.5 11l3.5 3.5L20 7.5M15 7.5h5v5',
+            'items' => [
+                ['slug' => 'מחזור-משכנתא', 'label' => 'מחזור משכנתא'],
+                ['slug' => 'חיסכון-בעלויות-המשכנתא', 'label' => 'חיסכון בעלויות המשכנתא'],
+                ['slug' => 'איחוד-הלוואות', 'label' => 'איחוד הלוואות וחובות'],
+            ],
+        ],
+        'special' => [
+            'title' => 'מקרים מיוחדים',
+            'text' => 'אחרי סירוב, אחרי גיל 50, ומשכנתא הפוכה.',
+            'icon' => 'M12 3.5 19.5 6v5.5c0 4.4-3.1 8-7.5 9-4.4-1-7.5-4.6-7.5-9V6L12 3.5ZM9 12l2.2 2.2L15.5 10',
+            'items' => [
+                ['slug' => 'יועץ-משכנתאות-למסורבים', 'label' => 'משכנתא למסורבים'],
+                ['slug' => 'משכנתא-למבוגרים', 'label' => 'משכנתא אחרי גיל 50'],
+                ['slug' => 'משכנתא-הפוכה', 'label' => 'משכנתא הפוכה'],
+            ],
+        ],
+        'personal' => [
+            'title' => 'ייעוץ אישי',
+            'text' => 'יועץ משכנתאות פרטי, הלוואות, וייעוץ באזור.',
+            'icon' => 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4.5 20.5c.8-3.8 3.8-6 7.5-6s6.7 2.2 7.5 6',
+            'items' => [
+                ['slug' => 'יועץ-משכנתאות-פרטי', 'label' => 'יועץ משכנתאות פרטי'],
+                ['slug' => 'יועץ-הלוואות-פרטי', 'label' => 'יועץ הלוואות פרטי'],
+                ['slug' => 'יועץ-משכנתאות-בצפון', 'label' => 'יועץ משכנתאות בצפון'],
+            ],
+        ],
+    ];
+}
+
+function amichai_mortgage_menu_children(): array {
+    $children = [];
+    foreach (amichai_mortgage_groups() as $key => $group) {
+        $children[] = [
+            'label' => $group['title'],
+            'type' => 'custom',
+            'path' => '/דיור-ומשכנתאות/#mortgage-' . $key,
+            'class' => 'am-mega-group',
+            'children' => array_map(static fn (array $item): array => $item + ['type' => 'post'], $group['items']),
+        ];
+    }
+    return $children;
+}
+
+/**
+ * @return array{group: string, title: string, label: string}|null
+ */
+function amichai_mortgage_topic(string $slug): ?array {
+    foreach (amichai_mortgage_groups() as $key => $group) {
+        foreach ($group['items'] as $item) {
+            if ($item['slug'] === $slug) {
+                return ['group' => $key, 'title' => $group['title'], 'label' => $item['label']];
+            }
+        }
+    }
+    return null;
+}
+
+function amichai_is_mortgage_topic(int $post_id): bool {
+    return amichai_mortgage_topic(rawurldecode((string) get_post_field('post_name', $post_id))) !== null;
+}
+
+function amichai_mortgage_icon(string $path): string {
+    return '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="' . esc_attr($path) . '"/></svg>';
+}
+
+function amichai_mortgage_map(string $current = ''): void {
+    ?>
+    <div class="am-mmap">
+      <?php foreach (amichai_mortgage_groups() as $key => $group) : ?>
+        <section class="am-mmap-group" id="mortgage-<?php echo esc_attr($key); ?>" aria-labelledby="am-mmap-<?php echo esc_attr($key); ?>">
+          <span class="am-mmap-icon"><?php echo amichai_mortgage_icon($group['icon']); ?></span>
+          <h3 id="am-mmap-<?php echo esc_attr($key); ?>"><?php echo esc_html($group['title']); ?></h3>
+          <p><?php echo esc_html($group['text']); ?></p>
+          <ul>
+            <?php foreach ($group['items'] as $item) : ?>
+              <li><a href="<?php echo esc_url(home_url('/' . $item['slug'] . '/')); ?>"<?php echo $item['slug'] === $current ? ' aria-current="page"' : ''; ?>><?php echo esc_html($item['label']); ?></a></li>
+            <?php endforeach; ?>
+          </ul>
+        </section>
+      <?php endforeach; ?>
+    </div>
+    <?php
+}
+
+/**
+ * @return array<int, array{q: string, a: string}>
+ */
+function amichai_post_faq(int $post_id): array {
+    $faq = json_decode((string) get_post_meta($post_id, '_amichai_faq', true), true);
+    if (!is_array($faq)) {
+        return [];
+    }
+    return array_values(array_filter($faq, static fn ($row) => is_array($row) && !empty($row['q']) && !empty($row['a'])));
+}
+
+function amichai_mortgage_trust_line(): void {
+    ?>
+    <p class="am-trust-line">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3.5 19.5 6v5.5c0 4.4-3.1 8-7.5 9-4.4-1-7.5-4.6-7.5-9V6L12 3.5ZM9 12l2.2 2.2L15.5 10"/></svg>
+      <span>עמיחי מרקס, יועץ משכנתאות. <a href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/#mortgage-cert')); ?>">חבר בהתאחדות יועצי המשכנתאות בישראל</a> · 15 שנה בליווי משפחות</span>
+    </p>
+    <?php
 }
 
 function amichai_menu_item_url(array $item): string {
@@ -240,7 +386,8 @@ function amichai_menu_item_url(array $item): string {
 
 function amichai_render_fallback_item(array $item): void {
     $children = $item['children'] ?? [];
-    $class = $children ? ' class="menu-item-has-children"' : '';
+    $classes = trim(($children ? 'menu-item-has-children ' : '') . ($item['class'] ?? ''));
+    $class = $classes !== '' ? ' class="' . esc_attr($classes) . '"' : '';
     echo '<li' . $class . '><a href="' . esc_url(amichai_menu_item_url($item)) . '">' . esc_html((string) $item['label']) . '</a>';
     if ($children) {
         echo '<ul class="sub-menu">';
@@ -270,13 +417,186 @@ function amichai_render_flat_links(array $items): void {
 
 function amichai_footer_service_links(): array {
     return [
-        ['label' => 'ייעוץ כלכלי', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post'],
+        ['label' => 'ייעוץ משכנתאות', 'slug' => 'דיור-ומשכנתאות', 'type' => 'post'],
+        ['label' => 'ייעוץ כלכלי למשפחה', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post'],
+        ['label' => 'צמיחה, חסכונות והשקעות', 'slug' => 'חסכונות', 'type' => 'post'],
+        ['label' => 'ליווי צמוד', 'slug' => 'ליווי', 'type' => 'post'],
         ['label' => 'חיים במינוס', 'slug' => 'חיים-במינוס', 'type' => 'post'],
         ['label' => 'פנסיה', 'slug' => 'פנסיה', 'type' => 'post'],
         ['label' => 'ביטוחים', 'slug' => 'ביטוחים', 'type' => 'post'],
-        ['label' => 'חסכונות', 'slug' => 'חסכונות', 'type' => 'post'],
-        ['label' => 'דיור ומשכנתאות', 'slug' => 'דיור-ומשכנתאות', 'type' => 'post'],
     ];
+}
+
+/**
+ * Scans of the certificates. The ID number is masked in the image files themselves.
+ *
+ * @return array<string, array<string, mixed>>
+ */
+function amichai_certificates(): array {
+    return [
+        'mortgage' => [
+            'file' => 'mortgage-association-2026',
+            'w' => 1600, 'h' => 1131, 'tw' => 560, 'th' => 396,
+            'title' => 'תעודת חבר, התאחדות יועצי המשכנתאות בישראל',
+            'meta' => 'יועצי מימון לדיור ע״ר · לשנת 2026',
+        ],
+        'family' => [
+            'file' => 'family-economics-2013',
+            'w' => 1142, 'h' => 1600, 'tw' => 400, 'th' => 560,
+            'title' => 'הסמכה כיועץ וכמאמן לכלכלת המשפחה',
+            'meta' => 'קבוצת אש לידור פילוסוף · 275 שעות · אוקטובר 2013',
+        ],
+        'coaching' => [
+            'file' => 'life-coaching-2013',
+            'w' => 1060, 'h' => 1484, 'tw' => 400, 'th' => 560,
+            'title' => 'תעודת גמר Life coaching',
+            'meta' => 'מסלול הכשרת מאמנים · 176 שעות אקדמיות · מוסד מוסמך על ידי לשכת המאמנים בישראל',
+        ],
+    ];
+}
+
+function amichai_cert_figure(string $key, string $class = ''): void {
+    $certs = amichai_certificates();
+    if (!isset($certs[$key])) {
+        return;
+    }
+    $c = $certs[$key];
+    $full = amichai_asset('assets/images/certs/' . $c['file'] . '.webp');
+    $thumb = amichai_asset('assets/images/certs/' . $c['file'] . '-thumb.webp');
+    ?>
+    <figure class="am-cert <?php echo esc_attr($class); ?>">
+      <a class="am-cert-frame" href="<?php echo esc_url($full); ?>" data-lightbox data-w="<?php echo (int) $c['w']; ?>" data-h="<?php echo (int) $c['h']; ?>" data-caption="<?php echo esc_attr($c['title'] . ' · ' . $c['meta']); ?>" aria-label="<?php echo esc_attr('הגדלת התעודה: ' . $c['title']); ?>">
+        <img src="<?php echo esc_url($thumb); ?>" width="<?php echo (int) $c['tw']; ?>" height="<?php echo (int) $c['th']; ?>" loading="lazy" decoding="async" alt="<?php echo esc_attr($c['title']); ?>">
+        <span class="am-cert-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4.5 4.5M11 8v6M8 11h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+      </a>
+      <figcaption><strong><?php echo esc_html($c['title']); ?></strong><span><?php echo esc_html($c['meta']); ?></span></figcaption>
+    </figure>
+    <?php
+}
+
+function amichai_credentials_list(): void {
+    ?>
+    <ul class="am-creds">
+      <li><strong>יועץ משכנתאות</strong><span>חבר בהתאחדות יועצי המשכנתאות בישראל</span></li>
+      <li><strong>יועץ ומאמן לכלכלת המשפחה</strong><span>הסמכה בהיקף 275 שעות, 2013</span></li>
+      <li><strong>רישיון לייעוץ פנסיוני</strong><span>דמי ניהול, כיסויים ומה שנשאר לגיל פרישה</span></li>
+      <li><strong>מאמן מוסמך ומגשר מוסמך</strong><span>176 שעות אקדמיות במסלול הכשרת מאמנים</span></li>
+      <li><strong>חבר באיגוד היועצים והמאמנים</strong><span>לכלכלת המשפחה בישראל</span></li>
+    </ul>
+    <?php
+}
+
+function amichai_portrait(string $class = 'am-portrait-card'): void {
+    ?>
+    <figure class="<?php echo esc_attr($class); ?>">
+      <img src="<?php echo esc_url(amichai_asset('assets/images/amichai-marx.jpg')); ?>" width="236" height="314" alt="עמיחי מרקס, יועץ לכלכלת המשפחה ויועץ משכנתאות">
+    </figure>
+    <?php
+}
+
+/**
+ * Hero copy, highlights and related links for the designed service hubs.
+ *
+ * @return array<string, mixed>
+ */
+function amichai_hub_profile(string $slug): array {
+    $profiles = [
+        'דיור-ומשכנתאות' => [
+            'kicker' => 'ייעוץ משכנתאות',
+            'tone' => 'navy',
+            'cert' => 'mortgage',
+            'highlights' => [
+                ['לקנות או להמשיך לשכור', 'החלטה שנבדקת מול ההכנסות, ההון העצמי והיכולת לעמוד במשבר.'],
+                ['תמהיל שנבנה בשבילכם', 'השוואה בין הצעות הבנקים, והחזר חודשי שהבית יכול לשאת.'],
+                ['מחזור משכנתא', 'בדיקת הריבית וההחזר הקיימים מול מה שאפשר לקבל היום.'],
+                ['ליווי צמוד לאורך הדרך', 'גם אחרי החתימה, כשהריבית או החיים משתנים.'],
+            ],
+            'related' => ['חסכונות', 'יועץ-לכלכלת-המשפחה', 'ליווי'],
+        ],
+        'חסכונות' => [
+            'kicker' => 'עולם הצמיחה',
+            'tone' => 'green',
+            'highlights' => [
+                ['חיסכון עם יעד', 'סכום חודשי שנגזר מהיעדים של המשפחה, לא מהמקרה.'],
+                ['איפה הכסף מושקע', 'תשואה, דמי ניהול ורמת סיכון של החסכונות הקיימים.'],
+                ['חיסכון לילדים', 'בחירת מסלול בחיסכון לכל ילד ותוכנית להשכלה, חתונה ודיור.'],
+                ['פנסיה כנכס', 'הנכס הפיננסי הגדול של רוב המשפחות, ודמי הניהול שעליו.'],
+            ],
+            'related' => ['חיסכון-לכל-ילד-כל-המידע-ומה-כדאי-לעשות', 'פנסיה', 'דיור-ומשכנתאות'],
+        ],
+    ];
+    $profiles['ליווי'] = [
+        'kicker' => 'ליווי צמוד',
+        'tone' => 'green',
+        'highlights' => [
+            ['שיחה שבועית', 'על ההתקדמות, בעזרת הכלים שסיכמנו עליהם.'],
+            ['מענה מהיר', 'לכל שאלה או בעיה, בטלפון או במייל.'],
+            ['פגישות נוספות', 'כשעולה החלטה גדולה או משהו משתנה בבית.'],
+            ['עד עצמאות', 'הליווי נמשך עד שיש ביטחון להמשיך לבד.'],
+        ],
+        'related' => ['פגישה-מס-1-היכרות', 'פגישה-מס-2-הצגת-התוכנית', 'פגישה-מס-3-יישום-התוכנית'],
+    ];
+    $default = [
+        'kicker' => 'ייעוץ לכלכלת המשפחה',
+        'tone' => 'paper',
+        'highlights' => [],
+        'related' => ['דיור-ומשכנתאות', 'חסכונות', 'ליווי'],
+    ];
+    return $profiles[$slug] ?? $default;
+}
+
+function amichai_post_by_slug(string $slug): ?WP_Post {
+    $found = get_posts([
+        'name' => sanitize_title($slug),
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'posts_per_page' => 1,
+    ]);
+    return $found ? $found[0] : null;
+}
+
+function amichai_topic_card(WP_Post $post, string $label = ''): void {
+    ?>
+    <a class="am-topic" href="<?php echo esc_url(get_permalink($post)); ?>">
+      <span class="am-topic-thumb"><?php echo get_the_post_thumbnail($post, 'medium_large', ['alt' => '', 'loading' => 'lazy']); ?></span>
+      <span class="am-topic-body">
+        <strong><?php echo esc_html($label !== '' ? $label : get_the_title($post)); ?></strong>
+        <span><?php echo esc_html(wp_trim_words(get_the_excerpt($post), 18)); ?></span>
+      </span>
+    </a>
+    <?php
+}
+
+function amichai_closing_cta(string $title = 'מוכנים לצאת לדרך?', string $text = 'שיחת היכרות, בלי התחייבות. משם ממשיכים יחד, בליווי צמוד לאורך הדרך.'): void {
+    ?>
+    <section class="am-band-last">
+      <div class="am-wrap">
+        <div class="am-cta-band am-cta-close">
+          <div>
+            <h2><?php echo esc_html($title); ?></h2>
+            <p><?php echo esc_html($text); ?></p>
+            <p class="am-cta-meta"><span class="am-email" dir="ltr">marx@amichai-marx.co.il</span><span>תל מנשה 11, חיננית</span></p>
+          </div>
+          <div class="am-actions">
+            <?php amichai_whatsapp_button(); ?>
+            <a class="am-btn am-btn-on-dark" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת ייעוץ</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <?php
+}
+
+function amichai_page_hero(string $title, string $lead = '', string $kicker = ''): void {
+    ?>
+    <header class="am-page-hero">
+      <div class="am-wrap">
+        <?php if ($kicker !== '') : ?><p class="am-kicker"><?php echo esc_html($kicker); ?></p><?php endif; ?>
+        <h1 class="am-page-title"><?php echo esc_html($title); ?></h1>
+        <?php if ($lead !== '') : ?><p class="am-page-lead"><?php echo esc_html($lead); ?></p><?php endif; ?>
+      </div>
+    </header>
+    <?php
 }
 
 function amichai_footer_site_links(): array {
@@ -302,6 +622,7 @@ function amichai_service_hub_slugs(): array {
         'כלכלת-משפחה',
         'למי-מיועד-הייעוץ',
         'הרצאות-וסדנאות',
+        'ליווי',
     ];
 }
 

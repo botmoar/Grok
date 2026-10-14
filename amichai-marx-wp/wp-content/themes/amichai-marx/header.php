@@ -25,7 +25,7 @@ defined('ABSPATH') || exit;
           'theme_location' => 'primary',
           'container' => false,
           'menu_class' => 'am-menu',
-          'depth' => 2,
+          'depth' => 3,
           'fallback_cb' => 'amichai_fallback_menu',
       ]);
       ?>

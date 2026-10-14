@@ -42,7 +42,7 @@ function amichai_meta_description(): string {
         }
     }
     if (is_front_page()) {
-        return 'ליווי אישי למשפחות בתקציב, יציאה מהמינוס ותכנון יעדים. עמיחי מרקס, מעל 20 שנות ניסיון. לתיאום שיחה: 054-2372417.';
+        return 'ייעוץ לכלכלת המשפחה ומשכנתאות בליווי צמוד: תקציב, מינוס, משכנתא, חסכונות והשקעות. עמיחי מרקס, 15 שנה בליווי משפחות. 054-2372417.';
     }
     if (is_category()) {
         return 'מאמרים בנושא ' . single_cat_title('', false) . ' מאת עמיחי מרקס, יועץ לכלכלת המשפחה.';
@@ -54,7 +54,7 @@ add_action('wp_head', function (): void {
     $desc = amichai_meta_description();
     $title = amichai_seo_title_raw();
     $url = amichai_current_url();
-    $image = get_template_directory_uri() . '/assets/images/hero-portrait.png';
+    $image = get_template_directory_uri() . '/assets/images/amichai-marx.jpg';
     if (is_singular()) {
         $thumb_id = get_post_thumbnail_id(get_queried_object_id());
         if ($thumb_id) {

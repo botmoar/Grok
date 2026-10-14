@@ -27,6 +27,17 @@
       </ul>
     </div>
   </div>
+  <nav class="am-wrap am-footer-mortgage" aria-label="נושאי משכנתא">
+    <h2><a href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/')); ?>">משכנתאות</a></h2>
+    <div class="am-footer-mgroups">
+      <?php foreach (amichai_mortgage_groups() as $group) : ?>
+        <div>
+          <h3><?php echo esc_html($group['title']); ?></h3>
+          <?php amichai_render_flat_links(array_map(static fn (array $item): array => $item + ['type' => 'post'], $group['items'])); ?>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </nav>
   <div class="am-wrap am-footer-base">
     <p>© <?php echo esc_html(gmdate('Y')); ?> עמיחי מרקס. חבר באיגוד היועצים והמאמנים לכלכלת המשפחה בישראל.</p>
     <img src="<?php echo esc_url(amichai_asset('assets/images/association.png')); ?>" width="120" height="48" alt="לוגו איגוד היועצים והמאמנים לכלכלת המשפחה בישראל">

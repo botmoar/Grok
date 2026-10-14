@@ -109,6 +109,7 @@ $category_slugs = [
     'מאמרים' => 'מאמרים',
     'סיפורי משפחות' => 'סיפורי-משפחות',
     'שירותים שלנו' => 'שירותים-שלנו',
+    'משכנתאות' => 'משכנתאות',
 ];
 $category_ids = [];
 foreach ($category_slugs as $name => $slug) {
@@ -172,6 +173,13 @@ function amichai_seed_upsert(array $row, string $type): int {
     }
     if (!empty($row['meta_desc'])) {
         update_post_meta($id, '_amichai_meta_desc', $row['meta_desc']);
+    }
+    foreach (['faq' => '_amichai_faq', 'related' => '_amichai_related'] as $field => $meta_key) {
+        if (!empty($row[$field]) && is_array($row[$field])) {
+            update_post_meta($id, $meta_key, wp_slash(wp_json_encode($row[$field], JSON_UNESCAPED_UNICODE)));
+        } else {
+            delete_post_meta($id, $meta_key);
+        }
     }
     return (int) $id;
 }
@@ -320,6 +328,7 @@ $add = static function (array $item, int $parent = 0) use ($menu_id, &$order, $r
         'menu-item-status' => 'publish',
         'menu-item-position' => $order,
         'menu-item-parent-id' => $parent,
+        'menu-item-classes' => (string) ($item['class'] ?? ''),
     ];
     if ($type === 'custom') {
         $args['menu-item-type'] = 'custom';

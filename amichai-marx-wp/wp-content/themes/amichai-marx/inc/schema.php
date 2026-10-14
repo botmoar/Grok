@@ -14,9 +14,9 @@ add_action('wp_head', function (): void {
                 '@type' => ['LocalBusiness', 'ProfessionalService'],
                 '@id' => $home . '#business',
                 'name' => 'עמיחי מרקס – ייעוץ לכלכלת המשפחה',
-                'description' => 'ייעוץ וליווי לכלכלת המשפחה: תקציב, מינוס, משכנתא, פנסיה, ביטוחים וחסכונות.',
+                'description' => 'ייעוץ וליווי צמוד לכלכלת המשפחה ומשכנתאות: תקציב, יציאה מהמינוס, משכנתא, חסכונות והשקעות, פנסיה וביטוחים.',
                 'url' => $home,
-                'image' => get_template_directory_uri() . '/assets/images/hero-portrait.png',
+                'image' => get_template_directory_uri() . '/assets/images/amichai-marx.jpg',
                 'logo' => get_template_directory_uri() . '/assets/images/logo.png',
                 'telephone' => '+972-54-2372417',
                 'email' => 'marx@amichai-marx.co.il',
@@ -33,7 +33,11 @@ add_action('wp_head', function (): void {
                 'founder' => [
                     '@type' => 'Person',
                     'name' => 'עמיחי מרקס',
-                    'jobTitle' => 'יועץ לכלכלת המשפחה',
+                    'jobTitle' => 'יועץ לכלכלת המשפחה ויועץ משכנתאות',
+                    'memberOf' => [
+                        '@type' => 'Organization',
+                        'name' => 'התאחדות יועצי המשכנתאות בישראל',
+                    ],
                 ],
                 'knowsLanguage' => 'he',
                 'currenciesAccepted' => 'ILS',
@@ -49,7 +53,34 @@ add_action('wp_head', function (): void {
         ],
     ];
 
-    if (is_singular('post')) {
+    $post_id = is_singular('post') ? get_queried_object_id() : 0;
+    $post_slug = $post_id ? rawurldecode((string) get_post_field('post_name', $post_id)) : '';
+    $is_mortgage = $post_id && ($post_slug === 'דיור-ומשכנתאות' || amichai_mortgage_topic($post_slug) !== null);
+
+    if ($is_mortgage) {
+        $data['@graph'][] = [
+            '@type' => 'Service',
+            '@id' => get_permalink($post_id) . '#service',
+            'name' => wp_strip_all_tags(get_the_title($post_id)),
+            'serviceType' => 'ייעוץ משכנתאות',
+            'description' => wp_strip_all_tags((string) get_post_meta($post_id, '_amichai_meta_desc', true)),
+            'url' => get_permalink($post_id),
+            'provider' => ['@id' => $home . '#business'],
+            'areaServed' => ['@type' => 'Country', 'name' => 'Israel'],
+            'inLanguage' => 'he-IL',
+        ];
+        $faq = amichai_post_faq($post_id);
+        if ($faq) {
+            $data['@graph'][] = [
+                '@type' => 'FAQPage',
+                'mainEntity' => array_map(static fn (array $row): array => [
+                    '@type' => 'Question',
+                    'name' => $row['q'],
+                    'acceptedAnswer' => ['@type' => 'Answer', 'text' => $row['a']],
+                ], $faq),
+            ];
+        }
+    } elseif (is_singular('post')) {
         $data['@graph'][] = [
             '@type' => 'Article',
             'headline' => wp_strip_all_tags(get_the_title()),

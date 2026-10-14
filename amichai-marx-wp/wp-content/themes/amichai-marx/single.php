@@ -1,6 +1,16 @@
 <?php
 defined('ABSPATH') || exit;
 get_header();
+if (amichai_is_mortgage_topic(get_queried_object_id())) {
+    get_template_part('parts/mortgage-topic');
+    get_footer();
+    return;
+}
+if (amichai_is_service_hub(get_queried_object_id())) {
+    get_template_part('parts/hub');
+    get_footer();
+    return;
+}
 ?>
 <main id="main" class="am-page">
   <div class="am-wrap am-article">

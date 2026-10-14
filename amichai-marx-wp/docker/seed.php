@@ -277,6 +277,25 @@ if (!empty($category_ids['מאמרים'])) {
     update_option('default_category', $category_ids['מאמרים']);
 }
 
+$icon_file = get_template_directory() . '/assets/images/icon-512.png';
+$icon_id = (int) get_option('site_icon');
+if ($icon_id <= 0 || get_post_meta($icon_id, '_amichai_source_url', true) !== 'theme:icon-512.png') {
+    if (is_readable($icon_file)) {
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+        $upload = wp_upload_bits('amichai-marx-site-icon.png', null, (string) file_get_contents($icon_file));
+        if (empty($upload['error'])) {
+            $icon_id = wp_insert_attachment([
+                'post_mime_type' => 'image/png',
+                'post_title' => 'סמל האתר',
+                'post_status' => 'inherit',
+            ], $upload['file']);
+            wp_update_attachment_metadata($icon_id, wp_generate_attachment_metadata($icon_id, $upload['file']));
+            update_post_meta($icon_id, '_amichai_source_url', 'theme:icon-512.png');
+            update_option('site_icon', $icon_id);
+        }
+    }
+}
+
 $menu_name = 'ראשי';
 $menu = wp_get_nav_menu_object($menu_name);
 $menu_id = $menu ? (int) $menu->term_id : (int) wp_create_nav_menu($menu_name);

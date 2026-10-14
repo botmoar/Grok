@@ -5,7 +5,10 @@ defined('ABSPATH') || exit;
 <head>
 <meta charset="<?php bloginfo('charset'); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="<?php echo esc_url(amichai_asset('assets/images/logo-mark.png')); ?>" type="image/png">
+<link rel="icon" href="<?php echo esc_url(amichai_asset('assets/images/icon-32.png')); ?>" sizes="32x32" type="image/png">
+<link rel="icon" href="<?php echo esc_url(amichai_asset('assets/images/icon-192.png')); ?>" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="<?php echo esc_url(amichai_asset('assets/images/icon-180.png')); ?>">
+<meta name="theme-color" content="#0f1d41">
 <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>

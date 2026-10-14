@@ -111,3 +111,27 @@ add_action('template_redirect', function (): void {
         }
     }
 }, 0);
+
+// Hardening: no author archives or user listing (they expose login names), no XML-RPC.
+add_action('template_redirect', function (): void {
+    if (is_author() || isset($_GET['author'])) {
+        wp_safe_redirect(home_url('/אודות/'), 301);
+        exit;
+    }
+}, 1);
+
+add_filter('rest_endpoints', function (array $endpoints): array {
+    if (!is_user_logged_in()) {
+        unset($endpoints['/wp/v2/users'], $endpoints['/wp/v2/users/(?P<id>[\d]+)']);
+    }
+    return $endpoints;
+});
+
+add_filter('xmlrpc_enabled', '__return_false');
+add_filter('wp_headers', function (array $headers): array {
+    unset($headers['X-Pingback']);
+    return $headers;
+});
+add_filter('wp_sitemaps_add_provider', function ($provider, string $name) {
+    return $name === 'users' ? false : $provider;
+}, 10, 2);

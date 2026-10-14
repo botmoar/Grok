@@ -51,40 +51,50 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
       <div class="am-service-grid">
         <a class="am-service am-service-key" href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/')); ?>">
           <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M8 22 24 9l16 13"/><path d="M12 19v20h24V19"/><path d="M20 39V28h8v11"/></svg></span>
-          <span class="am-service-tag">יועץ משכנתאות</span>
-          <strong>משכנתאות ודיור</strong>
-          <span>לקנות או להמשיך לשכור, בניית תמהיל, מחזור משכנתא. ההבדל בין משכנתא טובה לרעה הוא מאות אלפי שקלים.</span>
+          <span class="am-service-head">
+            <strong>משכנתאות ודיור</strong>
+          </span>
+          <span class="am-service-text">לקנות או לשכור, בניית תמהיל ומחזור משכנתא. החלטה שעולה או חוסכת מאות אלפי שקלים.</span>
           <em>לעמוד המשכנתאות</em>
         </a>
         <a class="am-service am-service-grow" href="<?php echo esc_url(home_url('/חסכונות/')); ?>">
           <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M8 38h32"/><path d="M12 32l8-9 6 5 11-13"/><path d="M30 15h7v7"/></svg></span>
-          <span class="am-service-tag">עולם הצמיחה</span>
-          <strong>צמיחה, חסכונות והשקעות</strong>
-          <span>חיסכון עם יעד, בדיקת תשואה, סיכון ודמי ניהול, וחיסכון לילדים.</span>
+          <span class="am-service-head">
+            <strong>צמיחה, חסכונות והשקעות</strong>
+          </span>
+          <span class="am-service-text">חיסכון עם יעד, בדיקת תשואה, סיכון ודמי ניהול, וחיסכון לילדים.</span>
           <em>לעמוד הצמיחה</em>
         </a>
         <a class="am-service" href="<?php echo esc_url(home_url('/חיים-במינוס/')); ?>">
           <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="9" y="12" width="30" height="24" rx="4"/><path d="M9 20h30"/><path d="M16 29h7"/></svg></span>
-          <strong>תקציב ויציאה מהמינוס</strong>
-          <span>תמונת מצב אמיתית, תוכנית שאפשר לחיות איתה, ויציאה מהמינוס בסדר פעולות.</span>
+          <span class="am-service-head">
+            <strong>תקציב ויציאה מהמינוס</strong>
+          </span>
+          <span class="am-service-text">תמונת מצב אמיתית, תוכנית שאפשר לחיות איתה, ויציאה מהמינוס בסדר פעולות.</span>
           <em>לקריאה</em>
         </a>
         <a class="am-service" href="<?php echo esc_url(home_url('/פנסיה/')); ?>">
           <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="14"/><path d="M24 16v8l6 4"/></svg></span>
-          <strong>פנסיה</strong>
-          <span>כמה תקבלו בפרישה, איפה הכסף מושקע, וכמה דמי ניהול גובים מכם.</span>
+          <span class="am-service-head">
+            <strong>פנסיה</strong>
+          </span>
+          <span class="am-service-text">כמה תקבלו בפרישה, איפה הכסף מושקע, וכמה דמי ניהול גובים מכם.</span>
           <em>לקריאה</em>
         </a>
         <a class="am-service" href="<?php echo esc_url(home_url('/ביטוחים/')); ?>">
           <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 7 11 12.5V23c0 8 5 13.8 13 16.5C32 36.8 37 31 37 23V12.5L24 7z"/><path d="m18 23.5 4 4 8.5-8.5"/></svg></span>
-          <strong>ביטוחים</strong>
-          <span>כפל כיסויים, חוסרים, ומה באמת צריך כדי שהבית יהיה מוגן.</span>
+          <span class="am-service-head">
+            <strong>ביטוחים</strong>
+          </span>
+          <span class="am-service-text">כפל כיסויים, חוסרים, ומה באמת צריך כדי שהבית יהיה מוגן.</span>
           <em>לקריאה</em>
         </a>
         <a class="am-service" href="<?php echo esc_url(home_url('/דילמות-כלכליות/')); ?>">
           <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 8v32"/><path d="M12 14h24"/><path d="M12 14 7 26a5 5 0 0 0 10 0l-5-12z"/><path d="M36 14l-5 12a5 5 0 0 0 10 0l-5-12z"/></svg></span>
-          <strong>החלטות גדולות</strong>
-          <span>חתונה, מעבר דירה, שינוי עבודה, גירושין או פרישה. לפני ההחלטה, לא אחריה.</span>
+          <span class="am-service-head">
+            <strong>החלטות גדולות</strong>
+          </span>
+          <span class="am-service-text">חתונה, מעבר דירה, שינוי עבודה, גירושין או פרישה. לפני ההחלטה, לא אחריה.</span>
           <em>לקריאה</em>
         </a>
       </div>

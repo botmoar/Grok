@@ -352,14 +352,18 @@ p { margin: 0 0 1rem; }
   gap: 20px;
 }
 .am-service {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 28px 26px 24px;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  column-gap: 14px;
+  row-gap: 12px;
+  align-items: center;
+  padding: 24px;
   border: 1px solid var(--line);
   border-radius: 18px;
   background: #fff;
   color: var(--ink);
+  text-align: start;
   text-decoration: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
@@ -369,11 +373,11 @@ p { margin: 0 0 1rem; }
   box-shadow: 0 18px 40px -22px rgba(15, 29, 65, 0.3);
   transform: translateY(-2px);
 }
-.am-service strong { color: var(--navy); font-size: 1.28rem; line-height: 1.3; }
-.am-service > span:not(.am-service-ico):not(.am-service-tag) { color: var(--muted); font-size: 1rem; line-height: 1.6; }
+.am-service-head { grid-column: 2; min-width: 0; }
+.am-service strong { display: block; color: var(--navy); font-size: 1.22rem; line-height: 1.3; }
+.am-service-text { grid-column: 1 / -1; align-self: start; color: var(--muted); font-size: 1rem; line-height: 1.6; }
 .am-service em {
-  margin-top: auto;
-  padding-top: 10px;
+  grid-column: 1 / -1;
   color: var(--blue);
   font-style: normal;
   font-weight: 700;
@@ -381,33 +385,24 @@ p { margin: 0 0 1rem; }
 }
 .am-service em::after { content: " ←"; }
 .am-service-ico {
-  width: 52px;
-  height: 52px;
-  margin-bottom: 8px;
+  grid-column: 1;
+  grid-row: 1;
+  width: 48px;
+  height: 48px;
   border-radius: 14px;
   background: #eef5fa;
   display: grid;
   place-items: center;
 }
-.am-service-ico svg { width: 28px; height: 28px; fill: none; stroke: var(--navy); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.am-service-tag {
-  align-self: flex-start;
-  padding: 3px 10px;
-  border-radius: 99px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  background: rgba(91, 188, 228, 0.18);
-  color: var(--blue-line);
-}
+.am-service-ico svg { width: 26px; height: 26px; fill: none; stroke: var(--navy); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .am-service-key { background: var(--navy); border-color: var(--navy); }
 .am-service-key strong { color: #fff; }
-.am-service-key > span:not(.am-service-ico):not(.am-service-tag) { color: rgba(255, 255, 255, 0.78); }
+.am-service-key .am-service-text { color: rgba(255, 255, 255, 0.78); }
 .am-service-key em { color: var(--lime); }
 .am-service-key .am-service-ico { background: rgba(255, 255, 255, 0.1); }
 .am-service-key .am-service-ico svg { stroke: #fff; }
 .am-service-key:hover { border-color: var(--navy); }
 .am-service-grow { background: #f1f9f4; border-color: #d6eedf; }
-.am-service-grow .am-service-tag { background: #dcf3e5; color: var(--green-dark); }
 .am-service-grow .am-service-ico { background: #fff; }
 .am-service-grow .am-service-ico svg { stroke: var(--green-dark); }
 .am-service-grow em { color: var(--green-dark); }
@@ -1766,7 +1761,8 @@ body.am-lightbox-open { overflow: hidden; }
   .am-hero-photo img { width: 104px; border-radius: 10px; }
   .am-hero-name { font-size: 1.15rem; }
   .am-service-grid { grid-template-columns: 1fr; gap: 14px; }
-  .am-service { padding: 22px 20px 20px; }
+  .am-service { padding: 20px; row-gap: 10px; }
+  .am-service strong { font-size: 1.14rem; }
   .am-services, .am-mortgage, .am-growth, .am-journey, .am-about-sec { padding: 56px 0; }
   .am-media-sec, .am-reads, .am-faq-sec { padding: 52px 0; }
   .am-mortgage .am-actions .am-btn { width: 100%; }
@@ -2058,9 +2054,15 @@ body.am-lightbox-open { overflow: hidden; }
 @media (max-width: 1200px) {
   .am-mmap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+@media (max-width: 1240px) and (min-width: 1101px) {
+  .am-header-phone-num { display: none; }
+}
 @media (max-width: 1100px) and (min-width: 981px) {
-  .am-menu { gap: 12px; }
-  .am-menu a { font-size: 0.92rem; }
+  .am-header-inner { gap: 14px; }
+  .am-menu { gap: 9px; }
+  .am-menu a { font-size: 0.9rem; }
+  .am-menu-key { padding-inline: 10px; }
+  .am-logo img { height: 54px; }
   .am-header-phone-num { display: none; }
 }
 @media (max-width: 980px) {

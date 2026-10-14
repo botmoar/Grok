@@ -67,13 +67,15 @@
 :root {
   --navy: #0f1d41;
   --navy-2: #162a45;
-  --blue: #1490c4;
+  --blue: #1077a2;
   --blue-line: #5bbce4;
   --green: #1ebe66;
-  --green-dark: #17a658;
+  --green-dark: #118144;
   --lime: #c1d82f;
+  --green-btn: #158648;
+  --green-btn-hover: #11733d;
   --ink: #1a2740;
-  --muted: #66788a;
+  --muted: #607283;
   --line: #e4ebf1;
   --paper: #f6f8fa;
   --white: #fff;
@@ -783,9 +785,9 @@ body.am-lightbox-open { overflow: hidden; }
   line-height: 1;
 }
 .am-btn:hover { text-decoration: none; }
-.am-btn-primary { background: var(--green); color: #fff; }
-.am-btn-primary:hover { background: var(--green-dark); color: #fff; }
-.am-btn-ghost { background: #fff; color: #1787b8; border-color: #8fd0ee; }
+.am-btn-primary { background: var(--green-btn); color: #fff; }
+.am-btn-primary:hover { background: var(--green-btn-hover); color: #fff; }
+.am-btn-ghost { background: #fff; color: #1077a2; border-color: #8fd0ee; }
 .am-btn-ghost:hover { border-color: var(--blue-line); color: var(--navy); }
 .am-btn-on-dark { background: transparent; color: #fff; border-color: rgba(255,255,255,.55); }
 .am-btn-on-dark:hover { color: #fff; border-color: #fff; }
@@ -1378,7 +1380,7 @@ body.am-lightbox-open { overflow: hidden; }
 }
 .am-whatsapp:hover { color: #fff; text-decoration: none; }
 .am-mobile-cta a:first-child { color: var(--navy); }
-.am-mobile-cta a:last-child { background: var(--green); color: #fff; }
+.am-mobile-cta a:last-child { background: var(--green-btn); color: #fff; }
 
 .fbc-outer { max-width: 760px; }
 .fbc-section { margin: 18px 0; }

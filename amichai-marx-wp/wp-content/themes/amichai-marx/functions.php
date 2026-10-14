@@ -19,31 +19,65 @@ add_action('after_setup_theme', function (): void {
     ]);
 });
 
-add_action('wp_enqueue_scripts', function (): void {
+function amichai_asset_src(string $path): array {
     $dir = get_template_directory();
-    $uri = get_template_directory_uri();
-    wp_enqueue_style(
-        'amichai-main',
-        $uri . '/assets/css/main.css',
-        [],
-        file_exists($dir . '/assets/css/main.css') ? (string) filemtime($dir . '/assets/css/main.css') : '1.0.0'
-    );
-    wp_enqueue_script(
-        'amichai-main',
-        $uri . '/assets/js/main.js',
-        [],
-        file_exists($dir . '/assets/js/main.js') ? (string) filemtime($dir . '/assets/js/main.js') : '1.0.0',
-        true
-    );
+    $min = preg_replace('/\.(css|js)$/', '.min.$1', $path);
+    $use = (!(defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) && file_exists($dir . '/' . $min)) ? $min : $path;
+    $ver = file_exists($dir . '/' . $use) ? (string) filemtime($dir . '/' . $use) : '1.0.0';
+    return [get_template_directory_uri() . '/' . $use, $ver];
+}
+
+add_action('wp_enqueue_scripts', function (): void {
+    [$css, $css_ver] = amichai_asset_src('assets/css/main.css');
+    wp_enqueue_style('amichai-main', $css, [], $css_ver);
+    [$js, $js_ver] = amichai_asset_src('assets/js/main.js');
+    wp_enqueue_script('amichai-main', $js, [], $js_ver, ['in_footer' => true, 'strategy' => 'defer']);
 
     if (is_page_template('template-budget.php')) {
-        wp_enqueue_script('amichai-budget', $uri . '/assets/js/budget.js', [], '1.0.0', true);
+        [$src, $ver] = amichai_asset_src('assets/js/budget.js');
+        wp_enqueue_script('amichai-budget', $src, [], $ver, ['in_footer' => true, 'strategy' => 'defer']);
     }
     if (is_page_template('template-savings.php')) {
-        wp_enqueue_style('amichai-savings', $uri . '/assets/css/savings.css', ['amichai-main'], '1.0.0');
-        wp_enqueue_script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js', [], '4.4.1', true);
-        wp_enqueue_script('amichai-savings', $uri . '/assets/js/savings.js', ['chartjs'], '1.0.0', true);
+        [$src, $ver] = amichai_asset_src('assets/css/savings.css');
+        wp_enqueue_style('amichai-savings', $src, ['amichai-main'], $ver);
+        wp_enqueue_script('chartjs', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js', [], '4.4.1', ['in_footer' => true, 'strategy' => 'defer']);
+        [$src, $ver] = amichai_asset_src('assets/js/savings.js');
+        wp_enqueue_script('amichai-savings', $src, ['chartjs'], $ver, ['in_footer' => true, 'strategy' => 'defer']);
     }
+
+    // Classic theme with no block content: core block and global styles are dead weight.
+    wp_dequeue_style('wp-block-library');
+    wp_dequeue_style('wp-block-library-theme');
+    wp_dequeue_style('classic-theme-styles');
+    wp_dequeue_style('global-styles');
+}, 20);
+
+// Generated image sizes are written as WebP; originals stay as uploaded.
+add_filter('image_editor_output_format', static function (array $formats): array {
+    $formats['image/jpeg'] = 'image/webp';
+    $formats['image/png'] = 'image/webp';
+    return $formats;
+});
+
+add_action('wp_head', function (): void {
+    $uri = get_template_directory_uri() . '/assets/fonts/';
+    foreach (['heebo-400', 'heebo-700', 'heebo-800'] as $font) {
+        echo '<link rel="preload" href="' . esc_url($uri . $font . '.woff2') . '" as="font" type="font/woff2" crossorigin>' . "\n";
+    }
+}, 2);
+
+add_action('init', function (): void {
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('wp_print_styles', 'print_emoji_styles');
+    remove_action('wp_enqueue_scripts', 'wp_enqueue_emoji_styles');
+    remove_filter('the_content_feed', 'wp_staticize_emoji');
+    remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+    add_filter('emoji_svg_url', '__return_false');
+    remove_action('wp_enqueue_scripts', 'wp_enqueue_global_styles');
+    remove_action('wp_footer', 'wp_enqueue_global_styles', 1);
+    remove_action('wp_head', 'wp_oembed_add_discovery_links');
+    remove_action('wp_head', 'rest_output_link_wp_head');
+    remove_action('template_redirect', 'rest_output_link_header', 11);
 });
 
 add_action('init', function (): void {
@@ -711,9 +745,9 @@ function amichai_intro_cta(): void {
 add_filter('wp_get_loading_optimization_attributes', function (array $attrs, string $tag_name, array $attr): array {
     $class = (string) ($attr['class'] ?? '');
     if ($tag_name === 'img' && str_contains($class, 'am-inline-photo')) {
-        $attrs['loading'] = 'lazy';
+        unset($attrs['loading']);
         $attrs['decoding'] = 'async';
-        $attrs['fetchpriority'] = 'low';
+        $attrs['fetchpriority'] = 'high';
     }
     return $attrs;
 }, 10, 3);

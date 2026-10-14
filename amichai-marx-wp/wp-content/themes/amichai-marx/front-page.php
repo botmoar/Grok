@@ -315,7 +315,7 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
           <span>«לבחור נכון» בהנחיית מיכל צפיר</span>
         </a>
         <a class="am-media-card am-media-radio" href="<?php echo esc_url(home_url('/מן-התקשורת/')); ?>">
-          <span class="am-media-thumb"><img src="<?php echo esc_url(amichai_asset('assets/images/kol-barama.png')); ?>" width="1024" height="636" loading="lazy" alt="קול ברמה"></span>
+          <span class="am-media-thumb"><img src="<?php echo esc_url(amichai_asset('assets/images/kol-barama.webp')); ?>" width="800" height="497" loading="lazy" alt="קול ברמה"></span>
           <strong>חזרה לשגרה, והמינוס שנשאר</strong>
           <span>«דנה בסוגיה» עם שיפי חריטן, קול ברמה</span>
         </a>

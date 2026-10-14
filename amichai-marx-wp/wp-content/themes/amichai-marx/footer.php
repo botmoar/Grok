@@ -3,7 +3,7 @@
   <div class="am-wrap am-footer-grid">
     <div class="am-footer-brand">
       <a class="am-logo am-logo-footer" href="<?php echo esc_url(home_url('/')); ?>">
-        <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="492" height="120" alt="עמיחי מרקס, יועץ ומאמן לכלכלת המשפחה">
+        <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="492" height="120" loading="lazy" alt="עמיחי מרקס, יועץ ומאמן לכלכלת המשפחה">
       </a>
       <p>ליווי אישי למשפחות שרוצות סדר בחשבון, ותוכנית שאפשר לחיות איתה.</p>
     </div>
@@ -40,7 +40,7 @@
   </nav>
   <div class="am-wrap am-footer-base">
     <p>© <?php echo esc_html(gmdate('Y')); ?> עמיחי מרקס. חבר באיגוד היועצים והמאמנים לכלכלת המשפחה בישראל.</p>
-    <img src="<?php echo esc_url(amichai_asset('assets/images/association.png')); ?>" width="120" height="48" alt="לוגו איגוד היועצים והמאמנים לכלכלת המשפחה בישראל">
+    <img src="<?php echo esc_url(amichai_asset('assets/images/association.png')); ?>" width="120" height="48" loading="lazy" alt="לוגו איגוד היועצים והמאמנים לכלכלת המשפחה בישראל">
   </div>
 </footer>
 <a class="am-whatsapp" href="<?php echo esc_url(amichai_whatsapp_url()); ?>" target="_blank" rel="noopener noreferrer" aria-label="שליחת וואטסאפ">

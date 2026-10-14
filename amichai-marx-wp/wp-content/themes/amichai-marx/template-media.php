@@ -25,7 +25,7 @@ get_header();
     </div>
     <h2>ראיון ברדיו קול ברמה, עם שיפי חריטן</h2>
     <div class="am-audio">
-      <img src="<?php echo esc_url(amichai_asset('assets/images/kol-barama.png')); ?>" alt="קול ברמה">
+      <img src="<?php echo esc_url(amichai_asset('assets/images/kol-barama.webp')); ?>" width="800" height="497" loading="lazy" alt="קול ברמה">
       <div>
         <p>הקלטת הראיון מ־18.10.2022, כפי שפורסמה באתר.</p>
         <audio controls preload="none" src="<?php echo esc_url(amichai_asset('assets/media/kol-barama-2022-10-18.mp3')); ?>">

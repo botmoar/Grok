@@ -129,6 +129,13 @@ It checks the following and must print `OK`:
 - `/wp-sitemap.xml` loads.
 - `readme.html`, `license.txt`, `debug.log`, the seed data and the public user list are not readable.
 
+Then check mobile Safari rendering (Playwright WebKit, iPhone 13 at 390px) for every sitemap URL. It must report `0 with problems`:
+
+```bash
+npm i --no-save playwright && npx playwright install --with-deps webkit
+node tools/webkit_check.mjs https://amichai-marx.co.il
+```
+
 Then by hand:
 
 - [ ] Home, `/דיור-ומשכנתאות/`, one mortgage topic, one story, `/צור-קשר/` and `/הצהרת-נגישות/` load on a phone, and the mega menu works.

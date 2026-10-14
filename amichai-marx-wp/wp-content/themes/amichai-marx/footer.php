@@ -24,6 +24,7 @@
         <li>תל מנשה 11, חיננית</li>
         <li>ח.פ. 032965006</li>
         <li><a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>">מדיניות פרטיות</a></li>
+        <li><a href="<?php echo esc_url(home_url('/הצהרת-נגישות/')); ?>">הצהרת נגישות</a></li>
       </ul>
     </div>
   </div>

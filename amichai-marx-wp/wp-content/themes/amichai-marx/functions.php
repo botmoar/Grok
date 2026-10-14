@@ -175,8 +175,10 @@ function amichai_handle_lead(): void {
         wp_safe_redirect(add_query_arg('lead', 'err', $back));
         exit;
     }
-    if (!empty($_POST['company_website'])) {
-        wp_safe_redirect(add_query_arg('lead', 'ok', $back));
+    $started = isset($_POST['amichai_t']) ? (int) $_POST['amichai_t'] : 0;
+    $too_fast = $started <= 0 || (time() - $started) < 3;
+    if (!empty($_POST['company_website']) || $too_fast) {
+        wp_safe_redirect(add_query_arg('lead', 'ok', home_url('/צור-קשר/')) . '#am-lead-status');
         exit;
     }
 
@@ -187,7 +189,7 @@ function amichai_handle_lead(): void {
     $consent = !empty($_POST['privacy_ok']);
 
     if ($name === '' || $phone === '' || !$consent) {
-        wp_safe_redirect(add_query_arg('lead', 'err', $back));
+        wp_safe_redirect(add_query_arg('lead', 'err', $back) . '#am-lead-status');
         exit;
     }
 
@@ -202,10 +204,13 @@ function amichai_handle_lead(): void {
         update_post_meta($id, 'phone', $phone);
         update_post_meta($id, 'email', $email);
         $body = "שם: {$name}\nטלפון: {$phone}\nדוא״ל: {$email}\n\n{$message}";
-        wp_mail('marx@amichai-marx.co.il', 'פנייה חדשה מהאתר: ' . $name, $body);
+        $headers = $email !== '' && is_email($email) ? ['Reply-To: ' . $name . ' <' . $email . '>'] : [];
+        $to = (string) apply_filters('amichai_lead_recipient', 'marx@amichai-marx.co.il');
+        $sent = wp_mail($to, 'פנייה חדשה מהאתר: ' . $name, $body, $headers);
+        update_post_meta($id, 'mail_sent', $sent ? '1' : '0');
     }
 
-    wp_safe_redirect(add_query_arg('lead', 'ok', home_url('/צור-קשר/')));
+    wp_safe_redirect(add_query_arg('lead', 'ok', home_url('/צור-קשר/')) . '#am-lead-status');
     exit;
 }
 

@@ -9,16 +9,19 @@ $status = isset($_GET['lead']) ? sanitize_key(wp_unslash($_GET['lead'])) : '';
 <main id="main" class="am-page">
   <?php amichai_page_hero('צור קשר', 'שיחת היכרות מתחילה בטלפון, בוואטסאפ או בטופס. בלי התחייבות.', 'ייעוץ לכלכלת המשפחה ומשכנתאות'); ?>
   <div class="am-wrap">
+    <div id="am-lead-status" role="status" aria-live="polite" tabindex="-1">
     <?php if ($status === 'ok') : ?>
       <p class="am-alert am-alert-ok">הפנייה התקבלה. עמיחי יחזור אליך. אם זה דחוף, אפשר גם להתקשר עכשיו.</p>
     <?php elseif ($status === 'err') : ?>
       <p class="am-alert am-alert-err">חסרים שם, טלפון, או אישור מדיניות הפרטיות. נסו שוב.</p>
     <?php endif; ?>
+    </div>
     <div class="am-contact-grid">
       <form class="am-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
         <input type="hidden" name="action" value="amichai_lead">
         <?php wp_nonce_field('amichai_lead', 'amichai_lead_nonce'); ?>
-        <label class="am-hp">אתר החברה
+        <input type="hidden" name="amichai_t" value="<?php echo esc_attr((string) time()); ?>">
+        <label class="am-hp" aria-hidden="true">אתר החברה
           <input type="text" name="company_website" tabindex="-1" autocomplete="off">
         </label>
         <label>שם מלא

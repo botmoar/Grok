@@ -10,6 +10,17 @@ if (!defined('ABSPATH')) {
 
 global $wpdb;
 
+// The JSON is the source of truth for every page and post body, so the seed keeps no revisions
+// and clears old ones: they can hold text that was deliberately removed from the site.
+add_filter('wp_revisions_to_keep', '__return_zero');
+$revision_ids = $wpdb->get_col(
+    "SELECT r.ID FROM {$wpdb->posts} r JOIN {$wpdb->posts} p ON p.ID = r.post_parent
+     WHERE r.post_type = 'revision' AND p.post_type IN ('page', 'post')"
+);
+foreach ($revision_ids as $revision_id) {
+    wp_delete_post_revision((int) $revision_id);
+}
+
 $data_dir = WP_CONTENT_DIR . '/amichai-data';
 $posts = json_decode((string) file_get_contents($data_dir . '/posts.json'), true);
 $pages = json_decode((string) file_get_contents($data_dir . '/pages.json'), true);

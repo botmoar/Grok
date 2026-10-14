@@ -54,7 +54,7 @@ Live export: 8 pages, 71 posts, 5 categories.
 
 The copy stays general: there are no rates, no approval promises, and no numbers beyond the ones on the live site (the 260,000 ₪ in the Salomon story).
 
-Facts used on the site (phone, emails, address, company number, credentials, quotes) come from the live pages. The published phone is `054-2372417`. The privacy page states it as the contact number. No new testimonials or performance stats were added. Client-confirmed facts (October 2026): 15 years accompanying families, over 20 years in finance, an intro meeting of about an hour and a half, and mortgage advisor with membership in התאחדות יועצי המשכנתאות בישראל. The certificate scans in `assets/images/certs/` have the ID number blurred in the image files themselves.
+Facts used on the site (phone, emails, address, credentials, quotes) come from the live pages. The live site's business number was his personal ID number, so at the client's request it is not shown anywhere: not in the footer, the contact page, the privacy policy or the schema. The published phone is `054-2372417`. The privacy page states it as the contact number. No new testimonials or performance stats were added. Client-confirmed facts (October 2026): 15 years accompanying families, over 20 years in finance, an intro meeting of about an hour and a half, and mortgage advisor with membership in התאחדות יועצי המשכנתאות בישראל. The certificate scans in `assets/images/certs/` have the ID number blurred in the image files themselves.
 
 ## Go live
 

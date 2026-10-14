@@ -26,7 +26,7 @@
   </div>
   <div class="am-footer-base">
     <div class="am-wrap">
-      <p>© <?php echo esc_html(gmdate('Y')); ?> עמיחי מרקס · ח.פ. 032965006</p>
+      <p>© <?php echo esc_html(gmdate('Y')); ?> עמיחי מרקס</p>
       <ul>
         <li><a href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">צור קשר</a></li>
         <li><a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>">מדיניות פרטיות</a></li>

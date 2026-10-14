@@ -48,7 +48,6 @@ $status = isset($_GET['lead']) ? sanitize_key(wp_unslash($_GET['lead'])) : '';
         <p><a href="https://wa.me/972542372417" target="_blank" rel="noopener">וואטסאפ</a></p>
         <p><a href="mailto:marx@amichai-marx.co.il">marx@amichai-marx.co.il</a></p>
         <p>תל מנשה 11, חיננית</p>
-        <p>ח.פ. 032965006</p>
         <p>פניות בנושא פרטיות: <a href="mailto:marx06@gmail.com">marx06@gmail.com</a></p>
         <p><a class="am-btn am-btn-ghost" href="tel:054-2372417">חייגו עכשיו</a></p>
       </aside>

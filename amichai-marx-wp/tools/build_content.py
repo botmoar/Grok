@@ -533,6 +533,34 @@ def main() -> None:
             return f'{match.group(1)}"{redirect_map[key]}"'
         return match.group(0)
 
+    # The old related-posts widget left a heading, bare titles and empty links in a few exports.
+    stale_related = re.compile(
+        r"<h4>עוד בנושא\s*</h4>(?:\s|הדרך לשגשוג פיננסי משפחתי מתחילה בתכנון נכון"
+        r"|המפתח להתנהלות כלכלית חכמה ומשפחתית יציבה|הדרך החכמה ליציבות כלכלית משפחתית"
+        r'|<a href="[^"]*"></a>)*'
+    )
+
+    def fix_heading_levels(html):
+        # Body headings sit directly under the template H1; never skip a level.
+        stack = [(1, 1)]
+
+        def remap(match):
+            source = int(match.group(1))
+            while stack and stack[-1][0] >= source:
+                stack.pop()
+            level = stack[-1][1] + 1 if stack else 2
+            stack.append((source, level))
+            return f"<h{level}{match.group(2)}</h{level}>"
+
+        return re.sub(r"<h([1-6])\b(.*?)</h\1>", remap, html, flags=re.S)
+
+    for row in kept + pages_out:
+        body = stale_related.sub("", row.get("content", ""))
+        body = body.replace("יועץ פיננסי למשפחות שרוצות להצליחמשפחות",
+                            "<h3>יועץ פיננסי למשפחות שרוצות להצליח</h3>משפחות")
+        body = re.sub(r"<a\b[^>]*>\s*</a>", "", body)
+        body = re.sub(r"<h([1-6])[^>]*>\s*</h\1>", "", body)
+        row["content"] = fix_heading_levels(body)
     for row in kept + pages_out:
         row["content"] = re.sub(r'(href=)"([^"]+)"', point_to_final, row.get("content", ""))
     link_names = {

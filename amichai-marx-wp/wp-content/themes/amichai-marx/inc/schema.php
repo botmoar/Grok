@@ -16,7 +16,7 @@ add_action('wp_head', function (): void {
                 'name' => 'עמיחי מרקס – ייעוץ לכלכלת המשפחה',
                 'description' => 'ייעוץ וליווי צמוד לכלכלת המשפחה ומשכנתאות: תקציב, יציאה מהמינוס, משכנתא, חסכונות והשקעות, פנסיה וביטוחים.',
                 'url' => $home,
-                'image' => get_template_directory_uri() . '/assets/images/amichai-marx.jpg',
+                'image' => amichai_portrait_url(),
                 'logo' => get_template_directory_uri() . '/assets/images/logo.png',
                 'telephone' => '+972-54-2372417',
                 'email' => 'marx@amichai-marx.co.il',
@@ -39,7 +39,7 @@ add_action('wp_head', function (): void {
                 '@id' => $home . '#person',
                 'name' => 'עמיחי מרקס',
                 'url' => home_url('/אודות/'),
-                'image' => get_template_directory_uri() . '/assets/images/amichai-marx.jpg',
+                'image' => amichai_portrait_url(),
                 'jobTitle' => 'יועץ לכלכלת המשפחה ויועץ משכנתאות',
                 'worksFor' => ['@id' => $home . '#business'],
                 'memberOf' => [
@@ -95,7 +95,7 @@ add_action('wp_head', function (): void {
             'inLanguage' => 'he-IL',
             'mainEntityOfPage' => get_permalink(),
             'author' => ['@id' => $home . '#person'],
-            'image' => get_the_post_thumbnail_url(null, 'large') ?: get_template_directory_uri() . '/assets/images/amichai-marx.jpg',
+            'image' => get_the_post_thumbnail_url(null, 'large') ?: amichai_portrait_url(),
             'publisher' => ['@id' => $home . '#business'],
         ];
     }

@@ -15,13 +15,7 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
           <a class="am-btn am-btn-ghost" href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/')); ?>">ייעוץ משכנתאות</a>
         </div>
       </div>
-      <aside class="am-hero-card" aria-label="עמיחי מרקס">
-        <?php amichai_portrait('am-hero-photo'); ?>
-        <div class="am-hero-card-body">
-          <p class="am-hero-name">עמיחי מרקס</p>
-          <p class="am-hero-role">יועץ לכלכלת המשפחה ויועץ משכנתאות</p>
-        </div>
-      </aside>
+      <?php amichai_portrait_panel('יועץ לכלכלת המשפחה ויועץ משכנתאות'); ?>
       <ul class="am-trust" aria-label="בקצרה">
         <?php
         $trust = [

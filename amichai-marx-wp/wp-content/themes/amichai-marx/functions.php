@@ -527,10 +527,67 @@ function amichai_credentials_list(): void {
     <?php
 }
 
+/**
+ * The portrait used by every template, the social share image and the schema.
+ * To swap the photo: put the new JPG in assets/images/, optionally a WebP with the same
+ * basename next to it, and update this entry. Frames crop with object-fit, so any portrait
+ * aspect works; `focus` is the object-position that keeps the face in frame.
+ */
+const AMICHAI_PORTRAIT = [
+    'file' => 'assets/images/amichai-marx.jpg',
+    'width' => 236,
+    'height' => 314,
+    'focus' => '50% 20%',
+];
+
+function amichai_portrait_url(): string {
+    return amichai_asset(AMICHAI_PORTRAIT['file']);
+}
+
+/**
+ * @param array<string, string> $attrs Extra <img> attributes (class, loading, width/height overrides).
+ */
+function amichai_portrait_img(string $alt = 'עמיחי מרקס, יועץ לכלכלת המשפחה ויועץ משכנתאות', array $attrs = []): string {
+    $webp = preg_replace('/\.(jpe?g|png)$/i', '.webp', AMICHAI_PORTRAIT['file']);
+    $attrs = array_merge([
+        'src' => amichai_portrait_url(),
+        'width' => (string) AMICHAI_PORTRAIT['width'],
+        'height' => (string) AMICHAI_PORTRAIT['height'],
+        'alt' => $alt,
+        'style' => '--focus:' . AMICHAI_PORTRAIT['focus'],
+    ], $attrs);
+    $html = '<picture class="am-pic">';
+    if ($webp !== AMICHAI_PORTRAIT['file'] && file_exists(get_template_directory() . '/' . $webp)) {
+        $html .= '<source type="image/webp" srcset="' . esc_url(amichai_asset($webp)) . '">';
+    }
+    $html .= '<img';
+    foreach ($attrs as $name => $value) {
+        $html .= ' ' . $name . '="' . ($name === 'src' ? esc_url($value) : esc_attr($value)) . '"';
+    }
+    return $html . '></picture>';
+}
+
 function amichai_portrait(string $class = 'am-portrait-card'): void {
     ?>
     <figure class="<?php echo esc_attr($class); ?>">
-      <img src="<?php echo esc_url(amichai_asset('assets/images/amichai-marx.jpg')); ?>" width="236" height="314" alt="עמיחי מרקס, יועץ לכלכלת המשפחה ויועץ משכנתאות">
+      <?php echo amichai_portrait_img(); ?>
+    </figure>
+    <?php
+}
+
+/**
+ * Large brand-panel portrait for the home and about heroes. The panel carries the size, so a
+ * small source photo stays near its native resolution instead of being blown up.
+ */
+function amichai_portrait_panel(string $role, string $extra = ''): void {
+    ?>
+    <figure class="am-portrait-panel">
+      <span class="am-portrait-arch"><?php echo amichai_portrait_img('עמיחי מרקס, ' . $role, ['fetchpriority' => 'high']); ?></span>
+      <figcaption class="am-portrait-tag">
+        <strong>עמיחי מרקס</strong>
+        <span><?php echo esc_html($role); ?></span>
+        <?php echo $extra; ?>
+      </figcaption>
     </figure>
     <?php
 }

@@ -379,7 +379,54 @@ $locations['primary'] = $menu_id;
 set_theme_mod('nav_menu_locations', $locations);
 
 flush_rewrite_rules(false);
-update_option('amichai_seed_version', '1');
+update_option('amichai_seed_version', '2');
+
+// The personal ID was withdrawn. Theme templates, schema, contact and the privacy JSON
+// no longer contain it. This pass overwrites any leftover copy still stored in the database
+// (old privacy drafts, widgets, options) so a re-seed on staging clears the footer/page text.
+function amichai_seed_strip_withdrawn_id(string $text): string {
+    $text = str_replace(
+        'העסק רשום בח.פ. 032965006, בכתובת תל מנשה 11, חיננית.',
+        'כתובת העסק: תל מנשה 11, חיננית.',
+        $text
+    );
+    $text = preg_replace('/\s*[·•|\-]\s*ח[\.״"]?\s*פ[\.״"]?\s*0?32965006/u', '', $text) ?? $text;
+    $text = preg_replace('/ח[\.״"]?\s*פ[\.״"]?\s*0?32965006/u', '', $text) ?? $text;
+    $text = preg_replace('/0?32965006/u', '', $text) ?? $text;
+    $text = preg_replace('/\s{2,}/u', ' ', $text) ?? $text;
+    return $text;
+}
+
+$scrubbed = 0;
+$id_rows = $wpdb->get_results(
+    "SELECT ID, post_content, post_excerpt, post_title FROM {$wpdb->posts}
+     WHERE post_content LIKE '%032965006%' OR post_content LIKE '%ח.פ%'
+        OR post_excerpt LIKE '%032965006%' OR post_excerpt LIKE '%ח.פ%'
+        OR post_title LIKE '%032965006%' OR post_title LIKE '%ח.פ%'"
+);
+foreach ($id_rows as $row) {
+    $next = [
+        'ID' => (int) $row->ID,
+        'post_content' => amichai_seed_strip_withdrawn_id((string) $row->post_content),
+        'post_excerpt' => amichai_seed_strip_withdrawn_id((string) $row->post_excerpt),
+        'post_title' => amichai_seed_strip_withdrawn_id((string) $row->post_title),
+    ];
+    if ($next['post_content'] !== $row->post_content || $next['post_excerpt'] !== $row->post_excerpt || $next['post_title'] !== $row->post_title) {
+        wp_update_post(wp_slash($next), true);
+        $scrubbed++;
+    }
+}
+foreach ($wpdb->get_results("SELECT option_id, option_name, option_value FROM {$wpdb->options} WHERE option_value LIKE '%032965006%' OR option_value LIKE '%ח.פ. 032%'") as $opt) {
+    if (in_array($opt->option_name, ['cron', 'rewrite_rules'], true)) {
+        continue;
+    }
+    $clean = amichai_seed_strip_withdrawn_id((string) $opt->option_value);
+    if ($clean !== $opt->option_value) {
+        update_option($opt->option_name, $clean);
+        $scrubbed++;
+    }
+}
+echo "withdrawn ID scrubbed in {$scrubbed} stored rows\n";
 
 $about = get_posts([
     'name' => sanitize_title('אודות'),

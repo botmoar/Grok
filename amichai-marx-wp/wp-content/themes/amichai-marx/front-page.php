@@ -114,7 +114,6 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
         </div>
       </div>
       <div class="am-mortgage-side">
-        <?php amichai_cert_figure('mortgage', 'am-cert-wide am-cert-on-dark'); ?>
         <blockquote class="am-pull">
           <p>ואז הגיעה הפגישה השנייה וגילינו לתדהמתנו שאנו יכולים לחסוך 260,000 ₪ במשכנתא, ובנוסף להגשים את כל היעדים שהגדרנו.</p>
           <footer><a href="<?php echo esc_url(home_url('/הסיפור-של-משפחת-סלומון-מהשרון/')); ?>">משפחת סלומון מהשרון</a></footer>

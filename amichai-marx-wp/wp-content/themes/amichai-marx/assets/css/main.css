@@ -1829,10 +1829,10 @@ body.am-lightbox-open { overflow: hidden; }
     width: calc(100% - 72px);
     justify-self: start;
   }
-  .am-about-hero { padding-bottom: 72px; }
+  .am-about-hero { padding-bottom: 120px; }
   .am-about-hero-grid > div,
-  .am-about-facts { padding-inline-start: 10px; padding-inline-end: 8px; }
-  .am-about-body { padding-inline-end: 72px; }
+  .am-about-facts { padding-inline-start: 16px; padding-inline-end: 12px; }
+  .am-about-body { padding-inline-end: 72px; padding-top: 40px; }
   body { padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
   #main { padding-bottom: 24px; }
   .am-page { padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px)); }

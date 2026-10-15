@@ -528,36 +528,52 @@ function amichai_credentials_list(): void {
 }
 
 /**
- * The portrait used by every template, the social share image and the schema.
- * To swap the photo: put the new JPG in assets/images/, optionally a WebP with the same
- * basename next to it, and update this entry. Frames crop with object-fit, so any portrait
- * aspect works; `focus` is the object-position that keeps the face in frame.
+ * The portraits used by every template, the social share image and the schema.
+ * To swap: drop the new files in assets/images/ and update these two entries.
+ * `hero` is the large studio shot; `avatar` is the 512 square for circular spots.
+ * Frames crop with object-fit; `focus` is the object-position that keeps the face in frame.
  */
 const AMICHAI_PORTRAIT = [
     'file' => 'assets/images/amichai-marx.jpg',
-    'width' => 236,
-    'height' => 314,
-    'focus' => '50% 20%',
+    'width' => 1312,
+    'height' => 1199,
+    'focus' => '50% 28%',
 ];
 
-function amichai_portrait_url(): string {
-    return amichai_asset(AMICHAI_PORTRAIT['file']);
+const AMICHAI_AVATAR = [
+    'file' => 'assets/images/amichai-marx-avatar-512.jpg',
+    'width' => 512,
+    'height' => 512,
+    'focus' => '50% 28%',
+];
+
+/**
+ * @return array{file: string, width: int, height: int, focus: string}
+ */
+function amichai_portrait_spec(string $kind = 'hero'): array {
+    return $kind === 'avatar' ? AMICHAI_AVATAR : AMICHAI_PORTRAIT;
+}
+
+function amichai_portrait_url(string $kind = 'hero'): string {
+    return amichai_asset(amichai_portrait_spec($kind)['file']);
 }
 
 /**
- * @param array<string, string> $attrs Extra <img> attributes (class, loading, width/height overrides).
+ * @param array<string, string> $attrs Extra <img> attributes (class, loading, sizes, width/height overrides).
  */
-function amichai_portrait_img(string $alt = 'עמיחי מרקס, יועץ לכלכלת המשפחה ויועץ משכנתאות', array $attrs = []): string {
-    $webp = preg_replace('/\.(jpe?g|png)$/i', '.webp', AMICHAI_PORTRAIT['file']);
+function amichai_portrait_img(string $alt = 'עמיחי מרקס, יועץ לכלכלת המשפחה ויועץ משכנתאות', array $attrs = [], string $kind = 'hero'): string {
+    $spec = amichai_portrait_spec($kind);
+    $webp = preg_replace('/\.(jpe?g|png)$/i', '.webp', $spec['file']);
     $attrs = array_merge([
-        'src' => amichai_portrait_url(),
-        'width' => (string) AMICHAI_PORTRAIT['width'],
-        'height' => (string) AMICHAI_PORTRAIT['height'],
+        'src' => amichai_asset($spec['file']),
+        'width' => (string) $spec['width'],
+        'height' => (string) $spec['height'],
         'alt' => $alt,
-        'style' => '--focus:' . AMICHAI_PORTRAIT['focus'],
+        'style' => '--focus:' . $spec['focus'],
+        'decoding' => 'async',
     ], $attrs);
     $html = '<picture class="am-pic">';
-    if ($webp !== AMICHAI_PORTRAIT['file'] && file_exists(get_template_directory() . '/' . $webp)) {
+    if ($webp !== $spec['file'] && file_exists(get_template_directory() . '/' . $webp)) {
         $html .= '<source type="image/webp" srcset="' . esc_url(amichai_asset($webp)) . '">';
     }
     $html .= '<img';
@@ -570,19 +586,18 @@ function amichai_portrait_img(string $alt = 'עמיחי מרקס, יועץ לכ�
 function amichai_portrait(string $class = 'am-portrait-card'): void {
     ?>
     <figure class="<?php echo esc_attr($class); ?>">
-      <?php echo amichai_portrait_img(); ?>
+      <?php echo amichai_portrait_img('', [], 'avatar'); ?>
     </figure>
     <?php
 }
 
 /**
- * Large brand-panel portrait for the home and about heroes. The panel carries the size, so a
- * small source photo stays near its native resolution instead of being blown up.
+ * Large brand-panel portrait for the home and about heroes.
  */
 function amichai_portrait_panel(string $role, string $extra = ''): void {
     ?>
     <figure class="am-portrait-panel">
-      <span class="am-portrait-arch"><?php echo amichai_portrait_img('עמיחי מרקס, ' . $role, ['fetchpriority' => 'high']); ?></span>
+      <span class="am-portrait-arch"><?php echo amichai_portrait_img('עמיחי מרקס, ' . $role, ['fetchpriority' => 'high', 'sizes' => '(max-width: 980px) 152px, 320px']); ?></span>
       <figcaption class="am-portrait-tag">
         <strong>עמיחי מרקס</strong>
         <span><?php echo esc_html($role); ?></span>

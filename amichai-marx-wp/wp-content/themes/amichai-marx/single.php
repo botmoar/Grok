@@ -38,7 +38,7 @@ if (amichai_is_service_hub(get_queried_object_id())) {
           <h1 class="am-page-title"><?php the_title(); ?></h1>
           <?php if (!$is_stories) : ?>
             <p class="am-post-meta">
-              <?php echo amichai_portrait_img('', ['width' => '36', 'height' => '36']); ?>
+              <?php echo amichai_portrait_img('', [], 'avatar'); ?>
               <span>עמיחי מרקס</span>
               <span aria-hidden="true">·</span>
               <time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date('j בF Y')); ?></time>
@@ -66,7 +66,7 @@ if (amichai_is_service_hub(get_queried_object_id())) {
               amichai_story_index($post_id);
           } else { ?>
             <aside class="am-author" aria-label="על הכותב">
-              <?php echo amichai_portrait_img('עמיחי מרקס', ['width' => '96', 'height' => '96', 'loading' => 'lazy']); ?>
+              <?php echo amichai_portrait_img('עמיחי מרקס', ['loading' => 'lazy'], 'avatar'); ?>
               <div>
                 <p class="am-author-name">עמיחי מרקס</p>
                 <p class="am-author-role">יועץ לכלכלת המשפחה ויועץ משכנתאות</p>

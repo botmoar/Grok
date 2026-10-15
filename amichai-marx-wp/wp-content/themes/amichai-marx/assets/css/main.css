@@ -2452,3 +2452,83 @@ body.am-lightbox-open { overflow: hidden; }
   outline-color: var(--lime);
 }
 .am-menu > li.is-dismissed > .sub-menu { display: none !important; }
+
+/* Surfaces: every band and page header draws from these washes and pattern patches, so tones
+   alternate on purpose instead of falling back to flat grey. Patches fade out inside the SVG. */
+:root {
+  --wash-sky:
+    radial-gradient(900px 420px at 100% 0%, rgba(91, 188, 228, 0.2), transparent 62%),
+    radial-gradient(700px 380px at 0% 100%, rgba(30, 190, 102, 0.09), transparent 65%),
+    linear-gradient(180deg, #eff7fc 0%, #f7fbfd 100%);
+  --wash-mint:
+    radial-gradient(800px 380px at 0% 0%, rgba(30, 190, 102, 0.14), transparent 62%),
+    radial-gradient(700px 360px at 100% 100%, rgba(91, 188, 228, 0.12), transparent 65%),
+    linear-gradient(180deg, #eff9f3 0%, #f8fcf9 100%);
+  --wash-paper: radial-gradient(760px 320px at 100% 0%, rgba(91, 188, 228, 0.09), transparent 65%), #fff;
+  --wash-navy:
+    radial-gradient(900px 420px at 0% 0%, rgba(20, 144, 196, 0.34), transparent 60%),
+    radial-gradient(640px 320px at 100% 100%, rgba(30, 190, 102, 0.16), transparent 65%),
+    linear-gradient(160deg, #0f1d41 0%, #132a52 100%);
+  --rule: linear-gradient(90deg, transparent, rgba(15, 29, 65, 0.1) 30%, rgba(15, 29, 65, 0.1) 70%, transparent) top / 100% 1px no-repeat;
+  --dots: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='340'%3E%3Cdefs%3E%3Cpattern id='p' width='18' height='18' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='9' cy='9' r='1.3' fill='%231077a2'/%3E%3C/pattern%3E%3CradialGradient id='g' cx='1' cy='0' r='1'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.5'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cmask id='m'%3E%3Crect width='480' height='340' fill='url(%23g)'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='480' height='340' fill='url(%23p)' mask='url(%23m)'/%3E%3C/svg%3E") right top / 480px 340px no-repeat;
+  --roofs-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='320'%3E%3Cdefs%3E%3Cpattern id='p' width='48' height='26' patternUnits='userSpaceOnUse'%3E%3Cpath d='M2 21 24 8l22 13' fill='none' stroke='%230f1d41' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/pattern%3E%3CradialGradient id='g' cx='.5' cy='.5' r='.5'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.11'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cmask id='m'%3E%3Crect width='640' height='320' fill='url(%23g)'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='640' height='320' fill='url(%23p)' mask='url(%23m)'/%3E%3C/svg%3E");
+  --roofs: var(--roofs-img) left -120px bottom -60px / 640px 320px no-repeat;
+  --dots-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='360'%3E%3Cdefs%3E%3Cpattern id='p' width='18' height='18' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='9' cy='9' r='1.2' fill='%23fff'/%3E%3C/pattern%3E%3CradialGradient id='g' cx='1' cy='0' r='1'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.3'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cmask id='m'%3E%3Crect width='520' height='360' fill='url(%23g)'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='520' height='360' fill='url(%23p)' mask='url(%23m)'/%3E%3C/svg%3E") right top / 520px 360px no-repeat;
+  --leaf: 120px;
+}
+
+.am-hero { background: var(--roofs-img) right -80px bottom 40px / 640px 320px no-repeat, var(--wash-sky); }
+.am-services { background: var(--dots), var(--wash-paper); }
+.am-mortgage {
+  background: var(--dots-light), var(--wash-navy);
+  border-start-end-radius: var(--leaf);
+  border-end-start-radius: var(--leaf);
+}
+.am-mtopics { background: var(--roofs), var(--wash-paper); }
+.am-growth { background: var(--roofs-img) right -140px top -40px / 640px 320px no-repeat, var(--wash-mint); }
+.am-journey { background: var(--dots), var(--wash-sky); }
+.am-about-sec { background: var(--rule), var(--roofs), var(--wash-paper); }
+.am-letters { background: var(--dots), var(--wash-mint); }
+.am-media-sec { background: var(--rule), var(--wash-paper); }
+.am-reads { background: var(--roofs), var(--wash-sky); }
+.am-faq-sec { background: var(--dots), var(--wash-paper); }
+.am-band-last { background: var(--dots-light), var(--wash-navy); border-start-end-radius: var(--leaf); }
+.am-band-last .am-cta-band { background: transparent; }
+
+.am-page-hero, .am-hub-hero, .am-about-hero {
+  background: var(--roofs-img) right -160px bottom -80px / 640px 320px no-repeat, var(--wash-sky);
+  border-end-start-radius: var(--leaf);
+}
+.am-page-hero { border-bottom: 0; }
+.am-hub-green .am-hub-hero { background: var(--roofs-img) right -160px bottom -80px / 640px 320px no-repeat, var(--wash-mint); }
+.am-hub-navy .am-hub-hero, .am-mt-hero {
+  background: var(--dots-light), var(--wash-navy);
+  border-end-start-radius: var(--leaf);
+}
+.am-hub-stories, .am-post-related { background: var(--dots), var(--wash-sky); border-top: 0; }
+.am-hub-cert { background: var(--rule), var(--roofs), var(--wash-paper); border-top: 0; }
+
+.am-faq { max-width: var(--max); display: grid; grid-template-columns: 320px minmax(0, 1fr); column-gap: 80px; align-items: start; }
+.am-faq-head { grid-row: 1 / span 6; position: sticky; top: calc(var(--header) + 24px); padding-top: 14px; }
+.am-faq-head h2 { font-size: clamp(2rem, 3.4vw, 2.6rem); }
+.am-faq-head::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 4px;
+  margin-top: 18px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--lime), var(--green));
+}
+.am-faq details { grid-column: 2; }
+
+@media (max-width: 980px) {
+  :root { --leaf: 56px; }
+  .am-faq { grid-template-columns: 1fr; }
+  .am-faq-head { grid-row: auto; position: static; padding-top: 0; }
+  .am-faq-head::after { display: none; }
+  .am-faq details { grid-column: 1; }
+}
+@media (max-width: 640px) {
+  :root { --leaf: 40px; }
+}

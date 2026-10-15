@@ -341,8 +341,10 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
 
   <section class="am-faq-sec">
     <div class="am-wrap am-faq">
-      <p class="am-kicker">שאלות ותשובות</p>
-      <h2>שאלות נפוצות</h2>
+      <header class="am-faq-head">
+        <p class="am-kicker">שאלות ותשובות</p>
+        <h2>שאלות נפוצות</h2>
+      </header>
       <details>
         <summary>כמה פגישות יש, ומה קורה אחריהן?</summary>
         <p>שלוש פגישות: היכרות של כשעה וחצי, הצגת התוכנית, ויישום. אחריהן מתחיל ליווי צמוד לאורך חודשים, עם שיחה שבועית ומענה לכל שאלה בדרך, עד שיש ביטחון להמשיך לבד.</p>

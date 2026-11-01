@@ -268,7 +268,7 @@ function amichai_primary_menu_tree(): array {
             ['label' => 'מן התקשורת', 'slug' => 'מן-התקשורת', 'type' => 'page'],
             ['label' => 'הרצאות וסדנאות', 'slug' => 'הרצאות-וסדנאות', 'type' => 'post'],
         ]],
-        ['label' => 'ייעוץ כלכלי', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post', 'children' => [
+        ['label' => 'כלכלת משפחה', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post', 'children' => [
             ['label' => 'למי מיועד הייעוץ?', 'slug' => 'למי-מיועד-הייעוץ', 'type' => 'post'],
             ['label' => 'ליווי צמוד לאורך הדרך', 'slug' => 'ליווי', 'type' => 'post'],
             ['label' => 'כלכלת משפחה', 'slug' => 'כלכלת-משפחה', 'type' => 'post'],
@@ -478,6 +478,10 @@ function amichai_pension_license(): array {
     ];
 }
 
+function amichai_license_number_html(): string {
+    return '<span class="am-ltr" dir="ltr">' . esc_html(amichai_pension_license()['number']) . '</span>';
+}
+
 function amichai_pension_registry_link(string $class = ''): string {
     $lic = amichai_pension_license();
     $cls = $class !== '' ? ' class="' . esc_attr($class) . '"' : '';
@@ -530,12 +534,19 @@ function amichai_cert_figure(string $key, string $class = ''): void {
     ?>
     <figure class="am-cert <?php echo esc_attr($class); ?>">
       <a class="am-cert-frame" href="<?php echo esc_url($full); ?>" data-lightbox data-w="<?php echo (int) $c['w']; ?>" data-h="<?php echo (int) $c['h']; ?>" data-caption="<?php echo esc_attr($c['title'] . ' · ' . $c['meta']); ?>" aria-label="<?php echo esc_attr('הגדלת התעודה: ' . $c['title']); ?>">
-        <img src="<?php echo esc_url($thumb); ?>" width="<?php echo (int) $c['tw']; ?>" height="<?php echo (int) $c['th']; ?>" loading="lazy" decoding="async" alt="<?php echo esc_attr($c['title']); ?>">
+        <img src="<?php echo esc_url($full); ?>" width="<?php echo (int) $c['w']; ?>" height="<?php echo (int) $c['h']; ?>" loading="lazy" decoding="async" alt="<?php echo esc_attr($c['title']); ?>">
         <span class="am-cert-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4.5 4.5M11 8v6M8 11h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
       </a>
       <figcaption>
         <strong><?php echo esc_html($c['title']); ?></strong>
-        <span><?php echo esc_html($c['meta']); ?></span>
+        <span><?php
+        if ($key === 'pension') {
+            $lic = amichai_pension_license();
+            echo esc_html($lic['authority']) . ' · מספר ' . amichai_license_number_html() . ' · בתוקף עד ' . esc_html($lic['valid_until']);
+        } else {
+            echo esc_html($c['meta']);
+        }
+        ?></span>
         <?php if ($key === 'pension') : ?>
           <span class="am-cert-check"><?php echo amichai_pension_registry_link(); ?></span>
         <?php endif; ?>
@@ -550,7 +561,7 @@ function amichai_credentials_list(): void {
     <ul class="am-creds">
       <li class="am-creds-key">
         <strong>רישיון יועץ פנסיוני</strong>
-        <span><?php echo esc_html($lic['authority']); ?>, מספר <span dir="ltr"><?php echo esc_html($lic['number']); ?></span>, בתוקף עד <?php echo esc_html($lic['valid_until']); ?>. ייעוץ אובייקטיבי בפנסיה ובביטוח, לא מכירה. <?php echo amichai_pension_registry_link(); ?></span>
+        <span><?php echo esc_html($lic['authority']); ?>, מספר <?php echo amichai_license_number_html(); ?>, בתוקף עד <?php echo esc_html($lic['valid_until']); ?>. ייעוץ אובייקטיבי בפנסיה ובביטוח, לא מכירה. <?php echo amichai_pension_registry_link(); ?></span>
       </li>
       <li><strong>יועץ ומאמן לכלכלת המשפחה</strong><span>הסמכה בהיקף 275 שעות, 2013</span></li>
       <li><strong>חבר באיגוד היועצים והמאמנים</strong><span>לכלכלת המשפחה בישראל (ע״ר)</span></li>
@@ -666,6 +677,17 @@ function amichai_portrait_panel(string $role, string $extra = ''): void {
  */
 function amichai_hub_profile(string $slug): array {
     $profiles = [
+        'יועץ-לכלכלת-המשפחה' => [
+            'kicker' => 'ייעוץ לכלכלת המשפחה',
+            'tone' => 'paper',
+            'highlights' => [
+                ['עו״ש', 'תמונת מצב אמיתית של החשבון וההתנהלות השוטפת.'],
+                ['נכסים והתחייבויות', 'מה יש, מה חייבים, ואיך זה משתלב בתקציב.'],
+                ['פנסיה וביטוח', 'בדיקה ושיפורים בהתאם, בייעוץ אובייקטיבי ברישיון.'],
+                ['חסכונות והשקעות', 'כל התחום, לפי היעדים של המשפחה.'],
+            ],
+            'related' => ['חיים-במינוס', 'חסכונות', 'דיור-ומשכנתאות'],
+        ],
         'דיור-ומשכנתאות' => [
             'kicker' => 'ייעוץ משכנתאות',
             'tone' => 'navy',
@@ -676,7 +698,7 @@ function amichai_hub_profile(string $slug): array {
                 ['מחזור משכנתא', 'בדיקת הריבית וההחזר הקיימים מול מה שאפשר לקבל היום.'],
                 ['ליווי צמוד לאורך הדרך', 'גם אחרי החתימה, כשהריבית או החיים משתנים.'],
             ],
-            'related' => ['חסכונות', 'יועץ-לכלכלת-המשפחה', 'ליווי'],
+            'related' => ['יועץ-לכלכלת-המשפחה', 'חסכונות', 'ליווי'],
         ],
         'חסכונות' => [
             'kicker' => 'חסכונות והשקעות',

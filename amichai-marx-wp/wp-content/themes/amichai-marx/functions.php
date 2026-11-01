@@ -268,7 +268,7 @@ function amichai_primary_menu_tree(): array {
             ['label' => 'מן התקשורת', 'slug' => 'מן-התקשורת', 'type' => 'page'],
             ['label' => 'הרצאות וסדנאות', 'slug' => 'הרצאות-וסדנאות', 'type' => 'post'],
         ]],
-        ['label' => 'ייעוץ כלכלי', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post', 'children' => [
+        ['label' => 'כלכלת משפחה', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post', 'children' => [
             ['label' => 'למי מיועד הייעוץ?', 'slug' => 'למי-מיועד-הייעוץ', 'type' => 'post'],
             ['label' => 'ליווי צמוד לאורך הדרך', 'slug' => 'ליווי', 'type' => 'post'],
             ['label' => 'כלכלת משפחה', 'slug' => 'כלכלת-משפחה', 'type' => 'post'],

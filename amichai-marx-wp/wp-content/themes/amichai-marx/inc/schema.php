@@ -14,7 +14,7 @@ add_action('wp_head', function (): void {
                 '@type' => ['LocalBusiness', 'ProfessionalService'],
                 '@id' => $home . '#business',
                 'name' => 'עמיחי מרקס – ייעוץ לכלכלת המשפחה',
-                'description' => 'ייעוץ וליווי צמוד לכלכלת המשפחה ומשכנתאות: תקציב, יציאה מהמינוס, משכנתא, חסכונות והשקעות, פנסיה וביטוחים.',
+                'description' => 'ייעוץ לכלכלת המשפחה: תקציב, יציאה מהמינוס ותוכנית צמיחה, בליווי צמוד. ייעוץ משכנתאות הוא שירות נפרד. פנסיה, ביטוחים, חסכונות והשקעות.',
                 'url' => $home,
                 'image' => amichai_portrait_url(),
                 'logo' => get_template_directory_uri() . '/assets/images/logo.png',

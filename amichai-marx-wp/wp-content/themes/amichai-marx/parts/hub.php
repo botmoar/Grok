@@ -21,9 +21,6 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
         <?php if ($excerpt !== '') : ?>
           <p class="am-hub-lead"><?php echo esc_html($excerpt); ?></p>
         <?php endif; ?>
-        <?php if ($slug === 'דיור-ומשכנתאות') : ?>
-          <p class="am-hub-note">שירות עצמאי. אין צורך בתוכנית לכלכלת המשפחה.</p>
-        <?php endif; ?>
         <div class="am-actions">
           <a class="am-btn am-btn-primary" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת היכרות <?php echo $arrow; ?></a>
           <?php amichai_whatsapp_button('am-btn am-btn-ghost am-btn-wa'); ?>

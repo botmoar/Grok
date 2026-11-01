@@ -223,7 +223,7 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
       </div>
       <div class="am-cert-wall" aria-label="תעודות">
         <?php
-        amichai_cert_figure('pension', 'am-cert-wide');
+        amichai_cert_figure('pension');
         amichai_cert_figure('mortgage');
         amichai_cert_figure('family');
         amichai_cert_figure('coaching');

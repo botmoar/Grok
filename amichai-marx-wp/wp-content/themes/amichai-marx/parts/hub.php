@@ -21,6 +21,9 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
         <?php if ($excerpt !== '') : ?>
           <p class="am-hub-lead"><?php echo esc_html($excerpt); ?></p>
         <?php endif; ?>
+        <?php if ($slug === 'דיור-ומשכנתאות') : ?>
+          <p class="am-hub-note">שירות עצמאי. אין צורך בתוכנית לכלכלת המשפחה.</p>
+        <?php endif; ?>
         <div class="am-actions">
           <a class="am-btn am-btn-primary" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת היכרות <?php echo $arrow; ?></a>
           <?php amichai_whatsapp_button('am-btn am-btn-ghost am-btn-wa'); ?>
@@ -89,7 +92,7 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
         <div>
           <p class="am-kicker">הסמכה</p>
           <h2 id="am-hub-cert-title">חבר בהתאחדות יועצי המשכנתאות בישראל</h2>
-          <p>ייעוץ המשכנתא נעשה כחלק מהתוכנית הכלכלית של הבית, בידי יועץ משכנתאות חבר בהתאחדות. לחיצה על התעודה פותחת אותה בגודל מלא.</p>
+          <p>ייעוץ משכנתאות הוא שירות עצמאי, בידי יועץ משכנתאות חבר בהתאחדות. לחיצה על התעודה פותחת אותה בגודל מלא.</p>
         </div>
         <?php amichai_cert_figure($profile['cert'], 'am-cert-wide'); ?>
       </div>

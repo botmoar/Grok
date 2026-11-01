@@ -1540,6 +1540,15 @@ body.am-lightbox-open { overflow: hidden; }
   text-wrap: balance;
 }
 .am-hub-lead { margin: 0 0 28px; max-width: 36rem; color: #4a5d72; font-size: 1.16rem; line-height: 1.65; font-weight: 500; }
+.am-hub-note {
+  margin: -12px 0 22px;
+  max-width: 36rem;
+  color: #35506a;
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.am-hub-navy .am-hub-note { color: rgba(255, 255, 255, 0.92); }
 .am-hub-photo { margin: 0; }
 .am-hub-photo img {
   display: block;

@@ -458,14 +458,30 @@ function amichai_render_flat_links(array $items): void {
 
 function amichai_footer_service_links(): array {
     return [
-        ['label' => 'ייעוץ משכנתאות', 'slug' => 'דיור-ומשכנתאות', 'type' => 'post'],
         ['label' => 'ייעוץ כלכלי למשפחה', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post'],
-        ['label' => 'צמיחה, חסכונות והשקעות', 'slug' => 'חסכונות', 'type' => 'post'],
-        ['label' => 'ליווי צמוד', 'slug' => 'ליווי', 'type' => 'post'],
         ['label' => 'חיים במינוס', 'slug' => 'חיים-במינוס', 'type' => 'post'],
+        ['label' => 'צמיחה, חסכונות והשקעות', 'slug' => 'חסכונות', 'type' => 'post'],
+        ['label' => 'ייעוץ משכנתאות', 'slug' => 'דיור-ומשכנתאות', 'type' => 'post'],
+        ['label' => 'ליווי צמוד', 'slug' => 'ליווי', 'type' => 'post'],
         ['label' => 'פנסיה', 'slug' => 'פנסיה', 'type' => 'post'],
         ['label' => 'ביטוחים', 'slug' => 'ביטוחים', 'type' => 'post'],
     ];
+}
+
+function amichai_pension_license(): array {
+    return [
+        'number' => 'L-00136625',
+        'valid_until' => '31/12/2026',
+        'valid_until_iso' => '2026-12-31',
+        'authority' => 'רשות שוק ההון, ביטוח וחיסכון',
+        'registry' => 'https://insa-prod-ex.formtitan.com/AgentsSearch',
+    ];
+}
+
+function amichai_pension_registry_link(string $class = ''): string {
+    $lic = amichai_pension_license();
+    $cls = $class !== '' ? ' class="' . esc_attr($class) . '"' : '';
+    return '<a href="' . esc_url($lic['registry']) . '" target="_blank" rel="noopener"' . $cls . '>לבדיקה במאגר רשות שוק ההון</a>';
 }
 
 /**
@@ -474,7 +490,14 @@ function amichai_footer_service_links(): array {
  * @return array<string, array<string, mixed>>
  */
 function amichai_certificates(): array {
+    $lic = amichai_pension_license();
     return [
+        'pension' => [
+            'file' => 'pension-license-2026',
+            'w' => 1400, 'h' => 1993, 'tw' => 400, 'th' => 257,
+            'title' => 'רישיון יועץ פנסיוני',
+            'meta' => $lic['authority'] . ' · מספר ' . $lic['number'] . ' · בתוקף עד ' . $lic['valid_until'],
+        ],
         'mortgage' => [
             'file' => 'mortgage-association-2026',
             'w' => 1600, 'h' => 1131, 'tw' => 560, 'th' => 396,
@@ -510,20 +533,49 @@ function amichai_cert_figure(string $key, string $class = ''): void {
         <img src="<?php echo esc_url($thumb); ?>" width="<?php echo (int) $c['tw']; ?>" height="<?php echo (int) $c['th']; ?>" loading="lazy" decoding="async" alt="<?php echo esc_attr($c['title']); ?>">
         <span class="am-cert-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4.5 4.5M11 8v6M8 11h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
       </a>
-      <figcaption><strong><?php echo esc_html($c['title']); ?></strong><span><?php echo esc_html($c['meta']); ?></span></figcaption>
+      <figcaption>
+        <strong><?php echo esc_html($c['title']); ?></strong>
+        <span><?php echo esc_html($c['meta']); ?></span>
+        <?php if ($key === 'pension') : ?>
+          <span class="am-cert-check"><?php echo amichai_pension_registry_link(); ?></span>
+        <?php endif; ?>
+      </figcaption>
     </figure>
     <?php
 }
 
 function amichai_credentials_list(): void {
+    $lic = amichai_pension_license();
     ?>
     <ul class="am-creds">
-      <li><strong>יועץ משכנתאות</strong><span>חבר בהתאחדות יועצי המשכנתאות בישראל</span></li>
+      <li class="am-creds-key">
+        <strong>רישיון יועץ פנסיוני</strong>
+        <span><?php echo esc_html($lic['authority']); ?>, מספר <span dir="ltr"><?php echo esc_html($lic['number']); ?></span>, בתוקף עד <?php echo esc_html($lic['valid_until']); ?>. ייעוץ אובייקטיבי בפנסיה ובביטוח, לא מכירה. <?php echo amichai_pension_registry_link(); ?></span>
+      </li>
       <li><strong>יועץ ומאמן לכלכלת המשפחה</strong><span>הסמכה בהיקף 275 שעות, 2013</span></li>
-      <li><strong>רישיון לייעוץ פנסיוני</strong><span>דמי ניהול, כיסויים ומה שנשאר לגיל פרישה</span></li>
+      <li><strong>חבר באיגוד היועצים והמאמנים</strong><span>לכלכלת המשפחה בישראל (ע״ר)</span></li>
+      <li><strong>יועץ משכנתאות</strong><span>חבר בהתאחדות יועצי המשכנתאות בישראל</span></li>
       <li><strong>מאמן מוסמך ומגשר מוסמך</strong><span>176 שעות אקדמיות במסלול הכשרת מאמנים</span></li>
-      <li><strong>חבר באיגוד היועצים והמאמנים</strong><span>לכלכלת המשפחה בישראל</span></li>
     </ul>
+    <?php
+}
+
+function amichai_assoc_logos(): void {
+    $src = amichai_asset('assets/images/assoc-family-horizontal.webp');
+    $fallback = amichai_asset('assets/images/assoc-family-horizontal.jpg');
+    ?>
+    <div class="am-assoc-row">
+      <figure class="am-assoc-mark">
+        <picture>
+          <source type="image/webp" srcset="<?php echo esc_url($src); ?>">
+          <img src="<?php echo esc_url($fallback); ?>" width="800" height="296" loading="lazy" decoding="async" alt="חבר באיגוד היועצים והמאמנים לכלכלת המשפחה בישראל (ע״ר)">
+        </picture>
+        <figcaption>חבר באיגוד היועצים והמאמנים לכלכלת המשפחה בישראל (ע״ר)</figcaption>
+      </figure>
+      <figure class="am-assoc-mark">
+        <p class="am-assoc-text"><strong>חבר בהתאחדות יועצי המשכנתאות בישראל</strong><span>יועצי מימון לדיור ע״ר</span></p>
+      </figure>
+    </div>
     <?php
 }
 
@@ -742,6 +794,16 @@ function amichai_page_hero(string $title, string $lead = '', string $kicker = ''
 function amichai_footer_columns(): array {
     return [
         [
+            'title' => 'שירותים',
+            'items' => [
+                ['label' => 'כלכלת המשפחה', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post'],
+                ['label' => 'חיים במינוס', 'slug' => 'חיים-במינוס', 'type' => 'post'],
+                ['label' => 'חסכונות והשקעות', 'slug' => 'חסכונות', 'type' => 'post'],
+                ['label' => 'ליווי צמוד', 'slug' => 'ליווי', 'type' => 'post'],
+                ['label' => 'פנסיה', 'slug' => 'פנסיה', 'type' => 'post'],
+            ],
+        ],
+        [
             'title' => 'משכנתאות',
             'items' => [
                 ['label' => 'ייעוץ משכנתאות', 'slug' => 'דיור-ומשכנתאות', 'type' => 'post'],
@@ -749,16 +811,6 @@ function amichai_footer_columns(): array {
                 ['label' => 'זוגות צעירים', 'slug' => 'יועץ-משכנתאות-לזוגות-צעירים', 'type' => 'post'],
                 ['label' => 'מסורבי משכנתא', 'slug' => 'יועץ-משכנתאות-למסורבים', 'type' => 'post'],
                 ['label' => 'איחוד הלוואות', 'slug' => 'איחוד-הלוואות', 'type' => 'post'],
-            ],
-        ],
-        [
-            'title' => 'שירותים',
-            'items' => [
-                ['label' => 'כלכלת המשפחה', 'slug' => 'יועץ-לכלכלת-המשפחה', 'type' => 'post'],
-                ['label' => 'ליווי צמוד', 'slug' => 'ליווי', 'type' => 'post'],
-                ['label' => 'חסכונות והשקעות', 'slug' => 'חסכונות', 'type' => 'post'],
-                ['label' => 'חיים במינוס', 'slug' => 'חיים-במינוס', 'type' => 'post'],
-                ['label' => 'פנסיה', 'slug' => 'פנסיה', 'type' => 'post'],
             ],
         ],
         [

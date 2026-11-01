@@ -37,9 +37,11 @@ get_header();
       <aside class="am-about-certs" id="credentials" aria-labelledby="am-certs-title">
         <h2 id="am-certs-title">הסמכות ותעודות</h2>
         <?php amichai_credentials_list(); ?>
+        <?php amichai_assoc_logos(); ?>
         <div class="am-cert-wall">
           <?php
-          amichai_cert_figure('mortgage', 'am-cert-wide');
+          amichai_cert_figure('pension', 'am-cert-wide');
+          amichai_cert_figure('mortgage');
           amichai_cert_figure('family');
           amichai_cert_figure('coaching');
           ?>

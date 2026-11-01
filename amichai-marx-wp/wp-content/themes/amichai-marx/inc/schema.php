@@ -40,11 +40,30 @@ add_action('wp_head', function (): void {
                 'name' => 'עמיחי מרקס',
                 'url' => home_url('/אודות/'),
                 'image' => amichai_portrait_url(),
-                'jobTitle' => 'יועץ לכלכלת המשפחה ויועץ משכנתאות',
+                'jobTitle' => 'יועץ לכלכלת המשפחה, יועץ פנסיוני ויועץ משכנתאות',
                 'worksFor' => ['@id' => $home . '#business'],
                 'memberOf' => [
-                    '@type' => 'Organization',
-                    'name' => 'התאחדות יועצי המשכנתאות בישראל',
+                    [
+                        '@type' => 'Organization',
+                        'name' => 'איגוד היועצים והמאמנים לכלכלת המשפחה בישראל',
+                    ],
+                    [
+                        '@type' => 'Organization',
+                        'name' => 'התאחדות יועצי המשכנתאות בישראל',
+                    ],
+                ],
+                'hasCredential' => [
+                    [
+                        '@type' => 'EducationalOccupationalCredential',
+                        'credentialCategory' => 'license',
+                        'name' => 'רישיון יועץ פנסיוני',
+                        'identifier' => amichai_pension_license()['number'],
+                        'recognizedBy' => [
+                            '@type' => 'Organization',
+                            'name' => amichai_pension_license()['authority'],
+                        ],
+                        'validUntil' => amichai_pension_license()['valid_until_iso'],
+                    ],
                 ],
                 'knowsLanguage' => 'he',
             ],

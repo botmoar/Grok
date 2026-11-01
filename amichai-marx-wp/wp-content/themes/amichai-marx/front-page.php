@@ -218,11 +218,13 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
         <h2 id="am-about-title">15 שנה בליווי משפחות</h2>
         <p>אני עמיחי מרקס. כבר למעלה מעשרים שנה אני פועל במערכת הפיננסית בארץ ובחו״ל, ו־15 שנה אני מלווה משפחות. את 2008 ראיתי מבפנים: שוק שנפל, ואנשים שהפסידו חסכונות ופנסיה בלי להבין למה. מאז, הליווי של משפחות הוא העבודה עצמה, לא תוספת.</p>
         <?php amichai_credentials_list(); ?>
+        <?php amichai_assoc_logos(); ?>
         <p class="am-more"><a href="<?php echo esc_url(home_url('/אודות/')); ?>">הסיפור המלא</a></p>
       </div>
       <div class="am-cert-wall" aria-label="תעודות">
         <?php
-        amichai_cert_figure('mortgage', 'am-cert-wide');
+        amichai_cert_figure('pension', 'am-cert-wide');
+        amichai_cert_figure('mortgage');
         amichai_cert_figure('family');
         amichai_cert_figure('coaching');
         ?>

@@ -6,7 +6,7 @@
         <img src="<?php echo esc_url(amichai_asset('assets/images/logo.png')); ?>" width="492" height="120" loading="lazy" alt="עמיחי מרקס, יועץ ומאמן לכלכלת המשפחה">
       </a>
       <p>ליווי אישי למשפחות שרוצות סדר בחשבון, ותוכנית שאפשר לחיות איתה.</p>
-      <img class="am-footer-assoc" src="<?php echo esc_url(amichai_asset('assets/images/association.png')); ?>" width="120" height="48" loading="lazy" alt="חבר באיגוד היועצים והמאמנים לכלכלת המשפחה בישראל">
+      <img class="am-footer-assoc" src="<?php echo esc_url(amichai_asset('assets/images/assoc-family-horizontal.webp')); ?>" width="200" height="74" loading="lazy" alt="חבר באיגוד היועצים והמאמנים לכלכלת המשפחה בישראל (ע״ר)">
     </div>
     <?php foreach (amichai_footer_columns() as $column) : ?>
       <nav class="am-footer-col" aria-label="<?php echo esc_attr($column['title']); ?>">

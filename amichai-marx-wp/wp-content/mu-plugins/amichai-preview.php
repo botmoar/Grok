@@ -45,6 +45,18 @@ add_filter('wp_sitemaps_enabled', static function ($enabled) {
     return defined('WPSEO_VERSION') ? false : true;
 });
 
+add_filter('option_wpseo_titles', static function ($opts) {
+    if (is_array($opts)) {
+        $opts['disable-attachment'] = true;
+    }
+    return $opts;
+});
+
+add_filter('wpseo_sitemap_exclude_post_type', static function ($exclude, $type) {
+    return $type === 'attachment' ? true : $exclude;
+}, 10, 2);
+
+
 add_filter('robots_txt', function (string $output, $public): string {
     if (amichai_is_live() && defined('WPSEO_VERSION')) {
         return $output;
@@ -93,6 +105,9 @@ function amichai_redirect_rules(): array {
             if ($from === '/' || $from === amichai_normalize_redirect_path($to)) {
                 continue; // never intercept the homepage; skip identity rules
             }
+            if (amichai_is_yoast_sitemap_path($from) !== '') {
+                continue;
+            }
             $map[$from] = $to;
         }
     }
@@ -129,9 +144,35 @@ function amichai_request_path(): string {
     return amichai_normalize_redirect_path((string) wp_parse_url($uri, PHP_URL_PATH));
 }
 
+
+function amichai_is_yoast_sitemap_path(string $path): string {
+    $path = amichai_normalize_redirect_path($path);
+    if (strcasecmp($path, '/sitemap_index.xml') === 0) {
+        return $path;
+    }
+    // Yoast children: post-sitemap.xml, post-sitemap2.xml, category-sitemap.xml, attachment-sitemap.xml, …
+    if (preg_match('#^/(?!wp-sitemap)[a-z0-9_-]+-sitemap[0-9]*\.xml$#i', $path)) {
+        return $path;
+    }
+    return '';
+}
+
+function amichai_is_core_sitemap_path(string $path): bool {
+    $path = amichai_normalize_redirect_path($path);
+    return (bool) preg_match('#^/wp-sitemap(?:-[a-z0-9_-]+)?\.xml$#i', $path);
+}
+
 function amichai_redirect_target_for_path(string $path): string {
-    $map = amichai_redirect_rules();
     $exact = amichai_normalize_redirect_path($path);
+    // Never 301 a sitemap Yoast is (or will be) serving — including children listed in sitemap_index.xml.
+    if (amichai_is_yoast_sitemap_path($exact) !== '') {
+        return '';
+    }
+    // Old WP core sitemaps: only send them to Yoast's index when Yoast is active.
+    if (defined('WPSEO_VERSION') && amichai_is_core_sitemap_path($exact)) {
+        return '/sitemap_index.xml';
+    }
+    $map = amichai_redirect_rules();
     if ($exact !== '/' && isset($map[$exact])) {
         return $map[$exact];
     }

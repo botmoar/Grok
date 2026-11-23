@@ -4,7 +4,7 @@ Moves the reviewed staging build onto the public domain. Every command runs over
 
 ## Current production (November 2026)
 
-https://amichai-marx.co.il is **live and indexable** (`blog_public=1`). Yoast SEO and Wordfence are installed. The theme's own title, meta, and JSON-LD yield to Yoast when `WPSEO_VERSION` is defined; robots and the sitemap follow Yoast's `/sitemap_index.xml` on this host.
+https://amichai-marx.co.il is **live and indexable** (`blog_public=1`). Yoast SEO and Wordfence are installed. The theme's own title, meta, and JSON-LD yield to Yoast when `WPSEO_VERSION` is defined; robots and the sitemap follow Yoast's `/sitemap_index.xml` on this host. Only core `/wp-sitemap*.xml` redirect to `/sitemap_index.xml`; Yoast child sitemaps (`post-sitemap.xml`, `page-sitemap.xml`, `category-sitemap.xml`, and the rest) must never be redirected.
 
 The contact form lands on `/תודה/` (`template-thanks.php`).
 
@@ -157,7 +157,7 @@ Then by hand:
 ## 10. Search Console
 
 1. Open the `amichai-marx.co.il` property (Domain property preferred).
-2. Sitemaps: submit `https://amichai-marx.co.il/sitemap_index.xml` (Yoast). Legacy `/post-sitemap.xml` and `/page-sitemap.xml` 301 to it.
+2. Sitemaps: submit `https://amichai-marx.co.il/sitemap_index.xml` (Yoast). Only core `/wp-sitemap*.xml` 301 to it. Do not redirect Yoast child sitemaps.
 3. URL Inspection → "Request indexing" for the home page, `/דיור-ומשכנתאות/`, `/יועץ-לכלכלת-המשפחה/` and `/אודות/`.
 4. Over the next two weeks, check Pages → "Not indexed" and the 404 report. Any old URL that shows up there and isn't in `redirects.json` or `mortgage-redirects.json` gets a rule. Redeploy the matching JSON. The old mortgage domain map is `docs/mortgage-redirect-map.csv`.
 

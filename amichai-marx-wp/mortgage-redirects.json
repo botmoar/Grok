@@ -172,23 +172,5 @@
     "to": "/דיור-ומשכנתאות/",
     "code": 301,
     "reason": "comments feed of the old mortgage site"
-  },
-  {
-    "from": "/page-sitemap.xml",
-    "to": "/sitemap_index.xml",
-    "code": 301,
-    "reason": "legacy sitemap"
-  },
-  {
-    "from": "/post-sitemap.xml",
-    "to": "/sitemap_index.xml",
-    "code": 301,
-    "reason": "legacy sitemap"
-  },
-  {
-    "from": "/category-sitemap.xml",
-    "to": "/sitemap_index.xml",
-    "code": 301,
-    "reason": "legacy sitemap"
   }
 ]

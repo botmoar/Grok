@@ -238,24 +238,6 @@
     "reason": "כתובת שגויה שהופצה בקישורים חיצוניים"
   },
   {
-    "from": "/post-sitemap.xml",
-    "to": "/sitemap_index.xml",
-    "code": 301,
-    "reason": "legacy sitemap → Yoast sitemap_index.xml"
-  },
-  {
-    "from": "/page-sitemap.xml",
-    "to": "/sitemap_index.xml",
-    "code": 301,
-    "reason": "legacy sitemap → Yoast sitemap_index.xml"
-  },
-  {
-    "from": "/category-sitemap.xml",
-    "to": "/sitemap_index.xml",
-    "code": 301,
-    "reason": "legacy sitemap → Yoast sitemap_index.xml"
-  },
-  {
     "from": "/משכנתא-לזוגות-צעירים/",
     "to": "/יועץ-משכנתאות-לזוגות-צעירים/",
     "code": 301

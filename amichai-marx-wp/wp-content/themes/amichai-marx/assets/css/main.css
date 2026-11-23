@@ -2549,3 +2549,28 @@ body.am-lightbox-open { overflow: hidden; }
 @media (max-width: 640px) {
   :root { --leaf: 40px; }
 }
+
+.am-footer-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.am-footer-credit span { font-size: inherit; }
+.am-footer-credit img { height: 18px; width: auto; display: block; }
+.am-footer-credit:hover { color: var(--navy); }
+.am-thanks { padding: 48px 0 72px; text-align: center; max-width: 640px; margin-inline: auto; }
+.am-thanks h1 { margin: 0 0 16px; font-size: clamp(1.8rem, 4vw, 2.4rem); }
+.am-thanks .am-lede { font-size: 1.08rem; line-height: 1.7; color: var(--ink); margin: 0 0 28px; }
+.am-thanks .am-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 40px; }
+.am-thanks-links { text-align: start; }
+.am-thanks-links h2 { font-size: 1.05rem; margin: 0 0 12px; text-align: center; }
+.am-thanks-links ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.am-thanks-links a { display: block; padding: 12px 16px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.am-thanks-links a:hover { border-color: var(--navy); }
+@media (max-width: 980px) {
+  .am-footer-base .am-footer-credit { margin-inline: auto; }
+  .am-thanks { padding: 36px 0 88px; }
+}

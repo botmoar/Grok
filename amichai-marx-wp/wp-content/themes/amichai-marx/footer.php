@@ -32,6 +32,10 @@
         <li><a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>">מדיניות פרטיות</a></li>
         <li><a href="<?php echo esc_url(home_url('/הצהרת-נגישות/')); ?>">הצהרת נגישות</a></li>
       </ul>
+      <a class="am-footer-credit" href="https://www.adactive.co.il/" target="_blank" rel="noopener">
+        <span>בניית האתר</span>
+        <img src="<?php echo esc_url(amichai_asset('assets/images/adactive.png')); ?>" width="166" height="40" alt="Adactive">
+      </a>
     </div>
   </div>
 </footer>

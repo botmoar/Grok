@@ -41,6 +41,7 @@ services:
       - ./wp-content/mu-plugins:/var/www/html/wp-content/mu-plugins
       - ./content:/var/www/html/wp-content/amichai-data:ro
       - ./redirects.json:/redirects.json:ro
+      - ./mortgage-redirects.json:/var/www/html/wp-content/amichai-data/mortgage-redirects.json:ro
 
   wpcli:
     image: wordpress:cli-2.12.0-php8.2
@@ -67,6 +68,7 @@ services:
       - ./wp-content/mu-plugins:/var/www/html/wp-content/mu-plugins
       - ./content:/var/www/html/wp-content/amichai-data:ro
       - ./redirects.json:/redirects.json:ro
+      - ./mortgage-redirects.json:/var/www/html/wp-content/amichai-data/mortgage-redirects.json:ro
       - ./docker/seed.sh:/seed/seed.sh:ro
       - ./docker/seed.php:/seed/seed.php:ro
     entrypoint: ["sh", "/seed/seed.sh"]

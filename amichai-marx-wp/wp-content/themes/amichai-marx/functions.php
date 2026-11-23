@@ -212,7 +212,7 @@ function amichai_handle_lead(): void {
         update_post_meta($id, 'mail_sent', $sent ? '1' : '0');
     }
 
-    wp_safe_redirect(add_query_arg('lead', 'ok', home_url('/צור-קשר/')) . '#am-lead-status');
+    wp_safe_redirect(home_url('/תודה/'));
     exit;
 }
 

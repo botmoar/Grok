@@ -5,7 +5,72 @@
 
 defined('ABSPATH') || exit;
 
+function amichai_person_schema_piece(string $home): array {
+    $license = amichai_pension_license();
+    return [
+        '@type' => 'Person',
+        '@id' => $home . '#person',
+        'name' => 'עמיחי מרקס',
+        'url' => home_url('/אודות/'),
+        'image' => amichai_portrait_url(),
+        'jobTitle' => 'יועץ לכלכלת המשפחה, יועץ פנסיוני ויועץ משכנתאות',
+        'worksFor' => ['@id' => $home . '#business'],
+        'memberOf' => [
+            [
+                '@type' => 'Organization',
+                'name' => 'איגוד היועצים והמאמנים לכלכלת המשפחה בישראל',
+            ],
+            [
+                '@type' => 'Organization',
+                'name' => 'התאחדות יועצי המשכנתאות בישראל',
+            ],
+        ],
+        'hasCredential' => [
+            [
+                '@type' => 'EducationalOccupationalCredential',
+                'credentialCategory' => 'license',
+                'name' => 'רישיון יועץ פנסיוני',
+                'identifier' => $license['number'],
+                'recognizedBy' => [
+                    '@type' => 'Organization',
+                    'name' => $license['authority'],
+                ],
+                'validUntil' => $license['valid_until_iso'],
+            ],
+        ],
+        'knowsLanguage' => 'he',
+    ];
+}
+
+add_filter('wpseo_schema_graph', static function ($graph) {
+    if (!is_array($graph)) {
+        return $graph;
+    }
+    $home = home_url('/');
+    $person = amichai_person_schema_piece($home);
+    $replaced = false;
+    foreach ($graph as $i => $piece) {
+        $types = (array) ($piece['@type'] ?? []);
+        $id = (string) ($piece['@id'] ?? '');
+        if (in_array('Person', $types, true) || str_ends_with($id, '#person')) {
+            $graph[$i] = array_merge($piece, $person);
+            if (!empty($piece['@id'])) {
+                $graph[$i]['@id'] = $piece['@id'];
+            }
+            $replaced = true;
+        }
+    }
+    if (!$replaced) {
+        $graph[] = $person;
+    }
+    return $graph;
+}, 20);
+
+
 add_action('wp_head', function (): void {
+    if (defined('WPSEO_VERSION')) {
+        return;
+    }
     $home = home_url('/');
     $data = [
         '@context' => 'https://schema.org',

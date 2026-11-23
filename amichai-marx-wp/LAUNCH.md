@@ -2,6 +2,14 @@
 
 Moves the reviewed staging build onto the public domain. Every command runs over SSH from the WordPress root on the server that serves the site (WP-CLI 2.x). Replace `STAGING_URL` with the staging address, for example `https://staging.amichai-marx.co.il`, with no trailing slash. Do it at a quiet time, with whoever controls DNS and hosting reachable.
 
+## Current production (November 2026)
+
+https://amichai-marx.co.il is **live and indexable** (`blog_public=1`). Yoast SEO and Wordfence are installed. The theme's own title, meta, and JSON-LD yield to Yoast when `WPSEO_VERSION` is defined; robots and the sitemap follow Yoast's `/sitemap_index.xml` on this host.
+
+The contact form lands on `/תודה/` (`template-thanks.php`).
+
+The old mortgage domain `amichaimortgage.co.il` is 308'd by uPress onto this host with the path preserved. Path-level 301s are therefore handled here, in `mortgage-redirects.json`, by `amichai-preview.php`. The old homepage cannot be intercepted after that 308 (uPress sends `/` to the new homepage with no extra query or header). The verified map is `docs/mortgage-redirect-map.csv`.
+
 ## 0. Before the day
 
 - [ ] Staging was approved by the client: copy, photos, menu, contact form.
@@ -31,6 +39,7 @@ From this repository:
 | `wp-content/mu-plugins/amichai-preview.php` | `wp-content/mu-plugins/amichai-preview.php` |
 | `content/` (including `.htaccess` and `index.php`) | `wp-content/amichai-data/` |
 | `redirects.json` | `wp-content/amichai-data/redirects.json` |
+| `mortgage-redirects.json` | `wp-content/amichai-data/mortgage-redirects.json` |
 | `docker/seed.php` | outside the web root, for example `~/seed.php` |
 
 Don't copy `tools/`, `docker/`, `server/`, `README.md`, `LAUNCH.md` or `.env*` into the web root.
@@ -91,7 +100,7 @@ curl -sI https://www.amichai-marx.co.il/ | grep -i '^location'
 - [ ] `define('DISALLOW_FILE_EDIT', true);` is in `wp-config.php`.
 - [ ] Delete `wp-content/debug.log` if it exists.
 - [ ] Delete the default files: `rm readme.html license.txt wp-config-sample.php`. The `.htaccess` rules block them anyway, but WordPress updates bring them back.
-- [ ] Remove the unused themes and plugins: `wp theme list`, then `wp theme delete twentytwentythree twentytwentyfour twentytwentyfive` (whichever are present). Also run `wp plugin delete hello akismet`, plus any plugin left over from the old site (Yoast, Contact Form 7).
+- [ ] Remove the unused themes and plugins: `wp theme list`, then `wp theme delete twentytwentythree twentytwentyfour twentytwentyfive` (whichever are present). Also run `wp plugin delete hello akismet`, plus leftover plugins from the old site (Contact Form 7). Keep Yoast SEO and Wordfence; they are installed on production.
 - [ ] No local or test helpers are in `wp-content/mu-plugins/`. The only file there is `amichai-preview.php`.
 - [ ] The staging admin account has a new strong password, or a new admin replaces it. `wp user list` shows no test users.
 - [ ] Delete test leads: wp-admin → פניות.
@@ -106,13 +115,13 @@ Indexing has a single switch: Settings → Reading → "Discourage search engine
 wp option update blog_public 1
 ```
 
-The mu-plugin follows this option only. With it on, `robots.txt` allows crawling and lists `/wp-sitemap.xml`, and pages drop the `noindex` meta and `X-Robots-Tag` header. Turning it off reverses all three.
+The mu-plugin follows this option. With it on and Yoast present, Yoast owns `robots.txt` and `/sitemap_index.xml`, and pages drop the theme `noindex` meta and `X-Robots-Tag` header. Turning it off reverses the theme's noindex. Without Yoast, the mu-plugin lists `/wp-sitemap.xml` instead.
 
 ## 8. Mail and the contact form
 
 1. Configure SMTP: a plugin such as WP Mail SMTP, or the host's mail service. Send its test email.
 2. Leads go to `marx@amichai-marx.co.il`. To change that address, add a filter in a small mu-plugin: `add_filter('amichai_lead_recipient', fn() => 'other@…');`.
-3. Fill in the form on `/צור-קשר/` from a phone. You should see the green confirmation, and the email should arrive with Reply-To set to the visitor. The lead also appears under פניות. Delete it afterwards.
+3. Fill in the form on `/צור-קשר/` from a phone. You should land on `/תודה/`, and the email should arrive with Reply-To set to the visitor. The lead also appears under פניות. Delete it afterwards.
 
 ## 9. Verify
 
@@ -124,9 +133,9 @@ python3 tools/verify_launch.py https://amichai-marx.co.il
 
 It checks the following and must print `OK`:
 
-- Every old live URL in `tools/live-urls.txt` and every `redirects.json` source reaches a 200 in at most one 301.
+- Every old live URL in `tools/live-urls.txt` and every `redirects.json` / `mortgage-redirects.json` source reaches a 200 in at most one 301 (plus the uPress 308 when the request started on `amichaimortgage.co.il`).
 - `robots.txt` allows crawling and lists the sitemap, and the home page has no `noindex`.
-- `/wp-sitemap.xml` loads.
+- `/sitemap_index.xml` loads (Yoast). Without Yoast, `/wp-sitemap.xml` is the fallback.
 - `readme.html`, `license.txt`, `debug.log`, the seed data and the public user list are not readable.
 
 Then check mobile Safari rendering (Playwright WebKit, iPhone 13 at 390px) for every sitemap URL. It must report `0 with problems`:
@@ -148,9 +157,9 @@ Then by hand:
 ## 10. Search Console
 
 1. Open the `amichai-marx.co.il` property (Domain property preferred).
-2. Sitemaps: remove `sitemap_index.xml` if it is listed, then submit `https://amichai-marx.co.il/wp-sitemap.xml`. The old Yoast sitemap URLs 301 to it, so stale fetches still work.
+2. Sitemaps: submit `https://amichai-marx.co.il/sitemap_index.xml` (Yoast). Legacy `/post-sitemap.xml` and `/page-sitemap.xml` 301 to it.
 3. URL Inspection → "Request indexing" for the home page, `/דיור-ומשכנתאות/`, `/יועץ-לכלכלת-המשפחה/` and `/אודות/`.
-4. Over the next two weeks, check Pages → "Not indexed" and the 404 report. Any old URL that shows up there and isn't in `redirects.json` gets a rule. To add one, edit `tools/build_content.py`, run it, and redeploy `redirects.json`.
+4. Over the next two weeks, check Pages → "Not indexed" and the 404 report. Any old URL that shows up there and isn't in `redirects.json` or `mortgage-redirects.json` gets a rule. Redeploy the matching JSON. The old mortgage domain map is `docs/mortgage-redirect-map.csv`.
 
 ## Rollback
 

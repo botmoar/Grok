@@ -1,0 +1,194 @@
+[
+  {
+    "from": "/משכנתא-לזוגות-צעירים/",
+    "to": "/יועץ-משכנתאות-לזוגות-צעירים/",
+    "code": 301,
+    "reason": "young couples / first-home topic"
+  },
+  {
+    "from": "/משכנתא-ראשונה/",
+    "to": "/יועץ-משכנתאות-לזוגות-צעירים/",
+    "code": 301,
+    "reason": "first mortgage"
+  },
+  {
+    "from": "/יועץ-משכנתאות-מחיר-למשתכן/",
+    "to": "/יועץ-משכנתאות-לזוגות-צעירים/",
+    "code": 301,
+    "reason": "Mechir Lamishtaken, first-home buyers"
+  },
+  {
+    "from": "/משכנתא-לשיפוצים/",
+    "to": "/משכנתא-לשיפוץ/",
+    "code": 301,
+    "reason": "renovation mortgage"
+  },
+  {
+    "from": "/מיחזור-משכנתא-והגדלתה/",
+    "to": "/מחזור-משכנתא/",
+    "code": 301,
+    "reason": "refinance / enlarge mortgage"
+  },
+  {
+    "from": "/האם-כדאי-לשקול-מיחזור-של-המשכנתא-כך-תדע/",
+    "to": "/מחזור-משכנתא/",
+    "code": 301,
+    "reason": "article on whether to refinance"
+  },
+  {
+    "from": "/משכנתא-לאיחוד-הלוואות/",
+    "to": "/איחוד-הלוואות/",
+    "code": 301,
+    "reason": "debt-consolidation mortgage"
+  },
+  {
+    "from": "/משכנתא-לאיחוד-חובות/",
+    "to": "/איחוד-הלוואות/",
+    "code": 301,
+    "reason": "debt-consolidation mortgage"
+  },
+  {
+    "from": "/כל-היתרונות-של-הלוואה-אחת-גדולה-על-פני-כ/",
+    "to": "/איחוד-הלוואות/",
+    "code": 301,
+    "reason": "article on consolidating loans"
+  },
+  {
+    "from": "/משכנתא-לגיל-השלישי/",
+    "to": "/משכנתא-למבוגרים/",
+    "code": 301,
+    "reason": "mortgage after 50 / third age"
+  },
+  {
+    "from": "/עומדים-לבנות-בית-כמה-דברים-שחשוב-לדעת-ל/",
+    "to": "/משכנתא-לבנייה-עצמית/",
+    "code": 301,
+    "reason": "article on building a home"
+  },
+  {
+    "from": "/כמה-טיפים-לבחירת-יועץ-משכנתאות/",
+    "to": "/יועץ-משכנתאות-פרטי/",
+    "code": 301,
+    "reason": "tips for choosing a mortgage advisor"
+  },
+  {
+    "from": "/עלות-ייעוץ-משכנתא/",
+    "to": "/דיור-ומשכנתאות/",
+    "code": 301,
+    "reason": "no cost page; mortgage hub"
+  },
+  {
+    "from": "/תמהיל-משכנתא/",
+    "to": "/דיור-ומשכנתאות/",
+    "code": 301,
+    "reason": "mortgage mix is covered on the hub"
+  },
+  {
+    "from": "/סוגי-משכנתאות/",
+    "to": "/דיור-ומשכנתאות/",
+    "code": 301,
+    "reason": "types of mortgages, hub"
+  },
+  {
+    "from": "/משכנתא-לרכישת-דירה/",
+    "to": "/דיור-ומשכנתאות/",
+    "code": 301,
+    "reason": "no dedicated purchase page"
+  },
+  {
+    "from": "/משכנתא-לדירה-להשקעה/",
+    "to": "/דיור-ומשכנתאות/",
+    "code": 301,
+    "reason": "no investment-property page"
+  },
+  {
+    "from": "/משכנתא-על-נכס-קיים/",
+    "to": "/דיור-ומשכנתאות/",
+    "code": 301,
+    "reason": "no exact match"
+  },
+  {
+    "from": "/היתרונות-של-ליווי-אישי-בתהליך-לקיחת-מש/",
+    "to": "/דיור-ומשכנתאות/",
+    "code": 301,
+    "reason": "accompaniment during a mortgage"
+  },
+  {
+    "from": "/ייעוץ-מקצועי-שיכול-לחסוך-לכם-הרבה-יותר/",
+    "to": "/דיור-ומשכנתאות/",
+    "code": 301,
+    "reason": "general mortgage-advice article"
+  },
+  {
+    "from": "/איך-יועצים-לכלכלת-המשפחה-יכולים-לעזור/",
+    "to": "/יועץ-לכלכלת-המשפחה/",
+    "code": 301,
+    "reason": "consulting page"
+  },
+  {
+    "from": "/הפכו-את-המינוס-לפלוס-איך-לנהל-את-כלכלת/",
+    "to": "/חיים-במינוס/",
+    "code": 301,
+    "reason": "getting out of overdraft"
+  },
+  {
+    "from": "/כך-תייצרו-לעצמכם-אוויר-כלכלי-בלי-להחלי/",
+    "to": "/יועץ-לכלכלת-המשפחה/",
+    "code": 301,
+    "reason": "creating financial breathing room"
+  },
+  {
+    "from": "/מההישרדות-לרווחה-כלכלית-הצעד-הראשון-ל/",
+    "to": "/יועץ-לכלכלת-המשפחה/",
+    "code": 301,
+    "reason": "from survival to financial wellbeing"
+  },
+  {
+    "from": "/שליטה-בכלכלת-הבית-הדרך-לחיים-פיננסיים/",
+    "to": "/ניהול-תקציב-משפחתי/",
+    "code": 301,
+    "reason": "household budget control"
+  },
+  {
+    "from": "/תכנון-נכון-היום-חוסך-לכם-הרבה-כסף-מחר/",
+    "to": "/יועץ-לכלכלת-המשפחה/",
+    "code": 301,
+    "reason": "planning ahead"
+  },
+  {
+    "from": "/author/newtheme_admin/",
+    "to": "/אודות/",
+    "code": 301,
+    "reason": "author archive"
+  },
+  {
+    "from": "/feed/",
+    "to": "/דיור-ומשכנתאות/",
+    "code": 301,
+    "reason": "site feed of the old mortgage site"
+  },
+  {
+    "from": "/comments/feed/",
+    "to": "/דיור-ומשכנתאות/",
+    "code": 301,
+    "reason": "comments feed of the old mortgage site"
+  },
+  {
+    "from": "/page-sitemap.xml",
+    "to": "/sitemap_index.xml",
+    "code": 301,
+    "reason": "legacy sitemap"
+  },
+  {
+    "from": "/post-sitemap.xml",
+    "to": "/sitemap_index.xml",
+    "code": 301,
+    "reason": "legacy sitemap"
+  },
+  {
+    "from": "/category-sitemap.xml",
+    "to": "/sitemap_index.xml",
+    "code": 301,
+    "reason": "legacy sitemap"
+  }
+]

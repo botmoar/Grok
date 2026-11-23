@@ -29,6 +29,9 @@ function amichai_seo_title_raw(): string {
 }
 
 add_filter('pre_get_document_title', static function (): string {
+    if (defined('WPSEO_VERSION')) {
+        return '';
+    }
     return amichai_seo_title_raw() . amichai_page_suffix();
 });
 
@@ -76,6 +79,9 @@ function amichai_meta_description(): string {
 }
 
 add_action('wp_head', function (): void {
+    if (defined('WPSEO_VERSION')) {
+        return;
+    }
     $desc = amichai_meta_description();
     $title = amichai_seo_title_raw() . amichai_page_suffix();
     $url = amichai_current_url();

@@ -76,14 +76,30 @@
   sync();
 })();
 
-// The footer has its own WhatsApp link; tuck the floating button away so it never covers footer text.
+// Tuck the FAB while the sticky bar is hidden (hero still on screen) and when the footer is in view.
 (function () {
   var footer = document.querySelector(".am-footer");
   var fab = document.querySelector(".am-whatsapp");
-  if (!footer || !fab || !("IntersectionObserver" in window)) return;
-  new IntersectionObserver(function (entries) {
-    fab.classList.toggle("is-tucked", entries[0].isIntersecting);
-  }).observe(footer);
+  if (!fab) return;
+  var mq = window.matchMedia("(max-width: 980px)");
+  var footerIn = false;
+  var threshold = 160;
+
+  function sync() {
+    var hideForHero = mq.matches && window.scrollY <= threshold;
+    fab.classList.toggle("is-tucked", footerIn || hideForHero);
+  }
+
+  window.addEventListener("scroll", sync, { passive: true });
+  if (mq.addEventListener) mq.addEventListener("change", sync);
+  else if (mq.addListener) mq.addListener(sync);
+  if (footer && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      footerIn = entries[0].isIntersecting;
+      sync();
+    }).observe(footer);
+  }
+  sync();
 })();
 
 (function () {

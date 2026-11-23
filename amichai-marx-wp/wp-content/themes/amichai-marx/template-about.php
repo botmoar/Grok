@@ -40,7 +40,7 @@ get_header();
         <?php amichai_assoc_logos(); ?>
         <div class="am-cert-wall">
           <?php
-          amichai_cert_figure('pension', 'am-cert-wide');
+          amichai_cert_figure('pension');
           amichai_cert_figure('mortgage');
           amichai_cert_figure('family');
           amichai_cert_figure('coaching');

@@ -7,7 +7,7 @@ defined('ABSPATH') || exit;
 
 function amichai_seo_title_raw(): string {
     if (is_front_page()) {
-        return 'ייעוץ לכלכלת המשפחה וביטחון פיננסי | עמיחי מרקס';
+        return 'יועץ לכלכלת המשפחה | תקציב, צמיחה וליווי | עמיחי מרקס';
     }
     if (is_singular()) {
         $custom = get_post_meta(get_queried_object_id(), '_amichai_seo_title', true);
@@ -29,6 +29,9 @@ function amichai_seo_title_raw(): string {
 }
 
 add_filter('pre_get_document_title', static function (): string {
+    if (defined('WPSEO_VERSION')) {
+        return '';
+    }
     return amichai_seo_title_raw() . amichai_page_suffix();
 });
 
@@ -56,7 +59,7 @@ function amichai_meta_description(): string {
         }
     }
     if (is_front_page()) {
-        return 'ייעוץ לכלכלת המשפחה ומשכנתאות בליווי צמוד: תקציב, מינוס, משכנתא, חסכונות והשקעות. עמיחי מרקס, 15 שנה בליווי משפחות. 054-2372417.';
+        return 'יועץ לכלכלת המשפחה: תקציב, יציאה מהמינוס ותוכנית צמיחה, בליווי צמוד. ייעוץ משכנתאות הוא שירות נפרד. עמיחי מרקס, 15 שנה בליווי משפחות. 054-2372417.';
     }
     if (is_category()) {
         $by_cat = [
@@ -76,6 +79,9 @@ function amichai_meta_description(): string {
 }
 
 add_action('wp_head', function (): void {
+    if (defined('WPSEO_VERSION')) {
+        return;
+    }
     $desc = amichai_meta_description();
     $title = amichai_seo_title_raw() . amichai_page_suffix();
     $url = amichai_current_url();

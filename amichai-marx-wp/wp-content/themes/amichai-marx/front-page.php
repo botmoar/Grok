@@ -8,11 +8,11 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
     <div class="am-wrap am-hero-grid">
       <div class="am-hero-copy">
         <p class="am-kicker">עמיחי מרקס</p>
-        <h1>ייעוץ לכלכלת המשפחה <span>ומשכנתאות, בליווי צמוד</span></h1>
-        <p class="am-lead">תקציב ומינוס, משכנתא, חסכונות והשקעות, בתוכנית אחת שבונים יחד. ואחרי התוכנית אני ממשיך ללוות אתכם, כל עוד צריך.</p>
+        <h1>ייעוץ לכלכלת המשפחה <span>תקציב, צמיחה וליווי צמוד</span></h1>
+        <p class="am-lead">תקציב, יציאה מהמינוס ותוכנית צמיחה, בליווי צמוד לאורך הדרך. ייעוץ משכנתאות הוא שירות נפרד, למי שצריך.</p>
         <div class="am-actions">
           <a class="am-btn am-btn-primary" href="<?php echo esc_url(home_url('/צור-קשר/')); ?>">לתיאום שיחת היכרות <?php echo $arrow; ?></a>
-          <a class="am-btn am-btn-ghost" href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/')); ?>">ייעוץ משכנתאות</a>
+          <a class="am-btn am-btn-ghost" href="<?php echo esc_url(home_url('/יועץ-לכלכלת-המשפחה/')); ?>">לייעוץ הכלכלי</a>
         </div>
       </div>
       <?php amichai_portrait_panel('יועץ לכלכלת המשפחה ויועץ משכנתאות'); ?>
@@ -20,9 +20,9 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
         <?php
         $trust = [
             ['15 שנה', 'בליווי משפחות', 'M16 19v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 17.5V19M10 10.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM20 19v-1.4a3.2 3.2 0 0 0-2.4-3.1M15.5 4.6a3 3 0 0 1 0 5.8'],
-            ['מעל 20 שנה', 'בעולם הפיננסי', 'M4 19.5h16M7 16v-5M12 16V6.5M17 16V9'],
-            ['יועץ משכנתאות', 'חבר בהתאחדות', 'M3 11.5 12 4l9 7.5M5.5 9.8V20h13V9.8M10 20v-5.5h4V20'],
-            ['ליווי צמוד', 'גם אחרי התוכנית', 'M6 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM18 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM6 16V10a4 4 0 0 1 4-4h6M18 8v6a4 4 0 0 1-4 4H8'],
+            ['כלכלת משפחה', 'תקציב ותוכנית צמיחה', 'M4 19.5h16M7 16v-5M12 16V6.5M17 16V9'],
+            ['יועץ פנסיוני', 'רישיון מורשה', 'M12 3 4.5 6.3V12c0 4.3 3 7.6 7.5 9 4.5-1.4 7.5-4.7 7.5-9V6.3L12 3z'],
+            ['יועץ משכנתאות', 'שירות נפרד', 'M3 11.5 12 4l9 7.5M5.5 9.8V20h13V9.8M10 20v-5.5h4V20'],
         ];
         foreach ($trust as [$title, $label, $icon]) :
             ?>
@@ -40,24 +40,16 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
       <header class="am-sec-head">
         <p class="am-kicker">שירותים</p>
         <h2 id="am-services-title">במה אני מלווה משפחות</h2>
-        <p>ההתנהלות השוטפת, המשכנתא, החסכונות, הביטוחים והפנסיה נבדקים באותו תהליך ואצל אותו אדם. כך ההחלטות מתחברות זו לזו, ולא סותרות.</p>
+        <p>השירות העיקרי הוא ייעוץ לכלכלת המשפחה: תקציב, יציאה מהמינוס ותוכנית צמיחה. ייעוץ משכנתאות הוא שירות נפרד. ניתן לרכוש כל שירות בנפרד, ולמי שצריך, גם לשלב ביניהם.</p>
       </header>
       <div class="am-service-grid">
-        <a class="am-service am-service-key" href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/')); ?>">
-          <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48" width="26" height="26" stroke-width="1.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 22 24 9l16 13"/><path d="M12 19v20h24V19"/><path d="M20 39V28h8v11"/></svg></span>
+        <a class="am-service am-service-grow" href="<?php echo esc_url(home_url('/יועץ-לכלכלת-המשפחה/')); ?>">
+          <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48" width="26" height="26" stroke-width="1.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 19v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 17.5V19"/><path d="M10 10.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M20 19v-1.4a3.2 3.2 0 0 0-2.4-3.1"/><path d="M15.5 4.6a3 3 0 0 1 0 5.8"/></svg></span>
           <span class="am-service-head">
-            <strong>משכנתאות ודיור</strong>
+            <strong>ייעוץ לכלכלת המשפחה</strong>
           </span>
-          <span class="am-service-text">לקנות או לשכור, בניית תמהיל ומחזור משכנתא. החלטה שעולה או חוסכת מאות אלפי שקלים.</span>
-          <em>לעמוד המשכנתאות</em>
-        </a>
-        <a class="am-service am-service-grow" href="<?php echo esc_url(home_url('/חסכונות/')); ?>">
-          <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48" width="26" height="26" stroke-width="1.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 38h32"/><path d="M12 32l8-9 6 5 11-13"/><path d="M30 15h7v7"/></svg></span>
-          <span class="am-service-head">
-            <strong>צמיחה, חסכונות והשקעות</strong>
-          </span>
-          <span class="am-service-text">חיסכון עם יעד, בדיקת תשואה, סיכון ודמי ניהול, וחיסכון לילדים.</span>
-          <em>לעמוד הצמיחה</em>
+          <span class="am-service-text">תקציב, יציאה מהמינוס ותוכנית צמיחה, בליווי צמוד. זה השירות העיקרי.</span>
+          <em>לעמוד הייעוץ</em>
         </a>
         <a class="am-service" href="<?php echo esc_url(home_url('/חיים-במינוס/')); ?>">
           <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48" width="26" height="26" stroke-width="1.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="12" width="30" height="24" rx="4"/><path d="M9 20h30"/><path d="M16 29h7"/></svg></span>
@@ -66,6 +58,22 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
           </span>
           <span class="am-service-text">תמונת מצב אמיתית, תוכנית שאפשר לחיות איתה, ויציאה מהמינוס בסדר פעולות.</span>
           <em>לקריאה</em>
+        </a>
+        <a class="am-service" href="<?php echo esc_url(home_url('/חסכונות/')); ?>">
+          <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48" width="26" height="26" stroke-width="1.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 38h32"/><path d="M12 32l8-9 6 5 11-13"/><path d="M30 15h7v7"/></svg></span>
+          <span class="am-service-head">
+            <strong>תוכנית צמיחה, חסכונות והשקעות</strong>
+          </span>
+          <span class="am-service-text">חיסכון עם יעד, בדיקת תשואה, סיכון ודמי ניהול, וחיסכון לילדים.</span>
+          <em>לעמוד הצמיחה</em>
+        </a>
+        <a class="am-service" href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/')); ?>">
+          <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48" width="26" height="26" stroke-width="1.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 22 24 9l16 13"/><path d="M12 19v20h24V19"/><path d="M20 39V28h8v11"/></svg></span>
+          <span class="am-service-head">
+            <strong>ייעוץ משכנתאות</strong>
+          </span>
+          <span class="am-service-text">שירות נפרד: משכנתא חדשה, מחזור, תמהיל והשוואת הצעות. אפשר גם בלי תוכנית כלכלת משפחה.</span>
+          <em>לעמוד המשכנתאות</em>
         </a>
         <a class="am-service" href="<?php echo esc_url(home_url('/פנסיה/')); ?>">
           <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48" width="26" height="26" stroke-width="1.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="14"/><path d="M24 16v8l6 4"/></svg></span>
@@ -83,14 +91,39 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
           <span class="am-service-text">כפל כיסויים, חוסרים, ומה באמת צריך כדי שהבית יהיה מוגן.</span>
           <em>לקריאה</em>
         </a>
-        <a class="am-service" href="<?php echo esc_url(home_url('/דילמות-כלכליות/')); ?>">
-          <span class="am-service-ico" aria-hidden="true"><svg viewBox="0 0 48 48" width="26" height="26" stroke-width="1.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M24 8v32"/><path d="M12 14h24"/><path d="M12 14 7 26a5 5 0 0 0 10 0l-5-12z"/><path d="M36 14l-5 12a5 5 0 0 0 10 0l-5-12z"/></svg></span>
-          <span class="am-service-head">
-            <strong>החלטות גדולות</strong>
-          </span>
-          <span class="am-service-text">חתונה, מעבר דירה, שינוי עבודה, גירושין או פרישה. לפני ההחלטה, לא אחריה.</span>
-          <em>לקריאה</em>
-        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="am-growth" aria-labelledby="am-growth-title">
+    <div class="am-wrap am-growth-grid">
+      <div class="am-growth-copy">
+        <p class="am-kicker">כלכלת המשפחה</p>
+        <h2 id="am-growth-title">תוכנית צמיחה: תקציב, חסכונות ויעדים</h2>
+        <p>לכולנו יש תכניות: להחליף רכב, לשפץ, השכלה לילדים, עזרה בדיור. בלי חיסכון מראש נשארות שתי אפשרויות: לוותר על התכנית, או לממן אותה בהלוואות ולשלם עליה כפול.</p>
+        <p>בייעוץ בודקים את העו״ש, הנכסים וההתחייבויות, את הפנסיה והביטוח, ואת כל תחום החסכונות וההשקעות. משם בונים תוכנית שאפשר לחיות איתה.</p>
+        <p class="am-more"><a href="<?php echo esc_url(home_url('/יועץ-לכלכלת-המשפחה/')); ?>">ייעוץ לכלכלת המשפחה</a></p>
+      </div>
+      <ol class="am-questions">
+        <li>
+          <strong>איפה הכסף מושקע, ואיזו תשואה מתקבלת?</strong>
+          <span>כסף שיושב בבנק מניב לרוב תשואה ריאלית שלילית. כלומר, מפסידים.</span>
+        </li>
+        <li>
+          <strong>מה רמת הסיכון?</strong>
+          <span>תשואה נאה יכולה להסתיר מנהל תיק שלוקח סיכונים על חשבונכם.</span>
+        </li>
+        <li>
+          <strong>האם הסכום מתאים ליעדים?</strong>
+          <span>אחרת, כשהילד ירצה ללמוד באוניברסיטה, יתברר שיש רק שליש מהסכום.</span>
+        </li>
+      </ol>
+    </div>
+    <div class="am-wrap">
+      <div class="am-growth-links">
+        <a href="<?php echo esc_url(home_url('/חיסכון-לכל-ילד-כל-המידע-ומה-כדאי-לעשות/')); ?>"><strong>חיסכון לכל ילד</strong><span>איזה מסלול לבחור, ומה כדאי לעשות</span></a>
+        <a href="<?php echo esc_url(home_url('/פנסיה/')); ?>"><strong>פנסיה</strong><span>הנכס הפיננסי הגדול שיהיה לכם בחיים</span></a>
+        <a href="<?php echo esc_url(home_url('/מחשבון-חיסכון-משפחתי-ליעדים/')); ?>"><strong>מחשבון חיסכון ליעדים</strong><span>כמה לחסוך בחודש כדי להגיע ליעד</span></a>
       </div>
     </div>
   </section>
@@ -99,9 +132,9 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
     <div class="am-wrap am-mortgage-grid">
       <div class="am-mortgage-copy">
         <p class="am-kicker am-kicker-light">משכנתאות</p>
-        <h2 id="am-mortgage-title">ייעוץ משכנתאות כחלק מהתוכנית הכלכלית</h2>
+        <h2 id="am-mortgage-title">ייעוץ משכנתאות, שירות נפרד</h2>
         <p>רכישת בית היא כנראה העסקה הגדולה בחיים. הבנקים מוסיפים פרמטרים וחישובים שמקשים על השוואה בין הצעות, וההבדל בין משכנתא טובה לרעה מורגש בכיס כל חודש, לאורך רוב שנות העבודה.</p>
-        <p>לכן ייעוץ משכנתאות מתחיל אצלי מהמשפחה, לא מהבנק: ההכנסות, ההוצאות, ההון העצמי והיעדים. רק מתוך התמונה הזו בונים תמהיל שמשלמים עליו לבנק פחות.</p>
+        <p>זה שירות עצמאי: משכנתא חדשה, מחזור, תמהיל והשוואת הצעות. אין צורך בתוכנית לכלכלת המשפחה. רוב לקוחות המשכנתא מגיעים רק לייעוץ הזה. מי שכבר בתוכנית צמיחה וצריך גם משכנתא חדשה או מחזור, יכול להוסיף את השירות.</p>
         <ul class="am-checks am-checks-light">
           <li>האם לקנות עכשיו, או להמשיך לשכור</li>
           <li>כמה החזר חודשי הבית באמת יכול לשאת</li>
@@ -132,39 +165,6 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
         <a class="am-letters-all" href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/')); ?>">המדריך המלא למשכנתא</a>
       </header>
       <?php amichai_mortgage_map(); ?>
-    </div>
-  </section>
-
-  <section class="am-growth" aria-labelledby="am-growth-title">
-    <div class="am-wrap am-growth-grid">
-      <div class="am-growth-copy">
-        <p class="am-kicker">צמיחה</p>
-        <h2 id="am-growth-title">חסכונות, השקעות ויעדים</h2>
-        <p>לכולנו יש תכניות: להחליף רכב, לשפץ, השכלה לילדים, עזרה בדיור. בלי חיסכון מראש נשארות שתי אפשרויות: לוותר על התכנית, או לממן אותה בהלוואות ולשלם עליה כפול.</p>
-        <p>בייעוץ בודקים מה קורה היום לכסף שכבר נחסך, ובונים תוכנית חיסכון שמאפשרת לממש את היעדים בזמן.</p>
-        <p class="am-more"><a href="<?php echo esc_url(home_url('/חסכונות/')); ?>">צמיחה, חסכונות והשקעות</a></p>
-      </div>
-      <ol class="am-questions">
-        <li>
-          <strong>איפה הכסף מושקע, ואיזו תשואה מתקבלת?</strong>
-          <span>כסף שיושב בבנק מניב לרוב תשואה ריאלית שלילית. כלומר, מפסידים.</span>
-        </li>
-        <li>
-          <strong>מה רמת הסיכון?</strong>
-          <span>תשואה נאה יכולה להסתיר מנהל תיק שלוקח סיכונים על חשבונכם.</span>
-        </li>
-        <li>
-          <strong>האם הסכום מתאים ליעדים?</strong>
-          <span>אחרת, כשהילד ירצה ללמוד באוניברסיטה, יתברר שיש רק שליש מהסכום.</span>
-        </li>
-      </ol>
-    </div>
-    <div class="am-wrap">
-      <div class="am-growth-links">
-        <a href="<?php echo esc_url(home_url('/חיסכון-לכל-ילד-כל-המידע-ומה-כדאי-לעשות/')); ?>"><strong>חיסכון לכל ילד</strong><span>איזה מסלול לבחור, ומה כדאי לעשות</span></a>
-        <a href="<?php echo esc_url(home_url('/פנסיה/')); ?>"><strong>פנסיה</strong><span>הנכס הפיננסי הגדול שיהיה לכם בחיים</span></a>
-        <a href="<?php echo esc_url(home_url('/מחשבון-חיסכון-משפחתי-ליעדים/')); ?>"><strong>מחשבון חיסכון ליעדים</strong><span>כמה לחסוך בחודש כדי להגיע ליעד</span></a>
-      </div>
     </div>
   </section>
 
@@ -223,7 +223,7 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
       </div>
       <div class="am-cert-wall" aria-label="תעודות">
         <?php
-        amichai_cert_figure('pension', 'am-cert-wide');
+        amichai_cert_figure('pension');
         amichai_cert_figure('mortgage');
         amichai_cert_figure('family');
         amichai_cert_figure('coaching');
@@ -352,7 +352,11 @@ $arrow = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><pa
       </details>
       <details>
         <summary>אתה גם יועץ משכנתאות?</summary>
-        <p>כן. אני יועץ משכנתאות וחבר בהתאחדות יועצי המשכנתאות בישראל. המשכנתא נבנית מתוך התמונה הכלכלית המלאה של הבית, ולא כעסקה נפרדת מול הבנק. <a href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/')); ?>">עוד על ייעוץ משכנתאות</a>.</p>
+        <p>כן. ייעוץ משכנתאות הוא שירות נפרד: משכנתא חדשה, מחזור והשוואת הצעות. אין צורך בתוכנית לכלכלת המשפחה. אפשר לרכוש כל שירות בנפרד, ולמי שצריך, גם לשלב. <a href="<?php echo esc_url(home_url('/דיור-ומשכנתאות/')); ?>">עוד על ייעוץ משכנתאות</a>.</p>
+      </details>
+      <details>
+        <summary>האם תוכנית הצמיחה כוללת ייעוץ משכנתאות?</summary>
+        <p>לא. בתוכנית הצמיחה נבדקים העו״ש, הנכסים וההתחייבויות, הפנסיה והביטוח, וכל תחום החסכונות וההשקעות. מסתכלים גם על משכנתא קיימת ועל החלטות דיור. משכנתא חדשה או מחזור הם שירות נפרד.</p>
       </details>
       <details>
         <summary>הייעוץ עוסק גם בחסכונות ובהשקעות?</summary>

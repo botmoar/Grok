@@ -2,7 +2,7 @@
 
 Hebrew RTL site for family-economics consultant Amichai Marx. Custom theme `amichai-marx`, Docker Compose (WordPress + MySQL 8 + WP-CLI), and a seed that keeps the live slugs worth keeping.
 
-Indexing follows one switch, WordPress's `blog_public` option (Settings → Reading). The seed turns it off on every host except `amichai-marx.co.il` and never turns it on. Go-live steps: [LAUNCH.md](LAUNCH.md).
+Production at https://amichai-marx.co.il is live and indexable. Indexing follows WordPress's `blog_public` option (Settings → Reading). The seed turns it off on every host except `amichai-marx.co.il` and never turns it on. Yoast SEO and Wordfence are installed on production; the theme yields titles, meta, JSON-LD, robots, and the sitemap to Yoast when it is present. Go-live steps and the current production notes: [LAUNCH.md](LAUNCH.md).
 
 ## Local preview
 
@@ -26,8 +26,8 @@ The seed is idempotent. Run the `wpcli` command again after content edits. Each 
 - Hero: Amichai's real headshot (from the live site), headline ייעוץ לכלכלת המשפחה ומשכנתאות, בליווי צמוד, green לתיאום שיחת היכרות
 - Main menu: a highlighted משכנתאות item that opens a mega menu (four groups, 13 topics); in the mobile drawer every group is an accordion
 - Mortgage hub `/דיור-ומשכנתאות/` with the association certificate, plus 13 topic pages (listed below)
-- Pages: `/אודות/`, `/צור-קשר/`, `/מן-התקשורת/`, `/כלי-עזר/`, `/מחשבון-תקציב-משפחתי/`, `/מחשבון-חיסכון-משפחתי-ליעדים/`, `/privacy-policy/`
-- Contact form stores a private lead (פניות in wp-admin) and tries `wp_mail`
+- Pages: `/אודות/`, `/צור-קשר/`, `/תודה/`, `/מן-התקשורת/`, `/כלי-עזר/`, `/מחשבון-תקציב-משפחתי/`, `/מחשבון-חיסכון-משפחתי-ליעדים/`, `/privacy-policy/`
+- Contact form stores a private lead (פניות in wp-admin), tries `wp_mail`, and redirects to `/תודה/`
 - With `blog_public` at 0: `robots.txt` disallows everything, and pages send `noindex` (meta and `X-Robots-Tag`)
 
 ## Content decisions
@@ -39,7 +39,7 @@ Live export: 8 pages, 71 posts, 5 categories.
 - 9 stale or thin posts redirect with no body merge. COVID grants, unpaid leave, isolation grants, the citizen grant, mortgage-freeze, study-fund withdrawal, and state-backed loans go to `/מענקים-לכולם-אילו-מענקים-וזכויות-מגיע/`. The thin return-to-routine note goes to `/איך-לצאת-מהמינוס/`. `/ייעוץ-כלכלי/` goes to the consulting pillar.
 - WhatsApp uses 972542372417. GA4 `G-5SR358LG0Z` is a theme option (Customizer → אנליטיקס) and stays off until it is switched on. The contact form replaces Contact Form 7.
 - The homepage is a landing page, not the old keyword wall.
-- Every move is a 301 in `redirects.json`, with the reason in Hebrew.
+- Every move is a 301 in `redirects.json`, with the reason in Hebrew. Old `amichaimortgage.co.il` paths are 308'd by uPress onto this host, then 301'd from `mortgage-redirects.json` (see `docs/mortgage-redirect-map.csv`).
 
 ### Mortgage pillar (October 2026 revision)
 
@@ -60,7 +60,7 @@ Facts used on the site (phone, emails, address, credentials, quotes) come from t
 
 Follow [LAUNCH.md](LAUNCH.md): backup, database and media move, search-replace, seed, server config, the remove-on-launch checklist, indexing, mail, verification (`tools/verify_launch.py`), Search Console, and rollback.
 
-Sitemap URL after go-live: `/wp-sitemap.xml`. Core WordPress sitemaps are enabled in code even on preview, but preview `robots.txt` disallows the whole host.
+Sitemap URL on production (Yoast installed): `/sitemap_index.xml`. Without Yoast, core `/wp-sitemap.xml` is the fallback. Preview `robots.txt` still disallows the whole host.
 
 ## cPanel
 
@@ -68,7 +68,7 @@ Requirements: PHP 8.2+, MySQL 8, WordPress 6.8, pretty permalinks, SSL.
 
 1. Install WordPress on the account. Set the language to עברית (`he_IL`) and the timezone to `Asia/Jerusalem`.
 2. Upload `wp-content/themes/amichai-marx` and `wp-content/mu-plugins/amichai-preview.php`.
-3. Upload `content/` to `wp-content/amichai-data/` and place `redirects.json` in that same folder.
+3. Upload `content/` to `wp-content/amichai-data/` and place `redirects.json` and `mortgage-redirects.json` in that same folder.
 4. Copy `docker/seed.php` onto the server and run, from the WordPress root:
 
 ```bash
@@ -96,9 +96,11 @@ define('DISALLOW_FILE_EDIT', true);
 | `docker/seed.sh` | Install core, Hebrew locale, run the seed |
 | `docker/seed.php` | Pages, posts, menu, front page |
 | `content/posts.json` | Kept and rewritten posts |
-| `content/pages.json` | The eight public pages |
+| `content/pages.json` | Public pages, including `/תודה/` |
 | `content/classification.json` | keep / rewrite / redirect for every live post |
-| `redirects.json` | 301 map |
+| `redirects.json` | 301 map for the previous amichai-marx.co.il URLs |
+| `mortgage-redirects.json` | 301 map for old amichaimortgage.co.il paths (after the uPress 308) |
+| `docs/mortgage-redirect-map.csv` | Verified old-host → new URL mapping |
 | `wp-content/themes/amichai-marx` | Theme |
 | `tools/build_content.py` | Rebuilds the JSON from a WP REST export (optional) |
 | `tools/editorial_overrides.json` | Hand edits made after the first build, re-applied on every build |
